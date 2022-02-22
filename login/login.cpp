@@ -19,6 +19,7 @@ Login::Login(DbManager* dbM, QWidget *parent)
 
 
 Login::~Login() {
+    qInfo()<<"Destroying Login";
     delete ui;
 }
 

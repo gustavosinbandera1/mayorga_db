@@ -84,6 +84,7 @@
      </property>
      <addaction name="actionAdd_Products"/>
      <addaction name="actionAdd_Users"/>
+     <addaction name="actionAdd_Address"/>
     </widget>
     <widget class="QMenu" name="menuOrders">
      <property name="title">
@@ -176,6 +177,11 @@
   <action name="actionList_Products">
    <property name="text">
     <string>List Products</string>
+   </property>
+  </action>
+  <action name="actionAdd_Address">
+   <property name="text">
+    <string>Add Address</string>
    </property>
   </action>
  </widget>

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMdiArea>
 #include <addressview.h>
 #include <ordersview.h>
 #include <usersview.h>
@@ -32,6 +33,8 @@ private slots:
 
     void on_actionAdd_Users_triggered();
 
+    void on_actionAdd_Address_triggered();
+
 private:
     Ui::MainWindow *ui;
     DbManager *_dbM;
@@ -40,6 +43,7 @@ private:
     OrdersView *ordersView = nullptr;
     AddressView *addressView = nullptr;
     void releaseMemory(QObject* obj) {if(obj != nullptr) delete obj;}
+    void populateTab(QWidget* widget, QMdiArea *mdiArea);
 };
 
 #endif // MAINWINDOW_H

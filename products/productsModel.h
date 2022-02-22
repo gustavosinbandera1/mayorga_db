@@ -24,9 +24,7 @@ public:
 private:
     DbManager *_dbM;
     QSqlTableModel *productModel;
-    QList<QString> tm_contact_name;
-    QList<QString> tm_contact_phone;
-
+    QVariant getItem( int row, int column) const ;
 };
 
 #endif // PRODUCTSMODEL_H

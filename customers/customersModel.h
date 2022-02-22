@@ -26,6 +26,7 @@ class CustomerModel : public QAbstractTableModel {
  private:
   DbManager *_dbM;
   QSqlTableModel *customerModel;
+  QVariant getItem( int row, int column) const ;
 };
 
 #endif  // PRODUCTSMODEL_H

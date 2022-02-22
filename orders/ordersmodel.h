@@ -10,7 +10,7 @@ class OrdersModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    explicit OrdersModel(DbManager mdb, QObject *parent = nullptr);
+    explicit OrdersModel(DbManager *mdb, QObject *parent = nullptr);
 
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
@@ -20,9 +20,11 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-
+    QSqlTableModel* getOrderModel() { return this->orderModel;}
 private:
     DbManager* _dbM;
+    QSqlTableModel *orderModel;
+    QVariant getItem( int row, int column) const;
 
 
 };

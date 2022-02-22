@@ -29,6 +29,7 @@ INCLUDEPATH += $$PWD/address
 INCLUDEPATH += $$PWD/administrators
 
 SOURCES += \
+    address/addressdto.cpp \
     address/addressmodel.cpp \
     address/addressview.cpp \
     administrators/registeruserDTO.cpp \
@@ -38,6 +39,8 @@ SOURCES += \
     login/login.cpp \
     main.cpp \
     mainwindow.cpp \
+    orders/orderform.cpp \
+    orders/ordersheet.cpp \
     orders/ordersmodel.cpp \
     orders/ordersview.cpp \
     products/productsModel.cpp \
@@ -46,6 +49,7 @@ SOURCES += \
     products/productsview.cpp
 
 HEADERS += \
+    address/addressdto.h \
     address/addressmodel.h \
     address/addressview.h \
     administrators/registeruserDTO.h \
@@ -55,6 +59,8 @@ HEADERS += \
     databaseManager/dbmanager.h \
     login/login.h \
     mainwindow.h \
+    orders/orderform.h \
+    orders/ordersheet.h \
     orders/ordersmodel.h \
     orders/ordersview.h \
     products/productsModel.h \
@@ -64,12 +70,15 @@ HEADERS += \
 
 FORMS += \
     #address/addressmodel.ui \
+    address/addressdto.ui \
     address/addressview.ui \
     administrators/registeruserDTO.ui \
     dialog.ui \
     login/login.ui \
     mainwindow.ui \
-    ordersview.ui \
+    orders/orderform.ui \
+    orders/ordersheet.ui \
+    orders/ordersview.ui \
     products/productsdto.ui \
     products/productsview.ui \
     userscontrolform.ui \

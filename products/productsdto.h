@@ -49,7 +49,7 @@ class ProductsDTO : public QDialog
 public:
     explicit ProductsDTO(QWidget *parent = nullptr);
     ~ProductsDTO();
-    Product getProduct(){return _product;}
+    Product getDTO(){return _product;}
 
 private slots:
     void on_buttonBox_accepted();

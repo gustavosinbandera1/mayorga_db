@@ -1,5 +1,4 @@
 #include "addressview.h"
-
 #include "addressmodel.h"
 #include "ui_addressview.h"
 
@@ -11,6 +10,9 @@ AddressView::AddressView(DbManager* mdb, QWidget* parent)
   ui->addressTableView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::Stretch);
   ui->addressTableView->setVisible(true);
+  ui-> addressTableView->setAlternatingRowColors(true);
 }
 
-AddressView::~AddressView() { delete ui; }
+AddressView::~AddressView() {
+    qDebug()<<"Destroying AddressView";
+    delete ui; }

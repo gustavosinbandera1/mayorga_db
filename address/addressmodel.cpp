@@ -6,10 +6,10 @@ AddressModel::AddressModel(DbManager *dbm, QObject *parent)
   addressModel->setTable("address");
   addressModel->select();
 
-  addressModel->setHeaderData(1, Qt::Horizontal, "first field");
-  addressModel->setHeaderData(2, Qt::Horizontal, "second field");
-  addressModel->setHeaderData(3, Qt::Horizontal, "third field");
-  addressModel->setHeaderData(4, Qt::Horizontal, "fourth field");
+  addressModel->setHeaderData(1, Qt::Horizontal, "City");
+  addressModel->setHeaderData(2, Qt::Horizontal, "State");
+  addressModel->setHeaderData(3, Qt::Horizontal, "Zip Code");
+  addressModel->setHeaderData(4, Qt::Horizontal, "Country");
 }
 
 int AddressModel::rowCount(const QModelIndex &parent) const {

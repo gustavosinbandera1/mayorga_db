@@ -1,11 +1,9 @@
 #include "mainwindow.h"
-
+#include <addressdto.h>
 #include <bits/unique_ptr.h>
 #include <ui_registeradmindialog.h>
-
 #include <QMdiSubWindow>
 #include <QMessageBox>
-
 #include "login.h"
 #include "ordersview.h"
 #include "productsdto.h"
@@ -40,30 +38,17 @@ void MainWindow::on_actionAbout_triggered() {
 
 void MainWindow::on_tabWidget_currentChanged(int index) {
   if (index == 0) {
-    releaseMemory(productsView);
     productsView = new ProductsView(_dbM, this);
-    ui->ProductMdiArea->closeAllSubWindows();
-    auto subwindow = ui->ProductMdiArea->addSubWindow(productsView);
-    subwindow->showMaximized();
-
+    populateTab(productsView, ui->ProductMdiArea);
   } else if (index == 1) {
-    releaseMemory(usersView);
     usersView = new UsersView(_dbM, this);
-    ui->userMdiArea->closeAllSubWindows();
-    auto subwindow = ui->userMdiArea->addSubWindow(usersView);
-    subwindow->showMaximized();
+    populateTab(usersView, ui->userMdiArea);
   } else if (index == 2) {
-    releaseMemory(ordersView);
-    OrdersView *oView = new OrdersView();
-    ui->ordersMdiArea->closeAllSubWindows();
-    auto subwindow = ui->ordersMdiArea->addSubWindow(oView);
-    subwindow->showMaximized();
-  } else if(index == 3) {
-      releaseMemory(addressView);
-      addressView = new AddressView(_dbM,this);
-      ui->addressMdiArea->closeAllSubWindows();
-      auto subwindow = ui->addressMdiArea->addSubWindow(addressView);
-      subwindow->showMaximized();
+    ordersView = new OrdersView(_dbM, this);
+    populateTab(ordersView, ui->ordersMdiArea);
+  } else if (index == 3) {
+    addressView = new AddressView(_dbM, this);
+    populateTab(addressView, ui->addressMdiArea);
   }
 }
 
@@ -71,18 +56,16 @@ void MainWindow::on_actionAdd_Products_triggered() {
   ProductsDTO pDTO(this);
   pDTO.setWindowFlags(Qt::Window | Qt::WindowTitleHint |
                       Qt::CustomizeWindowHint);
-  if (pDTO.exec() == QDialog::Rejected) {
-    return;
-  }
 
-  Product product = pDTO.getProduct();
+  if (pDTO.exec() == QDialog::Rejected) return;
+
+  Product product = pDTO.getDTO();
   QSqlQuery q(_dbM->db());
-  q.exec(
-      QString("INSERT INTO products"
-              "(description, price, weight) VALUES ( '%1', '%2', '%3')")
-          .arg(product.getDescription())
-          .arg(product.getPrice().toDouble())
-          .arg(product.getWeight().toDouble()));
+  q.exec(QString("INSERT INTO products"
+                 "(description, price, weight) VALUES ( '%1', '%2', '%3')")
+             .arg(product.getDescription())
+             .arg(product.getPrice().toDouble())
+             .arg(product.getWeight().toDouble()));
 }
 
 void MainWindow::on_actionAdd_Users_triggered() {
@@ -102,4 +85,22 @@ void MainWindow::on_actionAdd_Users_triggered() {
           .arg(admin.phone())
           .arg(admin.email())
           .arg(_dbM->getHash(admin.password())));
+}
+
+void MainWindow::on_actionAdd_Address_triggered() {
+  AddressDTO aDTO(this);
+  if (aDTO.exec() == QDialog::Rejected) return;
+  Address address = aDTO.getDTO();
+  QSqlQuery q(_dbM->db());
+  q.exec(QString("INSERT INTO address"
+                 "(city,state,zipCode,country) VALUES ('%1','%2','%3',%4)")
+             .arg(address.getCity())
+             .arg(address.getState())
+             .arg(address.getZipCode()));
+}
+
+void MainWindow::populateTab(QWidget *widget, QMdiArea *mdiArea) {
+  mdiArea->closeAllSubWindows();
+  auto subwindow = mdiArea->addSubWindow(widget);
+  subwindow->showMaximized();
 }
