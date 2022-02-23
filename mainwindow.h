@@ -29,14 +29,14 @@ private slots:
 
     void on_actionAbout_triggered();
 
-    void on_tabWidget_currentChanged(int index);
-
     void on_actionAdd_Products_triggered();
 
     void on_actionAdd_Users_triggered();
 
     void on_actionAdd_Address_triggered();
 
+
+    void on_tabWidget_tabBarClicked(int index);
 
 private:
     Ui::MainWindow *ui;
@@ -46,6 +46,8 @@ private:
     OrdersView *ordersView = nullptr;
     AddressView *addressView = nullptr;
     OrderForm *orderForm = nullptr;
+    QString currentUser;
+
     void releaseMemory(QObject* obj) {if(obj != nullptr) delete obj;}
     void populateTab(QWidget* widget, QMdiArea *mdiArea);
     void initTabWidget();

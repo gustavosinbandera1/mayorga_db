@@ -16,11 +16,20 @@
 #include "ui_mainwindow.h"
 #include "usersview.h"
 
+enum class TAB_NAME {
+  PRODUCTS,
+  USERS,
+  ORDERS,
+  ADDRESSES,
+  CREATE_ORDERS,
+  NUM_TABS
+};
+
 MainWindow::MainWindow(DbManager *dbM, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), _dbM(dbM) {
   ui->setupUi(this);
   Login *d = (Login *)parent;
-
+    currentUser = d->getCurrentUser();
   if (d->getType() == Login::ADMIN) {
     ui->menuDatabase->setEnabled(true);
   } else {
@@ -41,38 +50,22 @@ void MainWindow::on_actionAbout_triggered() {
   QMessageBox::aboutQt(this, "Qt");
 }
 //---------------------
-void MainWindow::on_tabWidget_currentChanged(int index) {
-    if (index == 0) {
-
-    } else if (index == 1) {
-        qDebug()<<"updating user into main UI";
-        usersView->updateUserModel();
-    } else if (index == 2) {
-
-    } else if (index == 3) {
-
-    }else if (index == 4) {
-       ordersView->updateOrderModel();
-      }
-}
-//---------------------
 void MainWindow::on_actionAdd_Products_triggered() {
   ProductsDTO pDTO(this);
   pDTO.setWindowFlags(Qt::Window | Qt::WindowTitleHint |
                       Qt::CustomizeWindowHint);
 
   if (pDTO.exec() == QDialog::Rejected) return;
-  qDebug()<<"trying to save product";
 
   Product product = pDTO.getDTO();
   QSqlQuery q(_dbM->db());
-  bool status = q.exec(QString("INSERT INTO products"
-                 "(name,description, price, weight) VALUES ( '%1', '%2', %3, %4)")
-             .arg(product.getName())
-             .arg(product.getDescription())
-             .arg(product.getPrice().toDouble())
-             .arg(product.getWeight().toDouble()));
-  qInfo()<<"salida: "<<status;
+  bool status = q.exec(
+      QString("INSERT INTO products"
+              "(name,description, price, weight) VALUES ( '%1', '%2', %3, %4)")
+          .arg(product.getName())
+          .arg(product.getDescription())
+          .arg(product.getPrice().toDouble())
+          .arg(product.getWeight().toDouble()));
 }
 //---------------------
 void MainWindow::on_actionAdd_Users_triggered() {
@@ -88,10 +81,10 @@ void MainWindow::on_actionAdd_Users_triggered() {
   q.exec(
       QString("INSERT INTO customer"
               "(name, phone, email, password) VALUES ('%1', '%2', '%3', '%4')")
-          .arg(admin.name())
-          .arg(admin.phone())
-          .arg(admin.email())
-          .arg(_dbM->getHash(admin.password())));
+          .arg(admin.getName())
+          .arg(admin.getPhone())
+          .arg(admin.getEmail())
+          .arg(_dbM->getHash(admin.getPassword())));
 }
 //---------------------
 void MainWindow::on_actionAdd_Address_triggered() {
@@ -112,19 +105,37 @@ void MainWindow::populateTab(QWidget *widget, QMdiArea *mdiArea) {
   subwindow->showMaximized();
 }
 //---------------------
-void MainWindow::initTabWidget()
-{
-    on_tabWidget_currentChanged(0);
+void MainWindow::initTabWidget() {
+  productsView = new ProductsView(_dbM, this);
+  ordersView = new OrdersView(_dbM, this);
+  usersView = new UsersView(_dbM, this);
+  addressView = new AddressView(_dbM, this);
+  orderForm = new OrderForm(_dbM, this);
 
-    productsView = new ProductsView(_dbM, this);
-    ordersView = new OrdersView(_dbM, this);
-    usersView = new UsersView(_dbM, this);
-    addressView = new AddressView(_dbM, this);
-    orderForm = new OrderForm(_dbM, this);
+  populateTab(productsView, ui->ProductMdiArea);
+  populateTab(usersView, ui->userMdiArea);
+  populateTab(addressView, ui->addressMdiArea);
+  populateTab(ordersView, ui->ordersMdiArea);
+  populateTab(orderForm, ui->orderFormMdiArea);
+}
 
-    populateTab(productsView, ui->ProductMdiArea);
-    populateTab(usersView, ui->userMdiArea);
-    populateTab(addressView, ui->addressMdiArea);
-    populateTab(ordersView, ui->ordersMdiArea);
-    populateTab(orderForm, ui->orderFormMdiArea);
+void MainWindow::on_tabWidget_tabBarClicked(int index) {
+  TAB_NAME type = static_cast<TAB_NAME>(index);
+  switch (type) {
+    case TAB_NAME::PRODUCTS:
+      if (productsView != nullptr) productsView->updateProductsModel();
+      break;
+    case TAB_NAME::USERS:
+      usersView->updateUserModel();
+      break;
+    case TAB_NAME::ORDERS:
+      break;
+    case TAB_NAME::ADDRESSES:
+      break;
+    case TAB_NAME::CREATE_ORDERS:
+      ordersView->updateOrderModel();
+      break;
+    default:
+      break;
+  }
 }

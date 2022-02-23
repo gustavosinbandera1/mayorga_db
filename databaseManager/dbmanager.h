@@ -83,7 +83,7 @@ class DbManager {
 
   bool checkUserCredentials(QString email, QString pwd);
 
-  QString selectFromTable(const QString& table, const QString& email);
+  QString getPasswordFromTable(const QString& table, const QString& email);
 
  private:
   QSqlDatabase m_db;

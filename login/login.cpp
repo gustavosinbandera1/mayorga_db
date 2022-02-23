@@ -23,22 +23,25 @@ Login::~Login() {
 }
 //---------------------
 void Login::on_buttonBox_accepted() {
-    bool is_user = false;
+//    if(ui->userLineEdit->text().isEmpty() || ui->passwordLineEdit->text().isEmpty())
+//        return;
     mType = Login::ADMIN;
     accept();
     return;
 
     QString password;
     if(ui->customerRadioButton->isChecked()) {
-        password = _dbM->selectFromTable("customer",ui->userLineEdit->text());
-        is_user = true;
+        password = _dbM->getPasswordFromTable("customer",ui->userLineEdit->text());
+       // is_user = true;
         mType = Login::USERS;
-
     } else {
-        is_user = false;
+       // is_user = false;
         mType = Login::ADMIN;
-        password = _dbM->selectFromTable("administrator", ui->userLineEdit->text());
+        password = _dbM->getPasswordFromTable("administrator", ui->userLineEdit->text());
     }
+
+    currentUser.setEmail(ui->userLineEdit->text());
+
     if(password.size()){
         if(password == _dbM->getHash(ui->passwordLineEdit->text())) {
             accept();
@@ -68,9 +71,9 @@ void Login::on_registerAdminButton_clicked() {
     QSqlQuery q(_dbM->db());
     q.exec(QString("INSERT INTO administrator"
                    "(name, phone, email, password) VALUES ('%1', '%2', '%3', '%4')")
-           .arg(admin.name())
-           .arg(admin.phone())
-           .arg(admin.email())
-           .arg(_dbM->getHash(admin.password()))
+           .arg(admin.getName())
+           .arg(admin.getPhone())
+           .arg(admin.getEmail())
+           .arg(_dbM->getHash(admin.getPassword()))
            );
 }

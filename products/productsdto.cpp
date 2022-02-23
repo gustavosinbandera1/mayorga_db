@@ -15,7 +15,7 @@ ProductsDTO::~ProductsDTO() {
 //---------------------
 void ProductsDTO::on_buttonBox_accepted() {
   // send data to database
-  _product.setSku(ui->skuLineEdit->text());
+  _product.setSetName(ui->nameLineEdit->text());
   _product.setDescription(ui->descLineEdit->text());
   _product.setPrice(ui->priceLineEdit->text());
   _product.setWeight(ui->weightLineEdit->text());

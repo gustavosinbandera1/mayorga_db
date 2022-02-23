@@ -24,7 +24,7 @@ void RegisterUserDTO::on_buttonBox_accepted() {
   _user.setEmail(ui->emailLineEdit->text());
   _user.setName(ui->userLineEdit->text());
   _user.setPassword(ui->passwordLineEdit->text());
-  if (_user.password() != ui->repeatPasswordLineEdit->text()) {
+  if (_user.getPassword() != ui->repeatPasswordLineEdit->text()) {
     QMessageBox::critical(this, "Error", "passowrd mismatch");
     return;
   }

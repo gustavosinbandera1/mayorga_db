@@ -5,12 +5,12 @@
 
 class User {
 public:
-    User(int id = -1, const QString& name = "", const QString& phone = "", const QString email = "", const QString& password = "");
+    User(int id = -1, const QString& getName = "", const QString& getPhone = "", const QString getEmail = "", const QString& getPassword = "");
     int id() const { return mId; }
-    QString name() const { return mName; }
-    QString phone() const { return mPhone; }
-    QString email() const { return mEmail; }
-    QString password() const { return mPassword; }
+    QString getName() const { return mName; }
+    QString getPhone() const { return mPhone; }
+    QString getEmail() const { return mEmail; }
+    QString getPassword() const { return mPassword; }
 
     void setId(int id) {mId = id;}
     void setName(const QString& name) { mName = name; }

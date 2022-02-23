@@ -7,17 +7,17 @@ ProductsModel::ProductsModel(DbManager *dbm, QObject *parent)
   productModel = new QSqlTableModel(this);
   productModel->setTable("products");
   productModel->select();
-  productModel->setHeaderData(0, Qt::Horizontal, "Sku");
-  productModel->setHeaderData(1, Qt::Horizontal, "Name");
-  productModel->setHeaderData(2, Qt::Horizontal, "Description");
-  productModel->setHeaderData(3, Qt::Horizontal, "Price");
-  productModel->setHeaderData(4, Qt::Horizontal, "Weight");
+  productModel->setHeaderData(0, Qt::Horizontal, "Id");
+  productModel->setHeaderData(1, Qt::Horizontal, "Description");
+  productModel->setHeaderData(2, Qt::Horizontal, "Price");
+  productModel->setHeaderData(3, Qt::Horizontal, "Weight");
 }
 //---------------------
-QSqlTableModel *ProductsModel::upadateModel() {
-  productModel->setTable("products");
-  productModel->select();
-  return productModel;
+QSqlTableModel *ProductsModel::upadateModel()
+{
+    productModel->setTable("products");
+    productModel->select();
+    return productModel;
 }
 //---------------------
 QVariant ProductsModel::headerData(int section, Qt::Orientation orientation,
@@ -40,18 +40,17 @@ QVariant ProductsModel::getItem(const int row, const int column) const {
     case 0:
       return productModel->record(row).value("sku").toString();
     case 1:
-      return productModel->record(row).value("name").toString();
-    case 2:
       return productModel->record(row).value("description").toString();
-    case 3:
+    case 2:
       return productModel->record(row).value("price").toString();
-    case 4:
+    case 3:
       return productModel->record(row).value("weight").toString();
   }
   return QVariant();
 }
 //---------------------
 QVariant ProductsModel::data(const QModelIndex &index, int role) const {
-  if (!index.isValid() || role != Qt::DisplayRole) return QVariant();
+  if (!index.isValid() || role != Qt::DisplayRole)
+    return QVariant();
   return getItem(index.row(), index.column());
 }

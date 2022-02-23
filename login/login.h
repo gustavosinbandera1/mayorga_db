@@ -1,5 +1,7 @@
 #ifndef DIALOG_H
 #define DIALOG_H
+#include <userDTO.h>
+
 #include <QDialog>
 
 #include "dbmanager.h"
@@ -14,23 +16,31 @@ class Login : public QDialog {
   Q_OBJECT
 
  public:
-    /**
+    enum Type { USERS, ADMIN };
+  /**
    * @brief Login
    * @param dbM database object
    * @param parent
    */
   Login(DbManager *dbM, QWidget *parent = nullptr);
   ~Login();
+  /**
+   * @brief getCurrentUser refer to the current logged user
+   * @return
+   */
+  QString getCurrentUser() { return currentUser.getEmail(); }
 
-  enum Type { USERS, ADMIN };
   /**
    * @brief getType return auth type
    * @return
    */
   bool getType() { return mType; }
+
+
  private slots:
   /**
-   * @brief on_buttonBox_accepted this slot is executed when accept button pressed
+   * @brief on_buttonBox_accepted this slot is executed when accept button
+   * pressed
    */
   void on_buttonBox_accepted();
   /**
@@ -45,7 +55,8 @@ class Login : public QDialog {
  private:
   Ui::Dialog *ui;
   DbManager *_dbM;
-  void checkAdmin();
+  void isAdmin();
   int mType;
+  User currentUser;
 };
 #endif  // DIALOG_H

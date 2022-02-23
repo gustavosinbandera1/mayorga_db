@@ -58,7 +58,7 @@ QString DbManager::getHash(QString data) {
  * @param email
  * @return
  */
-QString DbManager::selectFromTable(const QString& table, const QString& email) {
+QString DbManager::getPasswordFromTable(const QString& table, const QString& email) {
   QString command =
       QString("SELECT * FROM %1  WHERE email LIKE '%2' ").arg(table, email);
   QSqlQuery qry(m_db);
