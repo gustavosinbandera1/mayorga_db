@@ -12,7 +12,8 @@ AddressView::AddressView(DbManager* mdb, QWidget* parent)
   ui->addressTableView->setVisible(true);
   ui-> addressTableView->setAlternatingRowColors(true);
 }
-
+//---------------------
 AddressView::~AddressView() {
     qDebug()<<"Destroying AddressView";
-    delete ui; }
+    delete ui;
+}

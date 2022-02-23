@@ -16,14 +16,12 @@ Login::Login(DbManager* dbM, QWidget *parent)
     ui->passwordLineEdit->setEchoMode(QLineEdit::Password);
     ui->customerRadioButton->setChecked(true);
 }
-
-
+//---------------------
 Login::~Login() {
     qInfo()<<"Destroying Login";
     delete ui;
 }
-
-
+//---------------------
 void Login::on_buttonBox_accepted() {
     bool is_user = false;
     mType = Login::ADMIN;
@@ -53,11 +51,11 @@ void Login::on_buttonBox_accepted() {
     }
     QMessageBox::information(this, "Fail", "Wrong email!!");
 }
-
+//---------------------
 void Login::on_buttonBox_rejected() {
     reject();
 }
-
+//---------------------
 void Login::on_registerAdminButton_clicked() {
     RegisterUserDTO d(this);
     auto adminCheckBox = d.getAdminCheckBox();

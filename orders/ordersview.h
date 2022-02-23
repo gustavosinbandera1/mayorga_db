@@ -15,6 +15,7 @@ class OrdersView : public QWidget {
  public:
   explicit OrdersView(DbManager* dbm, QWidget *parent = nullptr);
   ~OrdersView();
+    void updateOrderModel();
 
 private slots:
     void on_ordersTableView_clicked(const QModelIndex &index);

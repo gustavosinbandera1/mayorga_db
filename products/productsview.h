@@ -16,6 +16,7 @@ class ProductsView : public QWidget
 public:
     explicit ProductsView(DbManager* dbm, QWidget *parent = nullptr);
     ~ProductsView();
+    void updateProductsModel();
 
 private slots:
     void on_productsView_clicked(const QModelIndex &index);

@@ -11,18 +11,18 @@ AddressModel::AddressModel(DbManager *dbm, QObject *parent)
   addressModel->setHeaderData(3, Qt::Horizontal, "Zip Code");
   addressModel->setHeaderData(4, Qt::Horizontal, "Country");
 }
-
+//---------------------
 int AddressModel::rowCount(const QModelIndex &parent) const {
   if (!parent.isValid()) return 0;
 
   return addressModel->rowCount();
 }
-
+//---------------------
 int AddressModel::columnCount(const QModelIndex &parent) const {
   if (!parent.isValid()) return 0;
   return addressModel->columnCount();
 }
-
+//---------------------
 QVariant AddressModel::data(const QModelIndex &index, int role) const {
   if (!index.isValid()) return QVariant();
 
@@ -34,7 +34,7 @@ QVariant AddressModel::data(const QModelIndex &index, int role) const {
   // FIXME: Implement me!
   return QVariant();
 }
-
+//---------------------
 QVariant AddressModel::headerData(int section, Qt::Orientation orientation,
                                   int role) const {
   return QVariant();

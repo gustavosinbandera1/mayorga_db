@@ -13,22 +13,29 @@ CustomerModel::CustomerModel(DbManager *dbm, QObject *parent)
   customerModel->setHeaderData(3, Qt::Horizontal, "Phone");
   customerModel->setHeaderData(4, Qt::Horizontal, "Password");
 }
-
+//---------------------
+QSqlTableModel *CustomerModel::updateModel()
+{
+    customerModel->setTable("customer");
+    customerModel->select();
+    return customerModel;
+}
+//---------------------
 QVariant CustomerModel::headerData(int section, Qt::Orientation orientation,
                                    int role) const {
   return QVariant();
 }
-
+//---------------------
 int CustomerModel::rowCount(const QModelIndex &parent) const {
   Q_UNUSED(parent);
   return customerModel->rowCount();
 }
-
+//---------------------
 int CustomerModel::columnCount(const QModelIndex &parent) const {
   Q_UNUSED(parent);
   return customerModel->columnCount();
 }
-
+//---------------------
 QVariant CustomerModel::getItem(const int row, const int column) const {
   switch (column) {
     case 0:
@@ -44,10 +51,11 @@ QVariant CustomerModel::getItem(const int row, const int column) const {
   }
   return QVariant();
 }
-
+//---------------------
 QVariant CustomerModel::data(const QModelIndex &index, int role) const {
   if (!index.isValid() || role != Qt::DisplayRole) {
     return QVariant();
   }
   return getItem(index.row(), index.column());
 }
+//---------------------

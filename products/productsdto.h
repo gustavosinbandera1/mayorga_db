@@ -21,6 +21,9 @@ public:
     QString getSku() const {return sku;}
     void setSku(const QString &value) {sku = value;}
 
+    QString getName() const {return name;}
+    void setSetName(const QString &value) {name = value;}
+
     QString getDescription() const {return description;}
     void setDescription(const QString &value) {description = value;}
 
@@ -32,6 +35,7 @@ public:
 
 private:
     QString sku;
+    QString name;
     QString description;
     QString price;
     QString weight;

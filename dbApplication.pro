@@ -39,8 +39,8 @@ SOURCES += \
     login/login.cpp \
     main.cpp \
     mainwindow.cpp \
+    orders/detailsDialog.cpp \
     orders/orderform.cpp \
-    orders/ordersheet.cpp \
     orders/ordersmodel.cpp \
     orders/ordersview.cpp \
     products/productsModel.cpp \
@@ -59,8 +59,8 @@ HEADERS += \
     databaseManager/dbmanager.h \
     login/login.h \
     mainwindow.h \
+    orders/detailsDialog.h \
     orders/orderform.h \
-    orders/ordersheet.h \
     orders/ordersmodel.h \
     orders/ordersview.h \
     products/productsModel.h \
@@ -76,8 +76,8 @@ FORMS += \
     dialog.ui \
     login/login.ui \
     mainwindow.ui \
+    orders/detailsDialog.ui \
     orders/orderform.ui \
-    orders/ordersheet.ui \
     orders/ordersview.ui \
     products/productsdto.ui \
     products/productsview.ui \

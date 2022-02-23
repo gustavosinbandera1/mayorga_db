@@ -11,6 +11,7 @@ class ProductsModel : public QAbstractTableModel
 
 public:
     explicit ProductsModel(DbManager* dbm, QObject *parent = nullptr);
+    QSqlTableModel* upadateModel();
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 

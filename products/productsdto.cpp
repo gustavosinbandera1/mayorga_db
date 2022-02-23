@@ -6,13 +6,13 @@ ProductsDTO::ProductsDTO(QWidget *parent)
     : QDialog(parent), ui(new Ui::ProductsDTO) {
   ui->setupUi(this);
 }
-
+//---------------------
 ProductsDTO::~ProductsDTO() {
     qInfo()<<"Releasing ProductsDTO";
     delete ui;
 
 }
-
+//---------------------
 void ProductsDTO::on_buttonBox_accepted() {
   // send data to database
   _product.setSku(ui->skuLineEdit->text());
@@ -22,5 +22,5 @@ void ProductsDTO::on_buttonBox_accepted() {
   accept();
 
 }
-
+//---------------------
 void ProductsDTO::on_buttonBox_rejected() { reject(); }

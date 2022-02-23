@@ -13,12 +13,16 @@ ProductsView::ProductsView(DbManager* dbm, QWidget* parent)
   ui->productsView->horizontalHeader()->setVisible(true);
   ui->productsView->setAlternatingRowColors(true);
 }
-
+//---------------------
 ProductsView::~ProductsView() {
   qInfo() << "Destroying ProductsView";
   delete ui;
 }
-
+//---------------------
+void ProductsView::updateProductsModel() {
+  ui->productsView->setModel(pModel->upadateModel());
+}
+//---------------------
 void ProductsView::on_productsView_clicked(const QModelIndex& index) {
   for (int i = 0; i < pModel->columnCount(); i++) {
     qInfo() << "data " << pModel->index(index.row(), i).data();

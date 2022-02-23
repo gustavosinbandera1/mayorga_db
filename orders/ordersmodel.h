@@ -11,7 +11,7 @@ class OrdersModel : public QAbstractTableModel
 
 public:
     explicit OrdersModel(DbManager *mdb, QObject *parent = nullptr);
-
+    QSqlTableModel* updateModel();
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 

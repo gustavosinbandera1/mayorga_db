@@ -9,6 +9,8 @@
 #include "dbmanager.h"
 
 class ProductsView;
+class OrderForm;
+
 namespace Ui {
 class MainWindow;
 }
@@ -35,6 +37,7 @@ private slots:
 
     void on_actionAdd_Address_triggered();
 
+
 private:
     Ui::MainWindow *ui;
     DbManager *_dbM;
@@ -42,8 +45,10 @@ private:
     UsersView *usersView = nullptr;
     OrdersView *ordersView = nullptr;
     AddressView *addressView = nullptr;
+    OrderForm *orderForm = nullptr;
     void releaseMemory(QObject* obj) {if(obj != nullptr) delete obj;}
     void populateTab(QWidget* widget, QMdiArea *mdiArea);
+    void initTabWidget();
 };
 
 #endif // MAINWINDOW_H

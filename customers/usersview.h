@@ -16,7 +16,7 @@ class UsersView : public QWidget {
  public:
   explicit UsersView(DbManager *dbm, QWidget *parent = nullptr);
   ~UsersView();
-
+    void updateUserModel();
 private slots:
     void on_userTableView_clicked(const QModelIndex &index);
 

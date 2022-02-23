@@ -11,7 +11,8 @@ class CustomerModel : public QAbstractTableModel {
 
  public:
   explicit CustomerModel(DbManager *dbm, QObject *parent = nullptr);
-  // Header:
+  QSqlTableModel* updateModel();
+    // Header:
   QVariant headerData(int section, Qt::Orientation orientation,
                       int role = Qt::DisplayRole) const override;
 

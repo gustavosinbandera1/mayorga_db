@@ -11,13 +11,13 @@ RegisterUserDTO::RegisterUserDTO(QWidget *parent)
   ui->passwordLineEdit->setEchoMode(QLineEdit::Password);
   ui->repeatPasswordLineEdit->setEchoMode(QLineEdit::Password);
 }
-
+//---------------------
 RegisterUserDTO::~RegisterUserDTO() { delete ui; }
-
+//---------------------
 QCheckBox *RegisterUserDTO::getAdminCheckBox() const {
   return ui->adminCheckBox;
 }
-
+//---------------------
 void RegisterUserDTO::on_buttonBox_accepted() {
   _user.setId(1);
   _user.setPhone(ui->phoneLineEdit->text());
@@ -30,5 +30,5 @@ void RegisterUserDTO::on_buttonBox_accepted() {
   }
   accept();
 }
-
+//---------------------
 void RegisterUserDTO::on_buttonBox_rejected() { reject(); }

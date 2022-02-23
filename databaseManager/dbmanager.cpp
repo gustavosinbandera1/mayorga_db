@@ -39,7 +39,7 @@ DbManager::DbManager(const QString& host, const QString& username,
   addUser("user-1", "3007433507", "n@gmail.com", getHash("1234"), "customer");
   // removeUser("gustavosinbandera123@gmail.com","administrator");
 }
-
+//---------------------
 /**
  * @brief DbManager::getHash
  * @param data
@@ -51,7 +51,7 @@ QString DbManager::getHash(QString data) {
   QString stringHash(hash.toHex());
   return stringHash;
 }
-
+//---------------------
 /**
  * @brief DbManager::selectFromTable
  * @param table
@@ -73,7 +73,7 @@ QString DbManager::selectFromTable(const QString& table, const QString& email) {
 
   return "";
 }
-
+//---------------------
 /**
  * @brief DbManager::~DbManager
  */
@@ -118,7 +118,7 @@ bool DbManager::addUser(const QString& name, const QString& phone,
 
   return success;
 }
-
+//---------------------
 /**
  * @brief DbManager::removeUser
  * @param email
@@ -143,7 +143,7 @@ bool DbManager::removeUser(const QString& email, const QString& rol) {
 
   return success;
 }
-
+//---------------------
 /**
  * @brief DbManager::userExists
  * @param username
@@ -163,7 +163,7 @@ bool DbManager::userExists(const QString& email, const QString& rol) const {
 
   return exists;
 }
-
+//---------------------
 /**
  * @brief DbManager::removeAllUsers
  * @return
@@ -181,7 +181,7 @@ bool DbManager::removeAllUsers() {
 
   return success;
 }
-
+//---------------------
 /**
  * @brief DbManager::ExecuteSqlScriptFile
  * @param fileName
@@ -207,7 +207,7 @@ int DbManager::ExecuteSqlScriptFile(const QString& fileName) {
   }
   return successCount;
 }
-
+//---------------------
 /**
  * @brief DbManager::checkUserCredentials
  * @param email

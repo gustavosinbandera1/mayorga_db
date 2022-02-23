@@ -1,10 +1,14 @@
 #include "mainwindow.h"
+
 #include <addressdto.h>
 #include <bits/unique_ptr.h>
 #include <ui_registeradmindialog.h>
+
 #include <QMdiSubWindow>
 #include <QMessageBox>
+
 #include "login.h"
+#include "orderform.h"
 #include "ordersview.h"
 #include "productsdto.h"
 #include "productsview.h"
@@ -22,52 +26,55 @@ MainWindow::MainWindow(DbManager *dbM, QWidget *parent)
   } else {
     ui->menuDatabase->setEnabled(false);
   }
-  on_tabWidget_currentChanged(0);
-}
 
+  initTabWidget();
+}
+//---------------------
 MainWindow::~MainWindow() {
   qDebug() << "Calling main UI destructor";
   delete ui;
 }
-
+//---------------------
 void MainWindow::on_actionQuit_triggered() { qDebug() << "was clicked quit"; }
-
+//---------------------
 void MainWindow::on_actionAbout_triggered() {
   QMessageBox::aboutQt(this, "Qt");
 }
-
+//---------------------
 void MainWindow::on_tabWidget_currentChanged(int index) {
-  if (index == 0) {
-    productsView = new ProductsView(_dbM, this);
-    populateTab(productsView, ui->ProductMdiArea);
-  } else if (index == 1) {
-    usersView = new UsersView(_dbM, this);
-    populateTab(usersView, ui->userMdiArea);
-  } else if (index == 2) {
-    ordersView = new OrdersView(_dbM, this);
-    populateTab(ordersView, ui->ordersMdiArea);
-  } else if (index == 3) {
-    addressView = new AddressView(_dbM, this);
-    populateTab(addressView, ui->addressMdiArea);
-  }
-}
+    if (index == 0) {
 
+    } else if (index == 1) {
+        qDebug()<<"updating user into main UI";
+        usersView->updateUserModel();
+    } else if (index == 2) {
+
+    } else if (index == 3) {
+
+    }else if (index == 4) {
+       ordersView->updateOrderModel();
+      }
+}
+//---------------------
 void MainWindow::on_actionAdd_Products_triggered() {
   ProductsDTO pDTO(this);
   pDTO.setWindowFlags(Qt::Window | Qt::WindowTitleHint |
                       Qt::CustomizeWindowHint);
 
   if (pDTO.exec() == QDialog::Rejected) return;
+  qDebug()<<"trying to save product";
 
   Product product = pDTO.getDTO();
   QSqlQuery q(_dbM->db());
-  q.exec(QString("INSERT INTO products"
-                 "(description, price, weight) VALUES ( '%1', '%2', '%3')")
+  bool status = q.exec(QString("INSERT INTO products"
+                 "(name,description, price, weight) VALUES ( '%1', '%2', %3, %4)")
+             .arg(product.getName())
              .arg(product.getDescription())
              .arg(product.getPrice().toDouble())
              .arg(product.getWeight().toDouble()));
+  qInfo()<<"salida: "<<status;
 }
-
+//---------------------
 void MainWindow::on_actionAdd_Users_triggered() {
   RegisterUserDTO d(this);
   auto adminCheckBox = d.getAdminCheckBox();
@@ -86,7 +93,7 @@ void MainWindow::on_actionAdd_Users_triggered() {
           .arg(admin.email())
           .arg(_dbM->getHash(admin.password())));
 }
-
+//---------------------
 void MainWindow::on_actionAdd_Address_triggered() {
   AddressDTO aDTO(this);
   if (aDTO.exec() == QDialog::Rejected) return;
@@ -98,9 +105,26 @@ void MainWindow::on_actionAdd_Address_triggered() {
              .arg(address.getState())
              .arg(address.getZipCode()));
 }
-
+//---------------------
 void MainWindow::populateTab(QWidget *widget, QMdiArea *mdiArea) {
   mdiArea->closeAllSubWindows();
   auto subwindow = mdiArea->addSubWindow(widget);
   subwindow->showMaximized();
+}
+//---------------------
+void MainWindow::initTabWidget()
+{
+    on_tabWidget_currentChanged(0);
+
+    productsView = new ProductsView(_dbM, this);
+    ordersView = new OrdersView(_dbM, this);
+    usersView = new UsersView(_dbM, this);
+    addressView = new AddressView(_dbM, this);
+    orderForm = new OrderForm(_dbM, this);
+
+    populateTab(productsView, ui->ProductMdiArea);
+    populateTab(usersView, ui->userMdiArea);
+    populateTab(addressView, ui->addressMdiArea);
+    populateTab(ordersView, ui->ordersMdiArea);
+    populateTab(orderForm, ui->orderFormMdiArea);
 }
