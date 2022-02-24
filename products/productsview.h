@@ -3,7 +3,8 @@
 
 #include <QWidget>
 #include "dbmanager.h"
-
+#include "productDelegate.h"
+#include "boxdelegate.h"
 class ProductsModel;
 namespace Ui {
 class ProductsView;
@@ -18,12 +19,18 @@ public:
     ~ProductsView();
     void updateProductsModel();
 
+    bool isInteger(const QVariant &variant);
+
+    bool isString(const QVariant &variant);
+
 private slots:
-    void on_productsView_clicked(const QModelIndex &index);
+    void on_productsView_doubleClicked(const QModelIndex &index);
 
 private:
     Ui::ProductsView *ui;
     ProductsModel* pModel;
+    ProductDelegate *productDelegate;
+    boxDelegate* boxdelegate;
 };
 
 #endif // PRODUCTSVIEW_H

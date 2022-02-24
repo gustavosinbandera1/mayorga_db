@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include "dbmanager.h"
+
+class AddressModel;
 namespace Ui {
 class AddressView;
 }
@@ -14,9 +16,11 @@ class AddressView : public QWidget
 public:
     explicit AddressView(DbManager* mdb, QWidget *parent = nullptr);
     ~AddressView();
+    void updateAddressModel();
 
 private:
     Ui::AddressView *ui;
+    AddressModel* aModel;
 };
 
 #endif // ADDRESSVIEW_H

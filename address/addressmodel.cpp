@@ -11,6 +11,13 @@ AddressModel::AddressModel(DbManager *dbm, QObject *parent)
   addressModel->setHeaderData(3, Qt::Horizontal, "Zip Code");
   addressModel->setHeaderData(4, Qt::Horizontal, "Country");
 }
+
+QSqlTableModel *AddressModel::updateModel() {
+  qDebug() << "updating Address model...";
+  addressModel->setTable("products");
+  addressModel->select();
+  return addressModel;
+}
 //---------------------
 int AddressModel::rowCount(const QModelIndex &parent) const {
   if (!parent.isValid()) return 0;

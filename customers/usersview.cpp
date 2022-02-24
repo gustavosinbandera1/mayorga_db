@@ -11,6 +11,9 @@ UsersView::UsersView(DbManager* dbm, QWidget* parent)
       QHeaderView::Stretch);
   ui->userTableView->horizontalHeader()->setVisible(true);
   ui->userTableView->setAlternatingRowColors(true);
+  ui->userTableView->setSortingEnabled(true);
+  ui->userTableView->sortByColumn(0, Qt::AscendingOrder);
+  ui->userTableView->reset();
 }
 //---------------------
 UsersView::~UsersView() {

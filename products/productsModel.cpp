@@ -7,14 +7,18 @@ ProductsModel::ProductsModel(DbManager *dbm, QObject *parent)
   productModel = new QSqlTableModel(this);
   productModel->setTable("products");
   productModel->select();
-  productModel->setHeaderData(0, Qt::Horizontal, "Id");
+  productModel->setHeaderData(0, Qt::Horizontal, "Sku");
+  productModel->setHeaderData(0, Qt::Horizontal, "Name");
   productModel->setHeaderData(1, Qt::Horizontal, "Description");
   productModel->setHeaderData(2, Qt::Horizontal, "Price");
   productModel->setHeaderData(3, Qt::Horizontal, "Weight");
+
+
 }
 //---------------------
 QSqlTableModel *ProductsModel::upadateModel()
 {
+    qDebug()<< "updating model...";
     productModel->setTable("products");
     productModel->select();
     return productModel;
@@ -54,3 +58,4 @@ QVariant ProductsModel::data(const QModelIndex &index, int role) const {
     return QVariant();
   return getItem(index.row(), index.column());
 }
+

@@ -14,6 +14,9 @@ OrdersView::OrdersView(DbManager *dbm, QWidget *parent)
       QHeaderView::Stretch);
   ui->ordersTableView->horizontalHeader()->setVisible(true);
   ui->ordersTableView->setAlternatingRowColors(true);
+  ui->ordersTableView->setSortingEnabled(true);
+  ui->ordersTableView->sortByColumn(0, Qt::DescendingOrder);
+  ui->ordersTableView->reset();
 }
 //---------------------
 OrdersView::~OrdersView() {

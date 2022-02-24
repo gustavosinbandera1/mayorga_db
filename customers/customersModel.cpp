@@ -16,6 +16,7 @@ CustomerModel::CustomerModel(DbManager *dbm, QObject *parent)
 //---------------------
 QSqlTableModel *CustomerModel::updateModel()
 {
+    qDebug()<< "updating customer model...";
     customerModel->setTable("customer");
     customerModel->select();
     return customerModel;

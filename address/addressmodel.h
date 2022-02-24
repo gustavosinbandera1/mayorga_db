@@ -11,6 +11,7 @@ class AddressModel : public QAbstractTableModel {
 
  public:
   explicit AddressModel(DbManager *dbm, QObject *parent = nullptr);
+  QSqlTableModel* updateModel();
   QVariant headerData(int section, Qt::Orientation orientation,
                       int role = Qt::DisplayRole) const override;
 

@@ -29,14 +29,15 @@ MainWindow::MainWindow(DbManager *dbM, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), _dbM(dbM) {
   ui->setupUi(this);
   Login *d = (Login *)parent;
-    currentUser = d->getCurrentUser();
+  currentUser = d->getCurrentUser();
+
   if (d->getType() == Login::ADMIN) {
     ui->menuDatabase->setEnabled(true);
   } else {
     ui->menuDatabase->setEnabled(false);
   }
-
   initTabWidget();
+  productsView->updateProductsModel();
 }
 //---------------------
 MainWindow::~MainWindow() {
@@ -123,17 +124,21 @@ void MainWindow::on_tabWidget_tabBarClicked(int index) {
   TAB_NAME type = static_cast<TAB_NAME>(index);
   switch (type) {
     case TAB_NAME::PRODUCTS:
-      if (productsView != nullptr) productsView->updateProductsModel();
+      //if (productsView != nullptr)
+          productsView->updateProductsModel();
       break;
     case TAB_NAME::USERS:
       usersView->updateUserModel();
       break;
     case TAB_NAME::ORDERS:
+      ordersView->updateOrderModel();
       break;
     case TAB_NAME::ADDRESSES:
+      addressView->updateAddressModel();
+
       break;
     case TAB_NAME::CREATE_ORDERS:
-      ordersView->updateOrderModel();
+
       break;
     default:
       break;

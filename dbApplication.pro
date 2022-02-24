@@ -33,6 +33,7 @@ SOURCES += \
     address/addressmodel.cpp \
     address/addressview.cpp \
     administrators/registeruserDTO.cpp \
+    boxdelegate.cpp \
     customers/customersModel.cpp \
     customers/userDTO.cpp \
     databaseManager/dbmanager.cpp \
@@ -43,6 +44,7 @@ SOURCES += \
     orders/orderform.cpp \
     orders/ordersmodel.cpp \
     orders/ordersview.cpp \
+    products/productDelegate.cpp \
     products/productsModel.cpp \
     customers/usersview.cpp \
     products/productsdto.cpp \
@@ -53,6 +55,8 @@ HEADERS += \
     address/addressmodel.h \
     address/addressview.h \
     administrators/registeruserDTO.h \
+    administrators/ui_registeradmindialog \
+    boxdelegate.h \
     customers/customersModel.h \
     customers/userDTO.h \
     databaseManager/db_config.h \
@@ -63,6 +67,7 @@ HEADERS += \
     orders/orderform.h \
     orders/ordersmodel.h \
     orders/ordersview.h \
+    products/productDelegate.h \
     products/productsModel.h \
     customers/usersview.h \
     products/productsdto.h \
@@ -73,7 +78,6 @@ FORMS += \
     address/addressdto.ui \
     address/addressview.ui \
     administrators/registeruserDTO.ui \
-    dialog.ui \
     login/login.ui \
     mainwindow.ui \
     orders/detailsDialog.ui \

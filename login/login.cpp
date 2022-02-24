@@ -1,5 +1,5 @@
 #include "login.h"
-#include "ui_dialog.h"
+#include "ui_login.h"
 #include "registeruserDTO.h"
 #include <QSqlQuery>
 #include <QMessageBox>
@@ -32,10 +32,8 @@ void Login::on_buttonBox_accepted() {
     QString password;
     if(ui->customerRadioButton->isChecked()) {
         password = _dbM->getPasswordFromTable("customer",ui->userLineEdit->text());
-       // is_user = true;
         mType = Login::USERS;
     } else {
-       // is_user = false;
         mType = Login::ADMIN;
         password = _dbM->getPasswordFromTable("administrator", ui->userLineEdit->text());
     }

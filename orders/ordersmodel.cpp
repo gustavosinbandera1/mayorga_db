@@ -12,6 +12,7 @@ OrdersModel::OrdersModel(DbManager *dbm, QObject *parent)
 }
 //---------------------
 QSqlTableModel *OrdersModel::updateModel() {
+  qDebug()<< "updating order model...";
   orderModel->setTable("orders");
   orderModel->select();
   return orderModel;
@@ -19,7 +20,7 @@ QSqlTableModel *OrdersModel::updateModel() {
 //---------------------
 QVariant OrdersModel::headerData(int section, Qt::Orientation orientation,
                                  int role) const {
-  // FIXME: Implement me!
+
 }
 //---------------------
 int OrdersModel::rowCount(const QModelIndex &parent) const {
