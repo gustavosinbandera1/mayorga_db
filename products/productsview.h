@@ -3,9 +3,10 @@
 
 #include <QWidget>
 #include "dbmanager.h"
-#include "productDelegate.h"
-#include "boxdelegate.h"
+#include "spinboxDelegate.h"
+
 class ProductsModel;
+class LineEditorDelegate;
 namespace Ui {
 class ProductsView;
 }
@@ -18,9 +19,7 @@ public:
     explicit ProductsView(DbManager* dbm, QWidget *parent = nullptr);
     ~ProductsView();
     void updateProductsModel();
-
     bool isInteger(const QVariant &variant);
-
     bool isString(const QVariant &variant);
 
 private slots:
@@ -29,8 +28,8 @@ private slots:
 private:
     Ui::ProductsView *ui;
     ProductsModel* pModel;
-    ProductDelegate *productDelegate;
-    boxDelegate* boxdelegate;
+    SpinboxDelegate *SpinBoxDelegate;
+    LineEditorDelegate *lineDelegate;
 };
 
 #endif // PRODUCTSVIEW_H

@@ -1,20 +1,20 @@
-#include "productDelegate.h"
+#include "spinboxDelegate.h"
 
 #include <QDebug>
 
-ProductDelegate::ProductDelegate(QObject *parent) : QItemDelegate(parent) {}
+SpinboxDelegate::SpinboxDelegate(QObject *parent) : QItemDelegate(parent) {}
 
-QWidget *ProductDelegate::createEditor(QWidget *parent,
+QWidget *SpinboxDelegate::createEditor(QWidget *parent,
                                        const QStyleOptionViewItem &option,
                                        const QModelIndex &index) const {
   qDebug() << "Creating editor .....";
   QSpinBox *editor = new QSpinBox(parent);
   editor->setMinimum(0);
-  editor->setMaximum(100);
+  editor->setMaximum(1000000);
   return editor;
 }
 
-void ProductDelegate::setEditorData(QWidget *editor,
+void SpinboxDelegate::setEditorData(QWidget *editor,
                                     const QModelIndex &index) const {
   qDebug() << "Editing Data:  ";
   int value = index.model()->data(index, Qt::EditRole).toInt();
@@ -22,7 +22,7 @@ void ProductDelegate::setEditorData(QWidget *editor,
   spinBox->setValue(value);
 }
 
-void ProductDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
+void SpinboxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
                                    const QModelIndex &index) const {
   qDebug() << "Setting Model data";
   QSpinBox *spinBox = static_cast<QSpinBox *>(editor);
@@ -31,9 +31,9 @@ void ProductDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
   model->setData(index, value, Qt::EditRole);
 }
 
-void ProductDelegate::updateEditorGeometry(QWidget *editor,
+void SpinboxDelegate::updateEditorGeometry(QWidget *editor,
                                            const QStyleOptionViewItem &option,
                                            const QModelIndex &index) const {
   editor->setGeometry(option.rect);
-   qDebug() << "updating geometry ................";
+  qDebug() << "updating geometry ................";
 }

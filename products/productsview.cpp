@@ -3,18 +3,18 @@
 #include <typeinfo>
 #include "productsModel.h"
 #include "ui_productsview.h"
-
+#include "lineeditordelegate.h"
 
 ProductsView::ProductsView(DbManager *dbm, QWidget *parent)
     : QWidget(parent), ui(new Ui::ProductsView) {
   ui->setupUi(this);
   pModel = new ProductsModel(dbm, this);
-  productDelegate = new ProductDelegate(this);
-  boxdelegate = new boxDelegate();
+  SpinBoxDelegate = new SpinboxDelegate(this);
+  lineDelegate = new LineEditorDelegate(this);
   ui->productsView->setModel(pModel->getProductModel());
   ui->productsView->setSortingEnabled(true);
   ui->productsView->sortByColumn(0, Qt::AscendingOrder);
-  //ui->productsView->reset();
+  ui->productsView->reset();
 
   ui->productsView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::Stretch);
@@ -31,24 +31,17 @@ void ProductsView::updateProductsModel() {
   ui->productsView->setModel(pModel->upadateModel());
 }
 //---------------------
-// void ProductsView::on_productsView_clicked(const QModelIndex& index) {
-//  //for (int i = 0; i < pModel->columnCount(); i++) {
-//    //qInfo() << "data " << pModel->index(index.row(), i).data();
-//      qDebug()<< "modele clicked ....";
-//  //}
-//}
-
 void ProductsView::on_productsView_doubleClicked(const QModelIndex &index) {
   qDebug() << "Doble click on item " << index.row() << " , " << index.column()
            << " = " << index.data();
 
   if(isInteger(index.data())){
        qDebug() << "It is an number ";
-       ui->productsView->setItemDelegate(productDelegate);
+       ui->productsView->setItemDelegate(SpinBoxDelegate);
        //set item delegate to number
   }else if(isString(index.data())){
        qDebug() << "it is a string ";
-       ui->productsView->setItemDelegate(boxdelegate);
+       ui->productsView->setItemDelegate(lineDelegate);
   }
 }
 

@@ -7,10 +7,10 @@
 #include <QSize>
 #include <QSpinBox>
 
-class ProductDelegate : public QItemDelegate {
+class SpinboxDelegate : public QItemDelegate {
   Q_OBJECT
  public:
-  explicit ProductDelegate(QObject *parent = nullptr);
+  explicit SpinboxDelegate(QObject *parent = nullptr);
   QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                         const QModelIndex &index) const override;
   void setEditorData(QWidget *editor, const QModelIndex &index) const override;

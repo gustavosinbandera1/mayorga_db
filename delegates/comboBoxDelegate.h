@@ -6,10 +6,10 @@
 #include <QObject>
 #include <QWidget>
 
-class boxDelegate : public QItemDelegate {
+class ComboBoxDelegate : public QItemDelegate {
   Q_OBJECT
  public:
-  explicit boxDelegate(QObject *parent = nullptr);
+  explicit ComboBoxDelegate(QObject *parent = nullptr);
   QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                         const QModelIndex &index) const override;
   void setEditorData(QWidget *editor, const QModelIndex &index) const override;

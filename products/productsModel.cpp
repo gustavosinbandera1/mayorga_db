@@ -12,8 +12,6 @@ ProductsModel::ProductsModel(DbManager *dbm, QObject *parent)
   productModel->setHeaderData(1, Qt::Horizontal, "Description");
   productModel->setHeaderData(2, Qt::Horizontal, "Price");
   productModel->setHeaderData(3, Qt::Horizontal, "Weight");
-
-
 }
 //---------------------
 QSqlTableModel *ProductsModel::upadateModel()

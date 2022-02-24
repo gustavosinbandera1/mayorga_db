@@ -26,6 +26,7 @@ INCLUDEPATH += $$PWD/customers
 INCLUDEPATH += $$PWD/login
 INCLUDEPATH += $$PWD/orders
 INCLUDEPATH += $$PWD/address
+INCLUDEPATH += $$PWD/delegates
 INCLUDEPATH += $$PWD/administrators
 
 SOURCES += \
@@ -33,10 +34,11 @@ SOURCES += \
     address/addressmodel.cpp \
     address/addressview.cpp \
     administrators/registeruserDTO.cpp \
-    boxdelegate.cpp \
+    delegates/comboBoxDelegate.cpp \
     customers/customersModel.cpp \
     customers/userDTO.cpp \
     databaseManager/dbmanager.cpp \
+    delegates/lineeditordelegate.cpp \
     login/login.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -44,11 +46,11 @@ SOURCES += \
     orders/orderform.cpp \
     orders/ordersmodel.cpp \
     orders/ordersview.cpp \
-    products/productDelegate.cpp \
     products/productsModel.cpp \
     customers/usersview.cpp \
     products/productsdto.cpp \
-    products/productsview.cpp
+    products/productsview.cpp \
+    delegates/spinboxDelegate.cpp
 
 HEADERS += \
     address/addressdto.h \
@@ -56,22 +58,23 @@ HEADERS += \
     address/addressview.h \
     administrators/registeruserDTO.h \
     administrators/ui_registeradmindialog \
-    boxdelegate.h \
+    delegates/comboBoxDelegate.h \
     customers/customersModel.h \
     customers/userDTO.h \
     databaseManager/db_config.h \
     databaseManager/dbmanager.h \
+    delegates/lineeditordelegate.h \
     login/login.h \
     mainwindow.h \
     orders/detailsDialog.h \
     orders/orderform.h \
     orders/ordersmodel.h \
     orders/ordersview.h \
-    products/productDelegate.h \
     products/productsModel.h \
     customers/usersview.h \
     products/productsdto.h \
-    products/productsview.h
+    products/productsview.h \
+    delegates/spinboxDelegate.h
 
 FORMS += \
     #address/addressmodel.ui \

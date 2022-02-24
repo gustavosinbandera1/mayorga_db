@@ -124,8 +124,7 @@ void MainWindow::on_tabWidget_tabBarClicked(int index) {
   TAB_NAME type = static_cast<TAB_NAME>(index);
   switch (type) {
     case TAB_NAME::PRODUCTS:
-      //if (productsView != nullptr)
-          productsView->updateProductsModel();
+      productsView->updateProductsModel();
       break;
     case TAB_NAME::USERS:
       usersView->updateUserModel();
