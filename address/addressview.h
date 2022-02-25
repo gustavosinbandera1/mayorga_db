@@ -18,6 +18,9 @@ public:
     ~AddressView();
     void updateAddressModel();
 
+private slots:
+    void on_addressTableView_clicked(const QModelIndex &index);
+
 private:
     Ui::AddressView *ui;
     AddressModel* aModel;

@@ -5,12 +5,17 @@
 
 class Address {
 public:
-    Address(QString city,
+    Address(int user_id,
+            QString city,
             QString state,
             QString zipcode,
             QString country);
 
     Address(){};
+
+    int getUserId() {return user_id;}
+    void setUserId(int id) {user_id = id;}
+
     QString getCity() const {return city;}
     void setCity(const QString &value) {city = value;}
 
@@ -24,6 +29,7 @@ public:
     void setCountry(const QString &value) {country = value;}
 
 private:
+    int user_id;
     QString city;
     QString state;
     QString zipCode;

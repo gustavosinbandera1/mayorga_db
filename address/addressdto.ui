@@ -28,7 +28,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_5"/>
+          <widget class="QLineEdit" name="userLineEdit"/>
          </item>
         </layout>
        </item>
@@ -42,7 +42,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit"/>
+          <widget class="QLineEdit" name="cityLineEdit"/>
          </item>
         </layout>
        </item>
@@ -56,7 +56,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_2"/>
+          <widget class="QLineEdit" name="stateLineEdit"/>
          </item>
         </layout>
        </item>
@@ -70,7 +70,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_3"/>
+          <widget class="QLineEdit" name="ZipCodeLineEdit"/>
          </item>
         </layout>
        </item>
@@ -84,7 +84,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_4"/>
+          <widget class="QLineEdit" name="countryLineEdit"/>
          </item>
         </layout>
        </item>

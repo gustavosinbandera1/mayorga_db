@@ -2,22 +2,38 @@
 
 #include <QComboBox>
 
-ComboBoxDelegate::ComboBoxDelegate(QObject *parent) : QItemDelegate(parent) {}
+ComboBoxDelegate::ComboBoxDelegate(DbManager *dbm, QString table,
+                                   QString column, QObject *parent)
+    : QItemDelegate(parent) {
+  _dbM = dbm;
+  _table = table;
+  _column = column;
+  QSqlQuery query;
+  QString c = QString("SELECT * FROM %1 ").arg(table);
+  if (!query.exec(c)) {
+    qDebug() << "--------------------error--------------------------";
+  }
+  while (query.next()) {
+    qDebug() << "output: " << query.value(3);
+    boxItems.append(query.value(3).toString());
+  }
+}
 
 QWidget *ComboBoxDelegate::createEditor(QWidget *parent,
                                         const QStyleOptionViewItem &option,
                                         const QModelIndex &index) const {
-  QComboBox *editor = new QComboBox(parent);
-  editor->addItem(QString("one in row %1").arg(index.row() + 1));
-  editor->addItem(QString("two in row %1").arg(index.row() + 1));
-  editor->addItem(QString("three in row %1").arg(index.row() + 1));
+  qDebug() << "--------------------creating editor--------------------------";
+  QComboBox *editor = new QComboBox(parent);;
+  for (const auto &item : boxItems) {
+    qDebug() << item;
+    editor->addItem(item);
+  }
   return editor;
 }
 
 void ComboBoxDelegate::setEditorData(QWidget *editor,
                                      const QModelIndex &index) const {
   QString str = index.model()->data(index, Qt::EditRole).toString();
-
   QComboBox *comboBox = static_cast<QComboBox *>(editor);
   // comboBox->setCurrentIndex(comboBox->findText(index.data().toString()));
 

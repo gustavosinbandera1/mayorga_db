@@ -8,6 +8,10 @@
 #include <QtSql>
 #include <QCheckBox>
 
+
+QString UserData::userName = "";
+int UserData::user_id = 0;
+
 Login::Login(DbManager* dbM, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::Dialog),
@@ -25,7 +29,11 @@ Login::~Login() {
 void Login::on_buttonBox_accepted() {
 //    if(ui->userLineEdit->text().isEmpty() || ui->passwordLineEdit->text().isEmpty())
 //        return;
+
     mType = Login::ADMIN;
+    UserData::userName ="n@gmail.com";
+    UserData::user_id = 1;
+
     accept();
     return;
 
@@ -39,6 +47,7 @@ void Login::on_buttonBox_accepted() {
     }
 
     currentUser.setEmail(ui->userLineEdit->text());
+    UserData::userName = currentUser.getEmail();
 
     if(password.size()){
         if(password == _dbM->getHash(ui->passwordLineEdit->text())) {
@@ -46,6 +55,7 @@ void Login::on_buttonBox_accepted() {
             return ;
         } else {
             QMessageBox::information(this, "Ok", "Wrong password!!");
+            UserData::userName = "";
             return;
         }
 

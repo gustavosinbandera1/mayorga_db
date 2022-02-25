@@ -3,11 +3,11 @@
 
 #include <QMainWindow>
 #include <QMdiArea>
-#include <addressview.h>
-#include <ordersview.h>
-#include <usersview.h>
-#include "dbmanager.h"
 
+class AddressView;
+class OrdersView;
+class UsersView;
+class DbManager;
 class ProductsView;
 class OrderForm;
 
@@ -37,6 +37,8 @@ private slots:
 
 
     void on_tabWidget_tabBarClicked(int index);
+
+    void on_NewAddressOrder_clicked();
 
 private:
     Ui::MainWindow *ui;

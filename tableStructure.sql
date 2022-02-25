@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS administrator (
     phone CHARACTER VARYING(12) UNIQUE NOT NULL,
     password CHARACTER VARYING(50) NOT NULL
     );
+
 CREATE TABLE IF NOT EXISTS customer (
     customer_id BIGSERIAL PRIMARY KEY,
     name  CHARACTER VARYING(50)  NOT NULL,
@@ -13,12 +14,25 @@ CREATE TABLE IF NOT EXISTS customer (
     password CHARACTER VARYING(50) NOT NULL
     );
 
+CREATE TABLE IF NOT EXISTS country (
+  country_id SERIAL NOT NULL PRIMARY KEY,
+  iso VARCHAR(2) NOT NULL,
+  name VARCHAR(80) NOT NULL,
+  nicename VARCHAR (80) NOT NULL,
+  iso3 VARCHAR(3) NULL,
+  zipcode INTEGER DEFAULT NULL,
+  phonecode INTEGER NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS address (
     address_id BIGSERIAL NOT NULL PRIMARY KEY,
     city VARCHAR(30) NOT NULL,
     state VARCHAR (30) NOT NULL,
-    zip_code VARCHAR(5) NOT NULL,
-    country VARCHAR(30) NOT NULL
+    street_number VARCHAR (100) NOT NULL,
+    fk_country_id int NOT NULL,
+    address_type VARCHAR (30),
+    CONSTRAINT address_to_country_fk FOREIGN KEY (fk_country_id)
+        REFERENCES country(country_id)
     );
 
 CREATE TABLE IF NOT EXISTS customer_address(
@@ -51,6 +65,10 @@ CREATE TABLE IF NOT EXISTS orders (
       REFERENCES customer (customer_id)
     );
 
+ALTER TABLE orders ADD CONSTRAINT
+    payment_type_constraint CHECK(
+    payment_type = 'visa' OR payment_type = 'mastercard' OR payment_type = 'cash'
+    );
 
 CREATE TABLE IF NOT EXISTS order_detail (
     num_detail BIGINT NOT NULL PRIMARY KEY,
@@ -67,4 +85,6 @@ CREATE TABLE IF NOT EXISTS order_detail (
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
     );
+
+
 

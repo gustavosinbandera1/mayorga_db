@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "dbmanager.h"
 #include "spinboxDelegate.h"
+#include "comboBoxDelegate.h"
 
 class ProductsModel;
 class LineEditorDelegate;
@@ -30,6 +31,7 @@ private:
     ProductsModel* pModel;
     SpinboxDelegate *SpinBoxDelegate;
     LineEditorDelegate *lineDelegate;
+    ComboBoxDelegate *comboBoxDelegate;
 };
 
 #endif // PRODUCTSVIEW_H

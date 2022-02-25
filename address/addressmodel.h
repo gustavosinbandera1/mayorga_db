@@ -23,6 +23,7 @@ class AddressModel : public QAbstractTableModel {
                 int role = Qt::DisplayRole) const override;
 
   QSqlTableModel *getAddressModel() { return this->addressModel; }
+  void setHeaders(void);
 
  private:
   DbManager *_dbM;

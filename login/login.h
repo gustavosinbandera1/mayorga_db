@@ -6,6 +6,12 @@
 
 #include "dbmanager.h"
 
+class UserData {
+public:
+static QString userName; //email
+static int user_id;
+};
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class Dialog;

@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 
-#include <addressdto.h>
 #include <bits/unique_ptr.h>
 #include <ui_registeradmindialog.h>
 
@@ -8,10 +7,16 @@
 #include <QMessageBox>
 
 #include "login.h"
+#include <addressdto.h>
+#include "addressview.h"
+
+
 #include "orderform.h"
 #include "ordersview.h"
+
 #include "productsdto.h"
 #include "productsview.h"
+
 #include "registeruserDTO.h"
 #include "ui_mainwindow.h"
 #include "usersview.h"
@@ -38,6 +43,8 @@ MainWindow::MainWindow(DbManager *dbM, QWidget *parent)
   }
   initTabWidget();
   productsView->updateProductsModel();
+  qDebug() << "el user name " << UserData::userName;
+  ui->userEmaillabel->setText(UserData::userName);
 }
 //---------------------
 MainWindow::~MainWindow() {
@@ -124,6 +131,7 @@ void MainWindow::on_tabWidget_tabBarClicked(int index) {
   TAB_NAME type = static_cast<TAB_NAME>(index);
   switch (type) {
     case TAB_NAME::PRODUCTS:
+      qDebug() << "The user is called : " << UserData::userName;
       productsView->updateProductsModel();
       break;
     case TAB_NAME::USERS:
@@ -142,4 +150,22 @@ void MainWindow::on_tabWidget_tabBarClicked(int index) {
     default:
       break;
   }
+}
+
+void MainWindow::on_NewAddressOrder_clicked() {
+    AddressDTO aDTO(this);
+    aDTO.setWindowFlags(Qt::Window | Qt::WindowTitleHint |
+                        Qt::CustomizeWindowHint);
+
+    if (aDTO.exec() == QDialog::Rejected) return;
+
+    Address address = aDTO.getDTO();
+    QSqlQuery q(_dbM->db());
+    bool status = q.exec(
+        QString("INSERT INTO address"
+                "(city, state, zip_code, country) VALUES ( '%1', '%2', %3, %4)")
+            .arg(address.getCity())
+            .arg(address.getState())
+            .arg(address.getZipCode())
+            .arg(address.getCountry()));
 }

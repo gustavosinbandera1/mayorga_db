@@ -1,5 +1,5 @@
 #include "productsview.h"
-
+#include "login.h"
 #include <typeinfo>
 #include "productsModel.h"
 #include "ui_productsview.h"
@@ -11,6 +11,9 @@ ProductsView::ProductsView(DbManager *dbm, QWidget *parent)
   pModel = new ProductsModel(dbm, this);
   SpinBoxDelegate = new SpinboxDelegate(this);
   lineDelegate = new LineEditorDelegate(this);
+
+  comboBoxDelegate = new ComboBoxDelegate(dbm, "products", "name", this);
+
   ui->productsView->setModel(pModel->getProductModel());
   ui->productsView->setSortingEnabled(true);
   ui->productsView->sortByColumn(0, Qt::AscendingOrder);
@@ -20,6 +23,9 @@ ProductsView::ProductsView(DbManager *dbm, QWidget *parent)
       QHeaderView::Stretch);
   ui->productsView->horizontalHeader()->setVisible(true);
   ui->productsView->setAlternatingRowColors(true);
+  //ui->productsView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+  qDebug()<< "In products view The user is called : " << UserData::userName;
 }
 //---------------------
 ProductsView::~ProductsView() {
@@ -38,10 +44,10 @@ void ProductsView::on_productsView_doubleClicked(const QModelIndex &index) {
   if(isInteger(index.data())){
        qDebug() << "It is an number ";
        ui->productsView->setItemDelegate(SpinBoxDelegate);
-       //set item delegate to number
   }else if(isString(index.data())){
        qDebug() << "it is a string ";
-       ui->productsView->setItemDelegate(lineDelegate);
+       //ui->productsView->setItemDelegate(lineDelegate);
+       ui->productsView->setItemDelegate(comboBoxDelegate);
   }
 }
 
