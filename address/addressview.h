@@ -1,6 +1,5 @@
 #ifndef ADDRESSVIEW_H
 #define ADDRESSVIEW_H
-
 #include <QWidget>
 #include "dbmanager.h"
 
@@ -17,13 +16,21 @@ public:
     explicit AddressView(DbManager* mdb, QWidget *parent = nullptr);
     ~AddressView();
     void updateAddressModel();
+    void updateAddressRModel();
 
 private slots:
     void on_addressTableView_clicked(const QModelIndex &index);
 
+    void on_streetNumberTextEdit_textChanged();
+
+    void on_streetNumberTextEdit_copyAvailable(bool b);
+
+    void on_streetNumberTextEdit_undoAvailable(bool b);
+
 private:
     Ui::AddressView *ui;
     AddressModel* aModel;
+    AddressModel* aRModel;
 };
 
 #endif // ADDRESSVIEW_H

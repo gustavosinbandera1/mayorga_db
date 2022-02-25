@@ -12,7 +12,7 @@ insert into products (name,description, price, weight) values ('smart-tv','Smart
 
 
 
-INSERT INTO country (country_id, iso, name, nicename, iso3, zipcode, phonecode) VALUES
+INSERT INTO country (country_id, iso, country_name, nicename, iso3, zipcode, phonecode) VALUES
 (1, 'AF', 'AFGHANISTAN', 'Afghanistan', 'AFG', 4, 93),
 (2, 'AL', 'ALBANIA', 'Albania', 'ALB', 8, 355),
 (3, 'DZ', 'ALGERIA', 'Algeria', 'DZA', 12, 213),

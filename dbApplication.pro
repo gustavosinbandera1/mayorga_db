@@ -27,6 +27,7 @@ INCLUDEPATH += $$PWD/login
 INCLUDEPATH += $$PWD/orders
 INCLUDEPATH += $$PWD/address
 INCLUDEPATH += $$PWD/delegates
+INCLUDEPATH += $$PWD/models
 INCLUDEPATH += $$PWD/administrators
 
 SOURCES += \
@@ -34,6 +35,7 @@ SOURCES += \
     address/addressmodel.cpp \
     address/addressview.cpp \
     administrators/registeruserDTO.cpp \
+    models/customtablemodel.cpp \
     delegates/comboBoxDelegate.cpp \
     customers/customersModel.cpp \
     customers/userDTO.cpp \
@@ -58,6 +60,7 @@ HEADERS += \
     address/addressview.h \
     administrators/registeruserDTO.h \
     administrators/ui_registeradmindialog \
+    models/customtablemodel.h \
     delegates/comboBoxDelegate.h \
     customers/customersModel.h \
     customers/userDTO.h \

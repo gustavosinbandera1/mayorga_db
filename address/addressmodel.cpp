@@ -5,16 +5,27 @@ AddressModel::AddressModel(DbManager *dbm, QObject *parent)
   addressModel = new QSqlTableModel(this);
   addressModel->setTable("address");
   addressModel->select();
+
+  addressRelationalModel = new QSqlRelationalTableModel(this);
+  addressRelationalModel->setTable("address");
+  addressRelationalModel->setRelation(0, QSqlRelation("country","country_id","country_name"));
+  addressRelationalModel->select();
+
   setHeaders();
 }
-
+//-------------------
 QSqlTableModel *AddressModel::updateModel() {
   qDebug() << "updating Address model...";
-
 
   addressModel->setTable("address");
   addressModel->select();
   return addressModel;
+}
+//--------------------
+QSqlRelationalTableModel *AddressModel::updateRModel() {
+    addressRelationalModel->setTable("address");
+    addressRelationalModel->select();
+    return addressRelationalModel;
 }
 //---------------------
 int AddressModel::rowCount(const QModelIndex &parent) const {
@@ -39,14 +50,23 @@ QVariant AddressModel::data(const QModelIndex &index, int role) const {
   // FIXME: Implement me!
   return QVariant();
 }
-
+//--------------------
 void AddressModel::setHeaders() {
   addressModel->setHeaderData(0, Qt::Horizontal, "Id");
   addressModel->setHeaderData(1, Qt::Horizontal, "City");
   addressModel->setHeaderData(2, Qt::Horizontal, "State");
-  //addressModel->setHeaderData(3, Qt::Horizontal, "Street & Number"); // this line should have to be hidden when table view rendering data
+  // addressModel->setHeaderData(3, Qt::Horizontal, "Street & Number"); // this
+  // line should have to be hidden when table view rendering data
   addressModel->setHeaderData(4, Qt::Horizontal, "Country");
   addressModel->setHeaderData(5, Qt::Horizontal, "Address Type");
+}
+//--------------------
+void AddressModel::setRHeaders() {
+  addressRelationalModel->setHeaderData(0, Qt::Horizontal, "Id");
+  addressRelationalModel->setHeaderData(1, Qt::Horizontal, "City");
+  addressRelationalModel->setHeaderData(2, Qt::Horizontal, "State");
+  addressRelationalModel->setHeaderData(4, Qt::Horizontal, "Country");
+  addressRelationalModel->setHeaderData(5, Qt::Horizontal, "Address Type");
 }
 //---------------------
 QVariant AddressModel::headerData(int section, Qt::Orientation orientation,

@@ -1,9 +1,8 @@
 #ifndef ADDRESSMODEL_H
 #define ADDRESSMODEL_H
 
-#include <QAbstractItemModel>
+#include <QSqlRelationalTableModel>
 #include <QSqlTableModel>
-
 #include "dbmanager.h"
 
 class AddressModel : public QAbstractTableModel {
@@ -12,6 +11,7 @@ class AddressModel : public QAbstractTableModel {
  public:
   explicit AddressModel(DbManager *dbm, QObject *parent = nullptr);
   QSqlTableModel* updateModel();
+  QSqlRelationalTableModel *updateRModel();
   QVariant headerData(int section, Qt::Orientation orientation,
                       int role = Qt::DisplayRole) const override;
 
@@ -22,12 +22,15 @@ class AddressModel : public QAbstractTableModel {
   QVariant data(const QModelIndex &index,
                 int role = Qt::DisplayRole) const override;
 
-  QSqlTableModel *getAddressModel() { return this->addressModel; }
+  QSqlTableModel *getModel() { return this->addressModel; }
+  QSqlRelationalTableModel *getRelationalModel() { return this->addressRelationalModel; }
   void setHeaders(void);
+  void setRHeaders(void);
 
  private:
   DbManager *_dbM;
   QSqlTableModel *addressModel;
+  QSqlRelationalTableModel *addressRelationalModel;
 };
 
 #endif  // ADDRESSMODEL_H
