@@ -1,6 +1,9 @@
 #include "addressview.h"
 #include "ui_addressview.h"
 
+/*
+select * from customer_address  join address ON customer_address.fk_address_id=address.address_id WHERE fk_customer_id = 1;
+*/
 AddressView::AddressView(DbManager* mdb, QWidget* parent)
     : QWidget(parent), ui(new Ui::AddressView) {
     ui->setupUi(this);
