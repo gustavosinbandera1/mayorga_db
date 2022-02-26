@@ -8,8 +8,12 @@
 OrdersView::OrdersView(DbManager *dbm, QWidget *parent)
     : QWidget(parent), ui(new Ui::OrdersView) {
   ui->setupUi(this);
-  oModel = new OrdersModel(dbm, this);
-  ui->ordersTableView->setModel(oModel->getOrderModel());
+  bool isRelational = true;
+  oModel = new CustomModel(dbm, "orders", isRelational, this);
+  oModel->setHeaders({"Id", "Customer_id", "Date", "Payment type"});
+  oModel->setRelation(1, "customer", "customer_id", "email");
+
+  ui->ordersTableView->setModel(oModel->getRelationalModel());
   ui->ordersTableView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::Stretch);
   ui->ordersTableView->horizontalHeader()->setVisible(true);
@@ -25,7 +29,9 @@ OrdersView::~OrdersView() {
 }
 //---------------------
 void OrdersView::updateOrderModel() {
-  ui->ordersTableView->setModel(oModel->updateModel());
+  ui->ordersTableView->setModel(oModel->updateRModel());
+   oModel->setHeaders({"Id", "Customer_id", "Date","Payment Type" });
+   oModel->setRelation(1, "customer", "customer_id", "email");
 }
 //---------------------
 void OrdersView::on_ordersTableView_clicked(const QModelIndex &index) {

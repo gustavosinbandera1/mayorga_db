@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "dbmanager.h"
+#include "customModel.h"
 
 class OrdersModel;
 namespace Ui {
@@ -16,13 +17,14 @@ class OrdersView : public QWidget {
   explicit OrdersView(DbManager* dbm, QWidget *parent = nullptr);
   ~OrdersView();
     void updateOrderModel();
+    void updateOrderRModel();
 
 private slots:
     void on_ordersTableView_clicked(const QModelIndex &index);
 
 private:
   Ui::OrdersView *ui;
-  OrdersModel *oModel;
+  CustomModel *oModel;
 };
 
 #endif  // ORDERSVIEW_H

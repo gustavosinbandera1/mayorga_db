@@ -1,12 +1,16 @@
 #include "usersview.h"
-#include "customersModel.h"
 #include "ui_usersview.h"
 
 UsersView::UsersView(DbManager* dbm, QWidget* parent)
     : QWidget(parent), ui(new Ui::UsersView) {
   ui->setupUi(this);
-  cModel = new CustomerModel(dbm, this);
-  ui->userTableView->setModel(cModel->getCustomerModel());
+  bool isRelational = false;
+  cModel = new CustomModel(dbm, "customer",isRelational, this);
+
+  ui->userTableView->setModel(cModel->getRelationalModel());
+  cModel->setHeaders({"Customer_id", "Name","Email", "Phone","Password"});
+  //cModel->setRelation(4,"address","address_id","city");
+
   ui->userTableView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::Stretch);
   ui->userTableView->horizontalHeader()->setVisible(true);
@@ -22,7 +26,10 @@ UsersView::~UsersView() {
 }
 //---------------------
 void UsersView::updateUserModel() {
-  ui->userTableView->setModel(cModel->updateModel());
+    qDebug()<<"Updating User R model";
+ ui->userTableView->setModel(cModel->updateModel());
+cModel->setHeaders({"Customer_id", "Name","Email", "Phone","Password"});
+  //cModel->setRelation(4,"address","address_id","city");
 }
 //---------------------
 void UsersView::on_userTableView_clicked(const QModelIndex& index) {

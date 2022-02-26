@@ -2,10 +2,8 @@
 #define USERSVIEW_H
 
 #include <QWidget>
-//#include "customersModel.h"
+#include "customModel.h"
 #include "dbmanager.h"
-
-class CustomerModel;
 namespace Ui {
 class UsersView;
 }
@@ -16,13 +14,13 @@ class UsersView : public QWidget {
  public:
   explicit UsersView(DbManager *dbm, QWidget *parent = nullptr);
   ~UsersView();
-    void updateUserModel();
-private slots:
-    void on_userTableView_clicked(const QModelIndex &index);
+  void updateUserModel();
+ private slots:
+  void on_userTableView_clicked(const QModelIndex &index);
 
-private:
+ private:
   Ui::UsersView *ui;
-   CustomerModel* cModel;
+  CustomModel *cModel;
 };
 
 #endif  // USERSVIEW_H

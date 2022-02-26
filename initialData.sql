@@ -12,37 +12,36 @@ insert into products (name,description, price, weight) values ('smart-tv','Smart
 
 
 
-INSERT INTO country (country_id, iso, country_name, nicename, iso3, zipcode, phonecode) VALUES
-(1, 'AF', 'AFGHANISTAN', 'Afghanistan', 'AFG', 4, 93),
-(2, 'AL', 'ALBANIA', 'Albania', 'ALB', 8, 355),
-(3, 'DZ', 'ALGERIA', 'Algeria', 'DZA', 12, 213),
-(4, 'AS', 'AMERICAN SAMOA', 'American Samoa', 'ASM', 16, 1684),
-(5, 'AD', 'ANDORRA', 'Andorra', 'AND', 20, 376),
-(6, 'AO', 'ANGOLA', 'Angola', 'AGO', 24, 244),
-(7, 'AI', 'ANGUILLA', 'Anguilla', 'AIA', 660, 1264),
-(8, 'AQ', 'ANTARCTICA', 'Antarctica', NULL, NULL, 0),
-(9, 'AG', 'ANTIGUA AND BARBUDA', 'Antigua and Barbuda', 'ATG', 28, 1268),
-(10, 'AR', 'ARGENTINA', 'Argentina', 'ARG', 32, 54),
-(11, 'AM', 'ARMENIA', 'Armenia', 'ARM', 51, 374),
-(12, 'AW', 'ARUBA', 'Aruba', 'ABW', 533, 297),
-(13, 'AU', 'AUSTRALIA', 'Australia', 'AUS', 36, 61),
-(14, 'AT', 'AUSTRIA', 'Austria', 'AUT', 40, 43),
-(15, 'AZ', 'AZERBAIJAN', 'Azerbaijan', 'AZE', 31, 994),
-(16, 'BS', 'BAHAMAS', 'Bahamas', 'BHS', 44, 1242),
-(17, 'BH', 'BAHRAIN', 'Bahrain', 'BHR', 48, 973),
-(18, 'BD', 'BANGLADESH', 'Bangladesh', 'BGD', 50, 880),
-(19, 'BB', 'BARBADOS', 'Barbados', 'BRB', 52, 1246),
-(20, 'BY', 'BELARUS', 'Belarus', 'BLR', 112, 375),
-(21, 'BE', 'BELGIUM', 'Belgium', 'BEL', 56, 32),
-(22, 'BZ', 'BELIZE', 'Belize', 'BLZ', 84, 501),
-(23, 'BJ', 'BENIN', 'Benin', 'BEN', 204, 229),
-(24, 'BM', 'BERMUDA', 'Bermuda', 'BMU', 60, 1441),
-(25, 'BT', 'BHUTAN', 'Bhutan', 'BTN', 64, 975),
-(26, 'BO', 'BOLIVIA', 'Bolivia', 'BOL', 68, 591),
-(27, 'BA', 'BOSNIA AND HERZEGOVINA', 'Bosnia and Herzegovina', 'BIH', 70, 387),
-(28, 'BW', 'BOTSWANA', 'Botswana', 'BWA', 72, 267),
-(29, 'BV', 'BOUVET ISLAND', 'Bouvet Island', NULL, NULL, 0),
-(30, 'BR', 'BRAZIL', 'Brazil', 'BRA', 76, 55);
+INSERT INTO country (country_id, nicename, country_name,zipcode) VALUES
+(1, 'AF',  'Afghanistan', 4),
+(2, 'AL',  'Albania', 8),
+(3, 'DZ',  'Algeria', 12),
+(4, 'AS',  'American Samoa', 16),
+(5, 'AD',  'Andorra', 20),
+(6, 'AO',  'Angola', 24),
+(7, 'AI',  'Anguilla',660),
+(8, 'AQ',  'Antarctica',12),
+(9, 'AG',  'Antigua and Barbuda', 28),
+(10, 'AR', 'Argentina', 32 ),
+(11, 'AM', 'Armenia', 51),
+(12, 'AW', 'Aruba', 533),
+(13, 'AU', 'Australia',  36),
+(14, 'AT', 'Austria',  40),
+(15, 'AZ', 'Azerbaijan',  31),
+(16, 'BS', 'Bahamas', 44),
+(17, 'BH', 'Bahrain', 48),
+(18, 'BD', 'Bangladesh', 50),
+(19, 'BB', 'Barbados',52),
+(20, 'BY', 'Belarus', 112),
+(21, 'BE', 'Belgium', 56),
+(22, 'BZ', 'Belize', 84),
+(23, 'BJ', 'Benin',  204),
+(24, 'BM', 'Bermuda', 60),
+(25, 'BT', 'Bhutan', 64),
+(26, 'BO', 'Bolivia', 68),
+(27, 'BA', 'Bosnia and Herzegovina',70),
+(28, 'BW', 'Botswana', 72),
+(30, 'BR', 'Brazil', 76);
 
 
 insert into customer (name, phone, email,password) values ('Thaddeus', '11223344', 'tclayborn0@facebook.com'  , '81dc9bdb52d04dc20036dbd8313ed055');
@@ -72,6 +71,6 @@ insert into address (city, state, fk_country_id, street_number, address_type) va
 
 
 insert into customer_address (fk_customer_id, fk_address_id,created_date_time) values (1, 1,current_timestamp);
-insert into customer_address (fk_customer_id, fk_address_id,created_date_time) values (1, 26,current_timestamp);
+insert into customer_address (fk_customer_id, fk_address_id,created_date_time) values (1, 2,current_timestamp);
 insert into customer_address (fk_customer_id, fk_address_id,created_date_time) values (2, 2,current_timestamp);
 insert into customer_address (fk_customer_id, fk_address_id,created_date_time) values (2, 8,current_timestamp);

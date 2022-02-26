@@ -16,8 +16,9 @@ void AddressDTO::on_buttonBox_accepted() {
     // send data to database
     _address.setState(ui->cityLineEdit->text());
     _address.setState(ui->stateLineEdit->text());
-    _address.setZipCode(ui->ZipCodeLineEdit->text());
+    _address.setZipCode(ui->zipcodeComboBox->itemData(ui->zipcodeComboBox->currentIndex()).toString());
     _address.setCountry(ui->countryLineEdit->text());
+
 
     accept();
 }

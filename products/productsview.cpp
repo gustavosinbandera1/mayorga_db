@@ -26,7 +26,8 @@ ProductsView::ProductsView(DbManager *dbm, QWidget *parent)
       QHeaderView::Stretch);
   ui->productsView->horizontalHeader()->setVisible(true);
   ui->productsView->setAlternatingRowColors(true);
-  //ui->productsView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+  //ui->productsView->setEditTriggers(QAbstractItemView::NoEditTriggers); // edit sisabled
 
   qDebug()<< "In products view The user is called : " << UserData::userName;
 }

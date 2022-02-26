@@ -32,11 +32,9 @@ INCLUDEPATH += $$PWD/administrators
 
 SOURCES += \
     address/addressdto.cpp \
-    #address/addressmodel.cpp \
     address/addressview.cpp \
     administrators/registeruserDTO.cpp \
     shared/delegates/comboBoxDelegate.cpp \
-    customers/customersModel.cpp \
     customers/userDTO.cpp \
     databaseManager/dbmanager.cpp \
     shared/delegates/lineeditordelegate.cpp \
@@ -46,9 +44,7 @@ SOURCES += \
     shared/models/customModel.cpp \
     orders/detailsDialog.cpp \
     orders/orderform.cpp \
-    orders/ordersmodel.cpp \
     orders/ordersview.cpp \
-    #products/productsModel.cpp \
     customers/usersview.cpp \
     products/productsdto.cpp \
     products/productsview.cpp \
@@ -56,12 +52,10 @@ SOURCES += \
 
 HEADERS += \
     address/addressdto.h \
-    #address/addressmodel.h \
     address/addressview.h \
     administrators/registeruserDTO.h \
     administrators/ui_registeradmindialog \
     shared/delegates/comboBoxDelegate.h \
-    customers/customersModel.h \
     customers/userDTO.h \
     databaseManager/db_config.h \
     databaseManager/dbmanager.h \
@@ -71,16 +65,13 @@ HEADERS += \
     shared/models/customModel.h \
     orders/detailsDialog.h \
     orders/orderform.h \
-    orders/ordersmodel.h \
     orders/ordersview.h \
-    #products/productsModel.h \
     customers/usersview.h \
     products/productsdto.h \
     products/productsview.h \
     shared/delegates/spinboxDelegate.h
 
 FORMS += \
-    #address/addressmodel.ui \
     address/addressdto.ui \
     address/addressview.ui \
     administrators/registeruserDTO.ui \

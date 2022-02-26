@@ -16,17 +16,14 @@ CREATE TABLE IF NOT EXISTS customer (
 
 CREATE TABLE IF NOT EXISTS country (
   country_id SERIAL NOT NULL PRIMARY KEY,
-  iso VARCHAR(2) NOT NULL,
-  country_name VARCHAR(80) NOT NULL,
   nicename VARCHAR (80) NOT NULL,
-  iso3 VARCHAR(3) NULL,
-  zipcode INTEGER DEFAULT NULL,
-  phonecode INTEGER NOT NULL
+  country_name VARCHAR(80) NOT NULL,
+  zipcode INTEGER DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS address (
     address_id BIGSERIAL NOT NULL PRIMARY KEY,
-    city VARCHAR(30) NOT NULL,
+    city VARCHAR(30) UNIQUE NOT NULL,
     state VARCHAR (30) NOT NULL,
     street_number VARCHAR (100) NOT NULL,
     fk_country_id int NOT NULL,

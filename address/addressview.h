@@ -17,7 +17,7 @@ public:
     explicit AddressView(DbManager* mdb, QWidget *parent = nullptr);
     ~AddressView();
     void updateAddressModel();
-    void updateAddressRModel();
+    //void updateAddressRModel();
 
 private slots:
     void on_addressTableView_clicked(const QModelIndex &index);
@@ -30,8 +30,6 @@ private slots:
 
 private:
     Ui::AddressView *ui;
-    //AddressModel* aModel;
-    //AddressModel* aRModel;
     CustomModel *model;
 };
 

@@ -141,8 +141,7 @@ void MainWindow::on_tabWidget_tabBarClicked(int index) {
       ordersView->updateOrderModel();
       break;
     case TAB_NAME::ADDRESSES:
-      //addressView->updateAddressModel();
-    addressView->updateAddressRModel();
+    addressView->updateAddressModel();
       break;
     case TAB_NAME::CREATE_ORDERS:
 
