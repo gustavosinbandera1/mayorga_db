@@ -24,7 +24,8 @@ QSqlTableModel *CustomerModel::updateModel()
 //---------------------
 QVariant CustomerModel::headerData(int section, Qt::Orientation orientation,
                                    int role) const {
-  return QVariant();
+  (void) section;
+    return QVariant();
 }
 //---------------------
 int CustomerModel::rowCount(const QModelIndex &parent) const {

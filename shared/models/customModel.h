@@ -8,12 +8,12 @@
 #include <QSqlTableModel>
 #include "dbmanager.h"
 
-class CustomTableModel : public QAbstractTableModel
+class CustomModel : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    explicit CustomTableModel(DbManager *dbm, QString table,bool relational,  QObject *parent = nullptr);
+    explicit CustomModel(DbManager *dbm, QString table,bool relational,  QObject *parent = nullptr);
 
     QSqlTableModel* updateModel();
     QSqlRelationalTableModel *updateRModel();
@@ -29,13 +29,16 @@ public:
 
     QSqlTableModel *getModel() { return this->model; }
     QSqlRelationalTableModel *getRelationalModel() { return this->relationalModel; }
-    void setHeaders(void);
-    void setRHeaders(QStringList &&headers);
+    void setHeaders(QStringList &&headers);
+    void setForeignHeaders(QStringList &&headers);
+    void setRelation(int foreignColumn,QString foreignTable,QString foreignKey,  QString columnToRender );
 
    private:
     DbManager *_dbM;
     QSqlTableModel *model;
+    QString _table;
     QSqlRelationalTableModel *relationalModel;
+    bool isRelational;
 };
 
 #endif // CUSTOMTABLEMODEL_H

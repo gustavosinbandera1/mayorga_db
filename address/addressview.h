@@ -2,6 +2,7 @@
 #define ADDRESSVIEW_H
 #include <QWidget>
 #include "dbmanager.h"
+#include "customModel.h"
 
 class AddressModel;
 namespace Ui {
@@ -29,8 +30,9 @@ private slots:
 
 private:
     Ui::AddressView *ui;
-    AddressModel* aModel;
-    AddressModel* aRModel;
+    //AddressModel* aModel;
+    //AddressModel* aRModel;
+    CustomModel *model;
 };
 
 #endif // ADDRESSVIEW_H

@@ -5,24 +5,23 @@
 
 AddressView::AddressView(DbManager* mdb, QWidget* parent)
     : QWidget(parent), ui(new Ui::AddressView) {
-  ui->setupUi(this);
+    ui->setupUi(this);
+    bool isRelational = true;
+    model = new CustomModel(mdb, "address", isRelational, this);
 
-  aModel = new AddressModel(mdb, this);
-  aRModel = new AddressModel(mdb,this);
-  ui->addressTableView->setModel(aRModel->getRelationalModel());
-  //ui->addressTableView->setModel(aModel->getModel());
+    ui->addressTableView->setModel(model->getRelationalModel());
+    model->setHeaders({"Id", "City", "State","Country", "Address Type" });
+    model->setRelation(4,"country","country_id","country_name");
 
   ui->addressTableView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::Stretch);
   ui->addressTableView->setVisible(true);
   ui->addressTableView->setColumnHidden(3, true);
-  ui->addressTableView->setColumnHidden(4, true);
   ui->addressTableView->setAlternatingRowColors(true);
 
   ui->addressTableView->setSortingEnabled(true);
   ui->addressTableView->sortByColumn(0, Qt::AscendingOrder);
   ui->addressTableView->reset();
-
   ui->addressIDLineEdit->setDisabled(true);
 }
 //---------------------
@@ -32,27 +31,30 @@ AddressView::~AddressView() {
 }
 
 void AddressView::updateAddressModel() {
-  ui->addressTableView->setModel(aModel->updateModel());
-  aModel->setHeaders();
+    qDebug()<<"Updating address model ";
+  ui->addressTableView->setModel(model->updateModel());
+  model->setHeaders({"Id", "City", "State","Country", "Address Type" });
   ui->addressTableView->setColumnHidden(3, true);
 }
 
 void AddressView::updateAddressRModel() {
-  ui->addressTableView->setModel(aRModel->updateRModel());
-  //aRModel->setHeaders();
-  //ui->addressTableView->setColumnHidden(3, true);
+    qDebug()<<"Updating address rmodel";
+ ui->addressTableView->setModel(model->updateRModel());
+ model->setHeaders({"Id", "City", "State","Country", "Address Type" });
+ model->setRelation(4,"country","country_id","country_name");
+ ui->addressTableView->setColumnHidden(3, true);
 }
 
 void AddressView::on_addressTableView_clicked(const QModelIndex& index) {
   qDebug() << "Cell clicked ";
-  QSqlTableModel* tmpModel = aModel->getModel();
-  QSqlRelationalTableModel *tmpRModel = aRModel->getRelationalModel();
-  //    ui->addressLineEdit->setText(tmpModel->index(index.row(),0).data().toString());
+  //QSqlTableModel* tmpModel = aModel->getModel();
+  QSqlRelationalTableModel *tmpRModel = model->getRelationalModel();
+  //ui->addressIDLineEdit->setText(tmpRModel->index(index.row(),0).data().toString());
   //    ui->cityLineEdit->setText(tmpModel->index(index.row(),1).data().toString());
   //    ui->stateLineEdit->setText(tmpModel->index(index.row(),2).data().toString());
 
   ui->addressIDLineEdit->setText(
-      tmpModel->record(index.row()).value("address_id").toString());
+      tmpRModel->record(index.row()).value("address_id").toString());
   ui->cityLineEdit->setText(
       tmpRModel->record(index.row()).value("city").toString());
   ui->stateLineEdit->setText(

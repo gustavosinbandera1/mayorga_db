@@ -26,58 +26,58 @@ INCLUDEPATH += $$PWD/customers
 INCLUDEPATH += $$PWD/login
 INCLUDEPATH += $$PWD/orders
 INCLUDEPATH += $$PWD/address
-INCLUDEPATH += $$PWD/delegates
-INCLUDEPATH += $$PWD/models
+INCLUDEPATH += $$PWD/shared/delegates
+INCLUDEPATH += $$PWD/shared/models
 INCLUDEPATH += $$PWD/administrators
 
 SOURCES += \
     address/addressdto.cpp \
-    address/addressmodel.cpp \
+    #address/addressmodel.cpp \
     address/addressview.cpp \
     administrators/registeruserDTO.cpp \
-    models/customtablemodel.cpp \
-    delegates/comboBoxDelegate.cpp \
+    shared/delegates/comboBoxDelegate.cpp \
     customers/customersModel.cpp \
     customers/userDTO.cpp \
     databaseManager/dbmanager.cpp \
-    delegates/lineeditordelegate.cpp \
+    shared/delegates/lineeditordelegate.cpp \
     login/login.cpp \
     main.cpp \
     mainwindow.cpp \
+    shared/models/customModel.cpp \
     orders/detailsDialog.cpp \
     orders/orderform.cpp \
     orders/ordersmodel.cpp \
     orders/ordersview.cpp \
-    products/productsModel.cpp \
+    #products/productsModel.cpp \
     customers/usersview.cpp \
     products/productsdto.cpp \
     products/productsview.cpp \
-    delegates/spinboxDelegate.cpp
+    shared/delegates/spinboxDelegate.cpp
 
 HEADERS += \
     address/addressdto.h \
-    address/addressmodel.h \
+    #address/addressmodel.h \
     address/addressview.h \
     administrators/registeruserDTO.h \
     administrators/ui_registeradmindialog \
-    models/customtablemodel.h \
-    delegates/comboBoxDelegate.h \
+    shared/delegates/comboBoxDelegate.h \
     customers/customersModel.h \
     customers/userDTO.h \
     databaseManager/db_config.h \
     databaseManager/dbmanager.h \
-    delegates/lineeditordelegate.h \
+    shared/delegates/lineeditordelegate.h \
     login/login.h \
     mainwindow.h \
+    shared/models/customModel.h \
     orders/detailsDialog.h \
     orders/orderform.h \
     orders/ordersmodel.h \
     orders/ordersview.h \
-    products/productsModel.h \
+    #products/productsModel.h \
     customers/usersview.h \
     products/productsdto.h \
     products/productsview.h \
-    delegates/spinboxDelegate.h
+    shared/delegates/spinboxDelegate.h
 
 FORMS += \
     #address/addressmodel.ui \

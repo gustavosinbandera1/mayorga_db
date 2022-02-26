@@ -5,6 +5,7 @@
 #include "dbmanager.h"
 #include "spinboxDelegate.h"
 #include "comboBoxDelegate.h"
+#include "customModel.h"
 
 class ProductsModel;
 class LineEditorDelegate;
@@ -28,7 +29,7 @@ private slots:
 
 private:
     Ui::ProductsView *ui;
-    ProductsModel* pModel;
+    CustomModel *pModel;
     SpinboxDelegate *SpinBoxDelegate;
     LineEditorDelegate *lineDelegate;
     ComboBoxDelegate *comboBoxDelegate;

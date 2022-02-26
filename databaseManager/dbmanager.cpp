@@ -215,5 +215,7 @@ int DbManager::ExecuteSqlScriptFile(const QString& fileName) {
  * @return
  */
 bool DbManager::checkUserCredentials(QString email, QString pwd) {
-  return false;
+    (void)email;
+    (void)pwd;
+    return false;
 }

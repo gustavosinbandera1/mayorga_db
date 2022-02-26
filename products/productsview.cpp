@@ -1,20 +1,23 @@
 #include "productsview.h"
 #include "login.h"
 #include <typeinfo>
-#include "productsModel.h"
 #include "ui_productsview.h"
 #include "lineeditordelegate.h"
 
 ProductsView::ProductsView(DbManager *dbm, QWidget *parent)
     : QWidget(parent), ui(new Ui::ProductsView) {
   ui->setupUi(this);
-  pModel = new ProductsModel(dbm, this);
+  bool isRelational = false;
+  pModel = new CustomModel(dbm, "products",isRelational ,this);
+
+  // Delegators
   SpinBoxDelegate = new SpinboxDelegate(this);
   lineDelegate = new LineEditorDelegate(this);
+  //comboBoxDelegate = new ComboBoxDelegate(dbm, "products", "name", this);
 
-  comboBoxDelegate = new ComboBoxDelegate(dbm, "products", "name", this);
+  ui->productsView->setModel(pModel->getModel());
+  pModel->setHeaders({"Id", "City", "State","Country", "Address Type" });
 
-  ui->productsView->setModel(pModel->getProductModel());
   ui->productsView->setSortingEnabled(true);
   ui->productsView->sortByColumn(0, Qt::AscendingOrder);
   ui->productsView->reset();
@@ -34,7 +37,7 @@ ProductsView::~ProductsView() {
 }
 //---------------------
 void ProductsView::updateProductsModel() {
-  ui->productsView->setModel(pModel->upadateModel());
+  ui->productsView->setModel(pModel->updateModel());
 }
 //---------------------
 void ProductsView::on_productsView_doubleClicked(const QModelIndex &index) {
@@ -46,8 +49,8 @@ void ProductsView::on_productsView_doubleClicked(const QModelIndex &index) {
        ui->productsView->setItemDelegate(SpinBoxDelegate);
   }else if(isString(index.data())){
        qDebug() << "it is a string ";
-       //ui->productsView->setItemDelegate(lineDelegate);
-       ui->productsView->setItemDelegate(comboBoxDelegate);
+       ui->productsView->setItemDelegate(lineDelegate);
+       //ui->productsView->setItemDelegate(comboBoxDelegate);
   }
 }
 
