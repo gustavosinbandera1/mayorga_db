@@ -34,7 +34,7 @@ enum class TAB_NAME {
 MainWindow::MainWindow(DbManager *dbM, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), _dbM(dbM) {
   ui->setupUi(this);
-  Login *d = (Login *)parent;
+  Login *d = static_cast<Login*>(parent);
   currentUser = d->getCurrentUser();
 
   if (d->getType() == Login::ADMIN) {

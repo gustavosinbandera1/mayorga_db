@@ -34,6 +34,7 @@ SOURCES += \
     address/addressdto.cpp \
     address/addressview.cpp \
     administrators/registeruserDTO.cpp \
+    shared/delegates/quantitytotaldelegate.cpp \
     shared/delegates/comboBoxDelegate.cpp \
     customers/userDTO.cpp \
     databaseManager/dbmanager.cpp \
@@ -41,20 +42,23 @@ SOURCES += \
     login/login.cpp \
     main.cpp \
     mainwindow.cpp \
-    shared/models/customModel.cpp \
     orders/detailsDialog.cpp \
     orders/orderform.cpp \
     orders/ordersview.cpp \
     customers/usersview.cpp \
     products/productsdto.cpp \
     products/productsview.cpp \
-    shared/delegates/spinboxDelegate.cpp
+    shared/delegates/spinboxDelegate.cpp \
+    shared/models/detailsmodel.cpp \
+    shared/models/templateModel.cpp
+
 
 HEADERS += \
     address/addressdto.h \
     address/addressview.h \
     administrators/registeruserDTO.h \
     administrators/ui_registeradmindialog \
+    shared/delegates/quantitytotaldelegate.h \
     shared/delegates/comboBoxDelegate.h \
     customers/userDTO.h \
     databaseManager/db_config.h \
@@ -62,14 +66,15 @@ HEADERS += \
     shared/delegates/lineeditordelegate.h \
     login/login.h \
     mainwindow.h \
-    shared/models/customModel.h \
     orders/detailsDialog.h \
     orders/orderform.h \
     orders/ordersview.h \
     customers/usersview.h \
     products/productsdto.h \
     products/productsview.h \
-    shared/delegates/spinboxDelegate.h
+    shared/delegates/spinboxDelegate.h \
+    shared/models/detailsmodel.h \
+    shared/models/templateModel.h
 
 FORMS += \
     address/addressdto.ui \

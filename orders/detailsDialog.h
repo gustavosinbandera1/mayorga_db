@@ -5,8 +5,10 @@
 #include <QDialog>
 #include <QList>
 #include <QPair>
-#include <spinboxDelegate.h>
+#include <QTableWidget>
+
 #include "dbmanager.h"
+#include "quantitytotaldelegate.h"
 
 QT_BEGIN_NAMESPACE
 class QCheckBox;
@@ -18,40 +20,43 @@ class QTextEdit;
 class QWidget;
 QT_END_NAMESPACE
 
-class DetailsDialog : public QDialog
-{
-    Q_OBJECT
+class DetailsDialog : public QDialog {
+  Q_OBJECT
 
-public:
-    DetailsDialog(DbManager* dbm, const QString &title, QWidget *parent);
+ public:
+  DetailsDialog(DbManager *dbm, const QString &title, QWidget *parent);
 
-public slots:
-    void verify();
+ public slots:
+  void verify();
 
-public:
-    QList<QPair<QString, int> > orderItems();
-    QString senderName() const;
-    QString senderAddress() const;
-    bool sendOffers();
+ public:
+  QList<QPair<QString, int> > orderItems();
+  QString senderName() const;
+  QString senderAddress() const;
+  bool sendOffers();
 
-private:
-    void setupItemsTable();
+ private:
+  void setupItemsTable();
 
-    QLabel *nameLabel;
-    QLabel *addressLabel;
-    QCheckBox *offersCheckBox;
-    QLineEdit *nameEdit;
-    QStringList items;
-    QTableWidget *itemsTable;
-    QTextEdit *addressEdit;
-    QDialogButtonBox *buttonBox;
+  QLabel *nameLabel;
+  QLabel *addressLabel;
+  QCheckBox *offersCheckBox;
+  QLineEdit *nameEdit;
+  QStringList items;
+  QList<QPair<QString, int>> _items;
+  QTableWidget *itemsTable;
+  QTextEdit *addressEdit;
+  QDialogButtonBox *buttonBox;
 
-    void populateTable(int rows, int colums );
-    //QTableWidget *pWidget;
-    DbManager* _dbM;
+  void populateTable(int rows, int colums);
+  DbManager *_dbM;
 
-    SpinboxDelegate *spinBoxDelegate;
+  QuantityTotalDelegate *quantityDelegate;
+
+ private slots:
+  void on_actionSave_triggered() ;
+
+  void on_table_itemChanged(QTableWidgetItem *item);
 };
 
-
-#endif // DETAILSDIALOG_H
+#endif  // DETAILSDIALOG_H

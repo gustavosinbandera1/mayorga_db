@@ -2,7 +2,7 @@
 #define USERSVIEW_H
 
 #include <QWidget>
-#include "customModel.h"
+#include "templateModel.h"
 #include "dbmanager.h"
 namespace Ui {
 class UsersView;

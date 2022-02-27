@@ -1,4 +1,4 @@
-#include "customModel.h"
+#include "templateModel.h"
 
 CustomModel::CustomModel(DbManager *dbm, QString table,
                                    bool relational, QObject *parent)

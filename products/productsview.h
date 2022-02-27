@@ -5,7 +5,7 @@
 #include "dbmanager.h"
 #include "spinboxDelegate.h"
 #include "comboBoxDelegate.h"
-#include "customModel.h"
+#include "templateModel.h"
 
 class ProductsModel;
 class LineEditorDelegate;

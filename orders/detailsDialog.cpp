@@ -1,13 +1,14 @@
 #include "detailsDialog.h"
-#include <QtWidgets>
-#include "login.h"
 
+#include <QtWidgets>
+
+#include "login.h"
 
 DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
                              QWidget *parent)
     : QDialog(parent) {
   _dbM = dbm;
-  spinBoxDelegate = new SpinboxDelegate(this);
+  quantityDelegate = new QuantityTotalDelegate(this);
   nameLabel = new QLabel(tr("Name:"));
   addressLabel = new QLabel(tr("Address:"));
   addressLabel->setAlignment(Qt::AlignLeft | Qt::AlignTop);
@@ -18,13 +19,16 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
   nameEdit->setReadOnly(true);
   nameEdit->setText(UserData::userName);
 
-  // pWidget = new QTableWidget(5, 6);
   addressEdit = new QTextEdit;
   setupItemsTable();
-  // populateTable(5, 6);
 
   buttonBox =
       new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+
+  connect(itemsTable, &QTableWidget::itemChanged,
+          []() { qDebug() << "Item changed .........................."; });
+
+  connect(itemsTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(on_table_itemChanged(QTableWidgetItem*)));
 
   connect(buttonBox, &QDialogButtonBox::accepted, this, &DetailsDialog::verify);
   connect(buttonBox, &QDialogButtonBox::rejected, this, &DetailsDialog::reject);
@@ -35,28 +39,12 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
   mainLayout->addWidget(addressLabel, 1, 0);
   mainLayout->addWidget(addressEdit, 1, 1);
   mainLayout->addWidget(itemsTable, 0, 2, 2, 1);
-  // mainLayout->addWidget(pWidget, 0, 2, 2, 1);
   mainLayout->addWidget(offersCheckBox, 2, 1, 1, 2);
   mainLayout->addWidget(buttonBox, 3, 0, 1, 3);
   setLayout(mainLayout);
 
   setWindowTitle(title);
 }
-//---------------------
-// void DetailsDialog::setupItemsTable() {
-//  items << tr("T-shirt") << tr("Badge") << tr("Reference book")
-//        << tr("Coffee cup");
-
-//  itemsTable = new QTableWidget(items.count(), 3);
-
-//  for (int row = 0; row < items.count(); ++row) {
-//    QTableWidgetItem *name = new QTableWidgetItem(items[row]);
-//    name->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-//    itemsTable->setItem(row, 0, name);
-//    QTableWidgetItem *quantity = new QTableWidgetItem("1");
-//    itemsTable->setItem(row, 1, quantity);
-//  }
-//}
 //---------------------
 QList<QPair<QString, int> > DetailsDialog::orderItems() {
   QList<QPair<QString, int> > orderList;
@@ -95,59 +83,56 @@ void DetailsDialog::verify() {
   if (answer == QMessageBox::Yes) reject();
 }
 
-// void DetailsDialog::populateTable(int rows, int columns) {
-//  // QTableWidget *pWidget = new QTableWidget( rows, columns );
-
-//  for (int row = 0; row < rows; row++) {
-//    for (int column = 0; column < columns; column++) {
-//      QString sItem = QString::number(row + column);
-
-//      QVariant oVariant(sItem);
-
-//      // allocate the widget item
-//      QTableWidgetItem *poItem = new QTableWidgetItem();
-//      poItem->setData(Qt::DisplayRole, oVariant);
-//      pWidget->setItem(row, column, poItem);
-//    }
-//  }
-//}
-
 void DetailsDialog::setupItemsTable() {
   QString command = QString("SELECT name,price FROM %1 ").arg("products");
-  QSqlQuery qry;//(_dbM->db());
+  QSqlQuery qry;  //(_dbM->db());
   qry.prepare(command);
   qry.exec();
 
+
   while (qry.next()) {
-    qDebug() << "product name --> " << qry.record().value("name").toString();
-    qDebug() << "product price --> " << qry.record().value("price").toDouble();
-    items.push_back(qry.record().value("name").toString());
+    _items.push_back(QPair<QString,int>(qry.record().value("name").toString(), qry.record().value("price").toInt()));
   }
 
-  itemsTable = new QTableWidget(items.count(), 4);
+  itemsTable = new QTableWidget(_items.count(), 4, this);
 
-
-  itemsTable->setItemDelegateForColumn(1, spinBoxDelegate);
+  itemsTable->setItemDelegateForColumn(1, quantityDelegate);
   itemsTable->setHorizontalHeaderLabels(
       {"Product", "Quantity", "Price", "Total"});
-  for (int row = 0; row < items.count(); ++row) {
 
-    QTableWidgetItem *name = new QTableWidgetItem(items[row]);
+  for (int row = 0; row < _items.count(); ++row) {
+    QTableWidgetItem *name = new QTableWidgetItem(_items[row].first);
     name->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     itemsTable->setItem(row, 0, name);
 
     QTableWidgetItem *quantity = new QTableWidgetItem("0");
     itemsTable->setItem(row, 1, quantity);
 
-    QTableWidgetItem *price = new QTableWidgetItem("1000");  // this value will need to be dinamically load
+    QTableWidgetItem *price = new QTableWidgetItem(
+                QString::number(_items[row].second));  // this value will need to be dinamically load
     itemsTable->setItem(row, 2, price);
 
     price->setFlags(price->flags() ^ Qt::ItemIsEditable);
 
-
-    QTableWidgetItem *totalPrice = new QTableWidgetItem("0");  // this value will need to be dinamically load
+    QTableWidgetItem *totalPrice = new QTableWidgetItem("0");
     itemsTable->setItem(row, 3, totalPrice);
     totalPrice->setFlags(totalPrice->flags() ^ Qt::ItemIsEditable);
   }
 }
 //---------------------
+void DetailsDialog::on_table_itemChanged(QTableWidgetItem *item) {
+  if (item->column() == 1) {
+    int quantity = itemsTable->item(item->row(), 1)->text().toInt();
+    int total;
+    int price = itemsTable->item(item->row(), 2)->text().toInt();
+    total = price * quantity;
+    qDebug()<<"Total: "<< total;
+    //total
+    itemsTable->item(item->row(), 3)->setText(QString::number(total));
+  }
+}
+
+
+void DetailsDialog::on_actionSave_triggered() {
+  qDebug() << "Action: " << "on_actionSave_triggered";
+}

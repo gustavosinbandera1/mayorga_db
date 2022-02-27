@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "dbmanager.h"
-#include "customModel.h"
+#include "templateModel.h"
 
 class OrdersModel;
 namespace Ui {
