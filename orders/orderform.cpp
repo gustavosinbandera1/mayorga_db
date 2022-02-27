@@ -158,7 +158,7 @@ void OrderForm::createLetter(const QString &name, const QString &address,
 }
 //---------------------
 void OrderForm::createSample() {
-  DetailsDialog dialog("Dialog with default values", this);
+  DetailsDialog dialog(_dbM,"Dialog with default values", this);
   createLetter("Mr. Smith", "12 High Street\nSmall Town\nThis country",
                dialog.orderItems(), true);
 }
@@ -168,7 +168,7 @@ OrderForm::~OrderForm() {
 }
 //---------------------
 void OrderForm::openDialog() {
-  DetailsDialog dialog(tr("Enter customer Details"), this);
+  DetailsDialog dialog(_dbM, tr("Enter customer Details"), this);
   if (dialog.exec() == QDialog::Accepted) {
     createLetter(dialog.senderName(), dialog.senderAddress(),
                  dialog.orderItems(), dialog.sendOffers());

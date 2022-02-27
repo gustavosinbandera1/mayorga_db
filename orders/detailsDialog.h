@@ -5,6 +5,8 @@
 #include <QDialog>
 #include <QList>
 #include <QPair>
+#include <spinboxDelegate.h>
+#include "dbmanager.h"
 
 QT_BEGIN_NAMESPACE
 class QCheckBox;
@@ -21,7 +23,7 @@ class DetailsDialog : public QDialog
     Q_OBJECT
 
 public:
-    DetailsDialog(const QString &title, QWidget *parent);
+    DetailsDialog(DbManager* dbm, const QString &title, QWidget *parent);
 
 public slots:
     void verify();
@@ -43,6 +45,12 @@ private:
     QTableWidget *itemsTable;
     QTextEdit *addressEdit;
     QDialogButtonBox *buttonBox;
+
+    void populateTable(int rows, int colums );
+    //QTableWidget *pWidget;
+    DbManager* _dbM;
+
+    SpinboxDelegate *spinBoxDelegate;
 };
 
 

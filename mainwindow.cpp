@@ -20,6 +20,7 @@
 #include "registeruserDTO.h"
 #include "ui_mainwindow.h"
 #include "usersview.h"
+#include <QUuid>
 
 enum class TAB_NAME {
   PRODUCTS,
@@ -45,6 +46,13 @@ MainWindow::MainWindow(DbManager *dbM, QWidget *parent)
   productsView->updateProductsModel();
   qDebug() << "el user name " << UserData::userName;
   ui->userEmaillabel->setText(UserData::userName);
+
+//insert into products (name,description, price, weight) values ('smart-tv-4','Smart tv-3', 5921.86, 75.6) ON CONFLICT (sku) DO NOTHING returning  sku;
+  qDebug()<< QUuid::createUuid().toString();
+//  qDebug()<< QUuid::createUuid().toString();
+//  qDebug()<< QUuid::createUuid().toString();
+//  qDebug()<< QUuid::createUuid().toString();
+
 }
 //---------------------
 MainWindow::~MainWindow() {

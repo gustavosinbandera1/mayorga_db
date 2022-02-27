@@ -28,3 +28,4 @@ private:
 };
 
 #endif  // BOXDELEGATE_H
+

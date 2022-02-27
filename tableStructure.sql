@@ -54,10 +54,10 @@ CREATE TABLE IF NOT EXISTS products (
     );
 
 CREATE TABLE IF NOT EXISTS orders (
-    order_id BIGSERIAL NOT NULL PRIMARY KEY,
-    fk_customer_id BIGINT NOT NULL,
-    date DATE NOT NULL,
-    payment_type CHARACTER VARYING(100) NOT NULL,
+    order_id BIGSERIAL  PRIMARY KEY,
+    fk_customer_id BIGINT ,
+    date DATE ,
+    payment_type CHARACTER VARYING(100),
     CONSTRAINT order_to_customer_fk FOREIGN KEY(fk_customer_id)
       REFERENCES customer (customer_id)
     );
@@ -68,11 +68,11 @@ ALTER TABLE orders ADD CONSTRAINT
     );
 
 CREATE TABLE IF NOT EXISTS order_detail (
-    num_detail BIGINT NOT NULL PRIMARY KEY,
-    fk_order_id BIGINT NOT NULL,
-    fk_product_sku BIGINT NOT NULL,
-    quantity INTEGER NOT NULL,
-    price NUMERIC(7,2) NOT NULL,
+    num_detail BIGINT PRIMARY KEY,
+    fk_order_id BIGINT,
+    fk_product_sku BIGINT,
+    quantity INTEGER,
+    price NUMERIC(7,2) ,
     CONSTRAINT detail_to_orders_fk FOREIGN KEY (fk_order_id)
         REFERENCES orders (order_id)
         ON UPDATE NO ACTION
