@@ -52,7 +52,7 @@ void OrderForm::createLetter(const QString &name, const QString &address,
   QTextCharFormat textFormat;
   QTextCharFormat boldFormat;
   boldFormat.setFontWeight(QFont::Bold);
-
+//-----------------------------------------------------------------------------------
   QTextFrameFormat addressFrameFormat;
   addressFrameFormat.setBorder(3);
   //referenceFrameFormat.setPadding(8);
@@ -76,8 +76,6 @@ void OrderForm::createLetter(const QString &name, const QString &address,
   for (const QString &line : lines) {
     cursor.insertBlock();
     cursor.insertText(line);
-    cursor.insertBlock();
-    cursor.insertText("---------------");
   }
   cursor.insertBlock();
   cursor.insertBlock();
@@ -86,6 +84,8 @@ void OrderForm::createLetter(const QString &name, const QString &address,
   cursor.insertText(tr("Date: %1").arg(date.toString("d MMMM yyyy")),
                     textFormat);
   cursor.insertBlock();
+  
+  //----------------------------------------------------------------------------
 
   QTextFrameFormat bodyFrameFormat;
   bodyFrameFormat.setWidth(QTextLength(QTextLength::PercentageLength, 100));

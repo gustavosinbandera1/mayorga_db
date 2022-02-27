@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS address (
 CREATE TABLE IF NOT EXISTS customer_address(
     fk_customer_id BIGINT NOT NULL,
     fk_address_id BIGINT NOT NULL,
-    created_date_time DATE NOT NULL,
+    created_date_time DATE,
     CONSTRAINT customer_address_pk
         PRIMARY KEY (fk_customer_id, fk_address_id),
     CONSTRAINT customer_address_to_address_fk FOREIGN KEY (fk_address_id)

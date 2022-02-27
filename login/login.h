@@ -9,7 +9,9 @@
 class UserData {
 public:
 static QString userName; //email
-static int user_id;
+static QString userEmail;
+static int userId;
+static bool isAdmin;
 };
 
 QT_BEGIN_NAMESPACE

@@ -70,7 +70,3 @@ insert into address (city, state, fk_country_id, street_number, address_type) va
 
 
 
-insert into customer_address (fk_customer_id, fk_address_id,created_date_time) values (1, 1,current_timestamp);
-insert into customer_address (fk_customer_id, fk_address_id,created_date_time) values (1, 2,current_timestamp);
-insert into customer_address (fk_customer_id, fk_address_id,created_date_time) values (2, 2,current_timestamp);
-insert into customer_address (fk_customer_id, fk_address_id,created_date_time) values (2, 8,current_timestamp);

@@ -7,12 +7,13 @@
 //class QSqlQuery;
 class Address {
 public:
-    Address(int user_id,
-            QString city,
-            QString state,
-            QString zipcode,
-            QString country,
-            QString streetNumber);
+//    Address(int user_id,
+//            QString city,
+//            QString state,
+//            QString zipcode,
+//            QString country,
+//            QString streetNumber,
+//            QString type);
 
     Address(){};
 
@@ -34,6 +35,12 @@ public:
     QString getStreetNumber() const {return streetNumber;}
     void setStreetNumber(const QString &value) {streetNumber = value;}
 
+    QString getType() const {return type;}
+    void setType(const QString &value) {type = value;}
+
+    int getCountryId() const {return country_id;}
+    void setCountryId(const int &value) {country_id = value;}
+
 private:
     int user_id;
     QString city;
@@ -41,7 +48,8 @@ private:
     QString zipCode;
     QString country;
     QString streetNumber;
-
+    QString type;
+    int country_id;
 };
 
 
@@ -67,16 +75,17 @@ private slots:
 
     void on_zipcodeComboBox_currentIndexChanged(int index);
 
-    void on_textEdit_copyAvailable(bool b);
+//    void on_textEdit_copyAvailable(bool b);
 
-    void on_textEdit_redoAvailable(bool b);
+//    void on_textEdit_redoAvailable(bool b);
 
-    void on_textEdit_textChanged();
+//    void on_textEdit_textChanged();
 
 private:
     Ui::AddressDTO *ui;
     Address _address;
     QStringList countryItems;
+    QList<QPair<QString, int>> _country_items;
 };
 
 #endif // ADDRESSDTO_H

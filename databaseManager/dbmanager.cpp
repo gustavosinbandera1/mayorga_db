@@ -58,7 +58,7 @@ QString DbManager::getHash(QString data) {
  * @param email
  * @return
  */
-QString DbManager::getPasswordFromTable(const QString& table, const QString& email) {
+QPair<QString, int> DbManager::getPasswordFromTable(const QString& table, const QString& email) {
   QString command =
       QString("SELECT * FROM %1  WHERE email LIKE '%2' ").arg(table, email);
   QSqlQuery qry(m_db);
@@ -67,11 +67,10 @@ QString DbManager::getPasswordFromTable(const QString& table, const QString& ema
   if (qry.first()) {
     qDebug() << "Size: " << qry.size();
     qDebug() << " Good Loogd Customer... " << qry.value("email").toString();
-    qDebug() << "salida de pass " << qry.value("password").toString();
-    return qry.value("password").toString();
+    return QPair<QString,int>(qry.value("password").toString(), qry.value("customer_id").toInt());
   }
 
-  return "";
+  return QPair<QString,int>("",-1);
 }
 //---------------------
 /**

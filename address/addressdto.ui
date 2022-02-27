@@ -6,17 +6,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>603</width>
-    <height>333</height>
+    <width>402</width>
+    <height>603</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QLabel" name="label_5">
@@ -30,7 +30,7 @@
        </item>
       </layout>
      </item>
-     <item>
+     <item row="1" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -64,7 +64,7 @@
        </item>
       </layout>
      </item>
-     <item>
+     <item row="2" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
         <widget class="QLabel" name="label_4">
@@ -78,7 +78,7 @@
        </item>
       </layout>
      </item>
-     <item>
+     <item row="3" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
         <widget class="QLabel" name="label_2">
@@ -92,7 +92,7 @@
        </item>
       </layout>
      </item>
-     <item>
+     <item row="4" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QLabel" name="label">
@@ -106,17 +106,40 @@
        </item>
       </layout>
      </item>
-     <item>
+     <item row="5" column="0">
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>Address type</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QRadioButton" name="billingRadioButton">
+          <property name="text">
+           <string>Billing</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="shippingRadioButton_2">
+          <property name="text">
+           <string>Shipping</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="6" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
         <string>Street Number</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QTextEdit" name="textEdit"/>
+     <item row="7" column="0">
+      <widget class="QTextEdit" name="streetTextEdit"/>
      </item>
-     <item>
+     <item row="8" column="0">
       <widget class="QDialogButtonBox" name="buttonBox">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -127,19 +150,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item row="0" column="1">
-    <spacer name="horizontalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>286</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>

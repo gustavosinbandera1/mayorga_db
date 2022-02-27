@@ -20,6 +20,20 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
   nameEdit->setText(UserData::userName);
 
   addressEdit = new QTextEdit;
+
+
+  QSqlQuery qry(_dbM->db());
+  QString query = "SELECT * from customer_address";
+
+ qDebug()<<"STATUS--->>>> " << qry.exec(QString("SELECT * from customer_address"
+                                                " JOIN address ON"
+                                                " customer_address.fk_address_id = address.address_id"));
+ //while (qry.next()) {
+//select * from customer_address join address ON customer_address.fk_address_id=address.address_id  JOIN customer  ON customer_address.fk_customer_id = customer.customer_id ;
+  qry.first();
+  qDebug()<< "DATA: " << qry.record().value("street_number").toString();
+      addressEdit->setPlainText(qry.record().value("street_number").toString());
+  //}
   setupItemsTable();
 
   buttonBox =
@@ -28,8 +42,8 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
   connect(itemsTable, &QTableWidget::itemChanged,
           []() { qDebug() << "Item changed .........................."; });
 
+  
   connect(itemsTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(on_table_itemChanged(QTableWidgetItem*)));
-
   connect(buttonBox, &QDialogButtonBox::accepted, this, &DetailsDialog::verify);
   connect(buttonBox, &QDialogButtonBox::rejected, this, &DetailsDialog::reject);
 
@@ -46,7 +60,7 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
   setWindowTitle(title);
 }
 //---------------------
-QList<QPair<QString, int> > DetailsDialog::orderItems() {
+QList<QPair<QString, int> > DetailsDialog::orderItems() const{
   QList<QPair<QString, int> > orderList;
 
   for (int row = 0; row < items.count(); ++row) {
@@ -59,9 +73,9 @@ QList<QPair<QString, int> > DetailsDialog::orderItems() {
   return orderList;
 }
 //---------------------
-QString DetailsDialog::senderName() const { return nameEdit->text(); }
+QString DetailsDialog::getSenderName() const { return nameEdit->text(); }
 //---------------------
-QString DetailsDialog::senderAddress() const {
+QString DetailsDialog::getSenderAddress() const {
   return addressEdit->toPlainText();
 }
 //---------------------

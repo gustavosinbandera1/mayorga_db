@@ -30,9 +30,9 @@ class DetailsDialog : public QDialog {
   void verify();
 
  public:
-  QList<QPair<QString, int> > orderItems();
-  QString senderName() const;
-  QString senderAddress() const;
+  QList<QPair<QString, int> > orderItems() const;
+  QString getSenderName() const;
+  QString getSenderAddress() const;
   bool sendOffers();
 
  private:

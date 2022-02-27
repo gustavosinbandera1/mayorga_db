@@ -10,7 +10,10 @@
 
 
 QString UserData::userName = "";
-int UserData::user_id = 0;
+QString UserData::userEmail = "";
+int UserData::userId = -1;
+bool UserData::isAdmin;
+
 
 Login::Login(DbManager* dbM, QWidget *parent)
     : QDialog(parent)
@@ -31,26 +34,36 @@ void Login::on_buttonBox_accepted() {
 //        return;
 
     mType = Login::ADMIN;
-    UserData::userName ="n@gmail.com";
-    UserData::user_id = 1;
+    UserData::userEmail ="n@gmail.com";
+    UserData::userName ="gustavo";
+    UserData::userId = 1;
+    UserData::isAdmin = true;
 
     accept();
     return;
 
-    QString password;
+    // QPair<"password", userId>
+    QPair<QString, int>  password;   // pasword and user id
     if(ui->customerRadioButton->isChecked()) {
         password = _dbM->getPasswordFromTable("customer",ui->userLineEdit->text());
         mType = Login::USERS;
+        UserData::isAdmin = false;
+        UserData::userId = password.second;
+
     } else {
         mType = Login::ADMIN;
+        UserData::isAdmin = true;
         password = _dbM->getPasswordFromTable("administrator", ui->userLineEdit->text());
     }
 
-    currentUser.setEmail(ui->userLineEdit->text());
-    UserData::userName = currentUser.getEmail();
+    //currentUser.setEmail(ui->userLineEdit->text());
+    UserData::userName = ui->userLineEdit->text();
+     UserData::userEmail =ui->userLineEdit->text();
+    UserData::isAdmin = bool(mType);
+    UserData::userId = password.second;
 
-    if(password.size()){
-        if(password == _dbM->getHash(ui->passwordLineEdit->text())) {
+    if(password.first.size()){
+        if(password.first == _dbM->getHash(ui->passwordLineEdit->text())) {
             accept();
             return ;
         } else {

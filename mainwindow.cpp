@@ -3,6 +3,7 @@
 #include <bits/unique_ptr.h>
 #include <ui_registeradmindialog.h>
 
+#include <QDate>
 #include <QMdiSubWindow>
 #include <QMessageBox>
 
@@ -40,7 +41,7 @@ MainWindow::MainWindow(DbManager *dbM, QWidget *parent)
   if (d->getType() == Login::ADMIN) {
     ui->menuDatabase->setEnabled(true);
   } else {
-    ui->menuDatabase->setEnabled(false);
+    ui->menuDatabase->setEnabled(true);
   }
   initTabWidget();
   productsView->updateProductsModel();
@@ -107,12 +108,30 @@ void MainWindow::on_actionAdd_Address_triggered() {
   AddressDTO aDTO(this);
   if (aDTO.exec() == QDialog::Rejected) return;
   Address address = aDTO.getDTO();
+  qDebug()<< "********************* saving address DTO " <<  address.getCity() << "AND" << address.getCountryId();
+
   QSqlQuery q(_dbM->db());
   q.exec(QString("INSERT INTO address"
-                 "(city,state,zipCode,country) VALUES ('%1','%2','%3',%4)")
+                 "(city,state, street_number, fk_country_id, address_type) VALUES ('%1','%2','%3',%4,'%5') returning address_id")
              .arg(address.getCity())
              .arg(address.getState())
-             .arg(address.getZipCode()));
+             .arg(address.getStreetNumber())
+             .arg(address.getCountryId())
+             .arg(address.getType()));
+
+  int lastInsertedId = q.lastInsertId().toInt();
+  qDebug()<<"-------------   response "<< lastInsertedId;
+
+  q.clear();
+  q.exec(QString("INSERT INTO customer_address"
+                 "(fk_customer_id, fk_address_id) VALUES (%1,%2)")
+             .arg(UserData::userId)
+             .arg(lastInsertedId)
+         );
+
+
+
+
 }
 //---------------------
 void MainWindow::populateTab(QWidget *widget, QMdiArea *mdiArea) {
