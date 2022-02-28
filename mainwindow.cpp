@@ -128,10 +128,6 @@ void MainWindow::on_actionAdd_Address_triggered() {
              .arg(UserData::userId)
              .arg(lastInsertedId)
          );
-
-
-
-
 }
 //---------------------
 void MainWindow::populateTab(QWidget *widget, QMdiArea *mdiArea) {

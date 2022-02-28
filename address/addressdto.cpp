@@ -20,7 +20,7 @@ AddressDTO::AddressDTO(QWidget *parent)
     qDebug() << "--------------------error--------------------------";
   }
 
-       // tmpRModel->record(index.row()).value("street_number").toString());
+  // tmpRModel->record(index.row()).value("street_number").toString());
 
   countryItems.clear();
   QString country;
@@ -28,9 +28,9 @@ AddressDTO::AddressDTO(QWidget *parent)
   while (query.next()) {
     country = query.record().value("country_name").toString();
     countryId = query.record().value("country_id").toInt();
-    qDebug()<< "salida......... "<< countryId;
+    qDebug() << "salida......... " << countryId;
     countryItems.append(country);
-    _country_items.append(QPair<QString,int>(country,countryId));
+    _country_items.append(QPair<QString, int>(country, countryId));
     ui->zipcodeComboBox->addItem(query.value("zipcode").toString());
     ui->countryLineEdit->setText(country);
   }
@@ -40,7 +40,7 @@ AddressDTO::~AddressDTO() { delete ui; }
 //---------------------
 void AddressDTO::on_buttonBox_accepted() {
   // send data to database
-    qDebug()<< "Checking DTO here into button "<< ui->cityLineEdit->text();
+  qDebug() << "Checking DTO here into button " << ui->cityLineEdit->text();
   _address.setCity(ui->cityLineEdit->text());
   _address.setState(ui->stateLineEdit->text());
   _address.setZipCode(
@@ -48,11 +48,11 @@ void AddressDTO::on_buttonBox_accepted() {
           .toString());
   _address.setCountry(ui->countryLineEdit->text());
   _address.setStreetNumber(ui->streetTextEdit->toPlainText());
-    if(ui->billingRadioButton->isChecked()) {
-        _address.setType(BILLING_ADDRESS);
-    }else {
-        _address.setType(SHIPPING_ADDRESS);
-    }
+  if (ui->billingRadioButton->isChecked()) {
+    _address.setType(BILLING_ADDRESS);
+  } else {
+    _address.setType(SHIPPING_ADDRESS);
+  }
   accept();
 }
 //---------------------
@@ -67,20 +67,4 @@ void AddressDTO::on_zipcodeComboBox_currentIndexChanged(int index) {
   ui->countryLineEdit->setText(countryItems[index]);
   ui->countryLineEdit->setText(_country_items[index].first);
   _address.setCountryId(_country_items[index].second);
-
 }
-
-//void AddressDTO::on_textEdit_copyAvailable(bool b)
-//{
-//    qDebug()<<"111111111111  copy available " << b;
-//}
-
-//void AddressDTO::on_textEdit_redoAvailable(bool b)
-//{
-//        qDebug()<<"222222222  re-do available " << b;
-//}
-
-//void AddressDTO::on_textEdit_textChanged()
-//{
-//    qDebug()<<"3333333333333  text changed ";
-//}

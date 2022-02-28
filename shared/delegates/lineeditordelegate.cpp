@@ -5,8 +5,6 @@
 #include <QLineEdit>
 #include <QMessageBox>
 
-
-
 LineEditorDelegate::LineEditorDelegate(QObject *parent)
     : QItemDelegate(parent) {}
 
@@ -32,23 +30,22 @@ void LineEditorDelegate::setEditorData(QWidget *editor,
 void LineEditorDelegate::setModelData(QWidget *editor,
                                       QAbstractItemModel *model,
                                       const QModelIndex &index) const {
+  QMessageBox::StandardButton reply;
+  reply =
+      QMessageBox::question(editor, "Save", "Do you want to save your changes?",
+                            QMessageBox::Save | QMessageBox::Discard);
 
-
-    QMessageBox::StandardButton reply;
-    reply =  QMessageBox::question(editor, "Save", "Do you want to save your changes?",QMessageBox::Save|QMessageBox::Discard);
-
-    if (reply == QMessageBox::Save) {
-        qDebug() << "Yes was clicked................";
-        QLineEdit *lineEdit = static_cast<QLineEdit *>(editor);
-        QString str = lineEdit->text();
-        model->setData(index, str, Qt::EditRole);
-    }
-    else if  (reply == QMessageBox::Discard)
-         qDebug() << "Discard was clicked................";
+  if (reply == QMessageBox::Save) {
+    qDebug() << "Yes was clicked................";
+    QLineEdit *lineEdit = static_cast<QLineEdit *>(editor);
+    QString str = lineEdit->text();
+    model->setData(index, str, Qt::EditRole);
+  } else if (reply == QMessageBox::Discard)
+    qDebug() << "Discard was clicked................";
 }
 
 void LineEditorDelegate::updateEditorGeometry(
     QWidget *editor, const QStyleOptionViewItem &option,
     const QModelIndex &index) const {
-    editor->setGeometry(option.rect);
+  editor->setGeometry(option.rect);
 }

@@ -7,14 +7,6 @@
 //class QSqlQuery;
 class Address {
 public:
-//    Address(int user_id,
-//            QString city,
-//            QString state,
-//            QString zipcode,
-//            QString country,
-//            QString streetNumber,
-//            QString type);
-
     Address(){};
 
     int getUserId() {return user_id;}
