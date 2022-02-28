@@ -26,6 +26,7 @@ QSqlTableModel *CustomModel::updateModel() {
 
 QSqlRelationalTableModel *CustomModel::updateRModel() {
   relationalModel->setTable(_table);
+  relationalModel->select();
   return relationalModel;
 }
 //-------------------
@@ -63,15 +64,20 @@ void CustomModel::setHeaders(QStringList &&headers) {
   int i = 0;
   for (const auto &header : headers) {
     qDebug() << header;
-    if (isRelational)
+    if (isRelational) {
+        qDebug() <<"Relational Model--> "<< header;
       relationalModel->setHeaderData(i, Qt::Horizontal, header);
-    else
+    } else {
       model->setHeaderData(i, Qt::Horizontal, header);
+        qDebug() <<"NO Relational Model--> "<< header;
+    }
     i++;
   }
 }
 //-------------------
-void CustomModel::setForeignHeaders(QStringList &&headers) {}
+void CustomModel::setForeignHeaders(QStringList &&headers) {
+
+}
 
 void CustomModel::setRelation(int foreignColumn, QString foreignTable,
                               QString foreignKey, QString columnToRender) {

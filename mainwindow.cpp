@@ -1,27 +1,20 @@
 #include "mainwindow.h"
-
+#include <addressdto.h>
 #include <bits/unique_ptr.h>
 #include <ui_registeradmindialog.h>
-
 #include <QDate>
 #include <QMdiSubWindow>
 #include <QMessageBox>
-
-#include "login.h"
-#include <addressdto.h>
+#include <QUuid>
 #include "addressview.h"
-
-
+#include "login.h"
 #include "orderform.h"
 #include "ordersview.h"
-
 #include "productsdto.h"
 #include "productsview.h"
-
 #include "registeruserDTO.h"
 #include "ui_mainwindow.h"
 #include "usersview.h"
-#include <QUuid>
 
 enum class TAB_NAME {
   PRODUCTS,
@@ -35,7 +28,7 @@ enum class TAB_NAME {
 MainWindow::MainWindow(DbManager *dbM, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), _dbM(dbM) {
   ui->setupUi(this);
-  Login *d = static_cast<Login*>(parent);
+  Login *d = static_cast<Login *>(parent);
   currentUser = d->getCurrentUser();
 
   if (d->getType() == Login::ADMIN) {
@@ -48,8 +41,7 @@ MainWindow::MainWindow(DbManager *dbM, QWidget *parent)
   qDebug() << "el user name " << UserData::userName;
   ui->userEmaillabel->setText(UserData::userName);
 
-  qDebug()<< QUuid::createUuid().toString();
-
+  qDebug() << QUuid::createUuid().toString();
 }
 //---------------------
 MainWindow::~MainWindow() {
@@ -106,7 +98,8 @@ void MainWindow::on_actionAdd_Address_triggered() {
   Address address = aDTO.getDTO();
   QSqlQuery q(_dbM->db());
   q.exec(QString("INSERT INTO address"
-                 "(city,state, street_number, fk_country_id, address_type) VALUES ('%1','%2','%3',%4,'%5') returning address_id")
+                 "(city,state, street_number, fk_country_id, address_type) "
+                 "VALUES ('%1','%2','%3',%4,'%5') returning address_id")
              .arg(address.getCity())
              .arg(address.getState())
              .arg(address.getStreetNumber())
@@ -114,15 +107,17 @@ void MainWindow::on_actionAdd_Address_triggered() {
              .arg(address.getType()));
 
   int lastInsertedId = q.lastInsertId().toInt();
-  qDebug()<<"-------------   response "<< lastInsertedId;
+  qDebug() << "-------------   response " << lastInsertedId;
 
   q.clear();
   QDateTime dateTime = QDateTime::currentDateTime();
-  q.prepare("INSERT INTO customer_address (fk_customer_id, fk_address_id, created_date_time) VALUES ( :customer_id, :address_id, :dateTime)");
-  q.bindValue(":customer_id",UserData::userId);
-  q.bindValue(":address_id",lastInsertedId);
+  q.prepare(
+      "INSERT INTO customer_address (fk_customer_id, fk_address_id, "
+      "created_date_time) VALUES ( :customer_id, :address_id, :dateTime)");
+  q.bindValue(":customer_id", UserData::userId);
+  q.bindValue(":address_id", lastInsertedId);
   q.bindValue(":dateTime", dateTime);
-
+  q.exec();
 }
 //---------------------
 void MainWindow::populateTab(QWidget *widget, QMdiArea *mdiArea) {
@@ -144,7 +139,7 @@ void MainWindow::initTabWidget() {
   populateTab(ordersView, ui->ordersMdiArea);
   populateTab(orderForm, ui->orderFormMdiArea);
 }
-
+//---------------------
 void MainWindow::on_tabWidget_tabBarClicked(int index) {
   TAB_NAME type = static_cast<TAB_NAME>(index);
   switch (type) {
@@ -159,7 +154,7 @@ void MainWindow::on_tabWidget_tabBarClicked(int index) {
       ordersView->updateOrderModel();
       break;
     case TAB_NAME::ADDRESSES:
-    addressView->updateAddressModel();
+      addressView->updateAddressModel();
       break;
     case TAB_NAME::CREATE_ORDERS:
 
@@ -168,21 +163,9 @@ void MainWindow::on_tabWidget_tabBarClicked(int index) {
       break;
   }
 }
-
+//---------------------
 void MainWindow::on_NewAddressOrder_clicked() {
-    AddressDTO aDTO(this);
-    aDTO.setWindowFlags(Qt::Window | Qt::WindowTitleHint |
-                        Qt::CustomizeWindowHint);
 
-    if (aDTO.exec() == QDialog::Rejected) return;
-
-    Address address = aDTO.getDTO();
-    QSqlQuery q(_dbM->db());
-    bool status = q.exec(
-        QString("INSERT INTO address"
-                "(city, state, zip_code, country) VALUES ( '%1', '%2', %3, %4)")
-            .arg(address.getCity())
-            .arg(address.getState())
-            .arg(address.getZipCode())
-            .arg(address.getCountry()));
+    on_actionAdd_Address_triggered();
 }
+//---------------------

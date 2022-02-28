@@ -16,7 +16,7 @@ ProductsView::ProductsView(DbManager *dbm, QWidget *parent)
   //comboBoxDelegate = new ComboBoxDelegate(dbm, "products", "name", this);
 
   ui->productsView->setModel(pModel->getModel());
-  pModel->setHeaders({"Id", "City", "State","Country", "Address Type" });
+  pModel->setHeaders({"Sku", "Name", "Description","Price", "Weight" });
 
   ui->productsView->setSortingEnabled(true);
   ui->productsView->sortByColumn(0, Qt::AscendingOrder);

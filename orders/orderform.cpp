@@ -7,7 +7,7 @@
 #include <QTextTable>
 
 #include "dbmanager.h"
-
+#include "login.h"
 #include "ui_orderform.h"
 
 OrderForm::OrderForm(DbManager *dbm, QWidget *parent)
@@ -45,7 +45,6 @@ void OrderForm::createLetter(const QString &name, const QString &address,
 
   QTextFrame *topFrame = cursor.currentFrame();
 
-
   QTextFrameFormat topFrameFormat = topFrame->frameFormat();
   topFrameFormat.setPadding(8);
   topFrame->setFrameFormat(topFrameFormat);
@@ -54,9 +53,7 @@ void OrderForm::createLetter(const QString &name, const QString &address,
   QTextCharFormat boldFormat;
   boldFormat.setFontWeight(QFont::Bold);
 
-
-
-//-----------------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------------
   QTextFrameFormat addressFrameFormat;
   addressFrameFormat.setBorder(3);
   addressFrameFormat.setPosition(QTextFrameFormat::FloatRight);
@@ -89,19 +86,20 @@ void OrderForm::createLetter(const QString &name, const QString &address,
   cursor.insertBlock();
 
   //----------------------------------------------------------------------------
- //----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
 
   QTextFrameFormat bodyFrameFormat;
   bodyFrameFormat.setWidth(QTextLength(QTextLength::PercentageLength, 100));
   cursor.insertFrame(bodyFrameFormat);
 
   cursor.insertText(tr("I would like to place an order for the following "
-                       "items:"),textFormat);
+                       "items:"),
+                    textFormat);
   cursor.insertBlock();
   cursor.insertBlock();
 
   //----------------------------------------------------------------------------
- //----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
   QTextTableFormat orderTableFormat;
   orderTableFormat.setAlignment(Qt::AlignHCenter);
   QTextTable *orderTable = cursor.insertTable(1, 4, orderTableFormat);
@@ -123,12 +121,12 @@ void OrderForm::createLetter(const QString &name, const QString &address,
   cursor.insertText(tr("Total"), boldFormat);
 
   for (int i = 0; i < orderItems.count(); ++i) {
-   DTODetails item = orderItems[i];
+    DTODetails item = orderItems[i];
     int row = orderTable->rows();
 
     orderTable->insertRows(row, 1);
     cursor = orderTable->cellAt(row, 0).firstCursorPosition();
-    cursor.insertText(item.name, textFormat);
+    cursor.insertText(item.productName, textFormat);
 
     cursor = orderTable->cellAt(row, 1).firstCursorPosition();
     cursor.insertText(QString("%1").arg(item.quantity), textFormat);
@@ -137,7 +135,7 @@ void OrderForm::createLetter(const QString &name, const QString &address,
     cursor.insertText(QString("%1").arg(item.price), textFormat);
 
     cursor = orderTable->cellAt(row, 3).firstCursorPosition();
-    cursor.insertText(QString("%1").arg(item.total), textFormat);
+    cursor.insertText(QString("%1").arg(item.purchase), textFormat);
   }
 
   cursor.setPosition(topFrame->lastPosition());
@@ -149,7 +147,6 @@ void OrderForm::createLetter(const QString &name, const QString &address,
          "following privacy information:"));
   cursor.insertBlock();
 
-
   cursor.setPosition(topFrame->lastPosition());
   cursor.insertBlock();
   cursor.insertText(tr("Sincerely,"), textFormat);
@@ -157,23 +154,22 @@ void OrderForm::createLetter(const QString &name, const QString &address,
   cursor.insertBlock();
   cursor.insertBlock();
   cursor.insertText(name);
+
+  editor->setReadOnly(true);
   printAction->setEnabled(true);
 }
 //---------------------
 void OrderForm::createSample() {
-  DetailsDialog dialog(_dbM,"Dialog with default values", this);
+  DetailsDialog dialog(_dbM, "Dialog with default values", this);
   createLetter("Mr. Smith", "12 High Street\nSmall Town\nThis country",
                dialog.orderItems());
 }
 //---------------------
-OrderForm::~OrderForm() {
-    qDebug()<< "deleting Order Form";
-}
+OrderForm::~OrderForm() { qDebug() << "deleting Order Form"; }
 //---------------------
 void OrderForm::openDialog() {
   DetailsDialog dialog(_dbM, tr("Enter customer Details"), this);
   if (dialog.exec() == QDialog::Accepted) {
-      qDebug()<< __LINE__ << "dIALOG ACCEPTED ------------------------------";
     createLetter(dialog.getSenderName(), dialog.getSenderAddress(),
                  dialog.orderItems());
 
@@ -182,9 +178,25 @@ void OrderForm::openDialog() {
 }
 //------------------------
 bool OrderForm::saveOrder(QList<DTODetails> orderItems) {
+  QSqlQuery q(_dbM->db());
+  QDateTime dateTime = QDateTime::currentDateTime();
+  QString payment = "visa";
 
-    qDebug()<< "Saving Orders ..................";
-    return true;
+  q.prepare(
+      "INSERT INTO orders (fk_customer_id, created_date_time, payment_type) "
+      "VALUES ( :customer_id, :dateTime, :payment)");
+  q.bindValue(":customer_id", UserData::userId);
+  q.bindValue(":dateTime", dateTime);
+  q.bindValue(":payment", payment);
+
+  if (!q.exec()) {
+    qDebug() << "**************ERROR************";
+    // handle error
+  }
+  int lastInsertedId = q.lastInsertId().toInt();
+  qDebug() << "Last inserted ID: " << lastInsertedId;
+
+  return true;
 }
 //---------------------
 void OrderForm::printFile() {}

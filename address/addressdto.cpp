@@ -1,5 +1,7 @@
 #include "addressdto.h"
 
+#include <QMessageBox>
+
 #include "login.h"
 #include "ui_addressdto.h"
 
@@ -13,6 +15,16 @@ AddressDTO::AddressDTO(QWidget *parent)
   _address.setUserId(UserData::userId);
   ui->userLineEdit->setReadOnly(true);
   ui->countryLineEdit->setReadOnly(true);
+
+  ui->billingRadioButton->setChecked(true);
+
+  connect(ui->buttonBox, &QDialogButtonBox::accepted, this,
+          &AddressDTO::verify);
+
+  connect(ui->buttonBox, &QDialogButtonBox::rejected, this,
+          [=]() { qDebug("cancel"); });
+  connect(ui->buttonBox, &QDialogButtonBox::rejected, this,
+          [=]() { reject(); });
 
   QSqlQuery query;
   QString c = QString("SELECT * FROM %1 ").arg("country");
@@ -28,7 +40,7 @@ AddressDTO::AddressDTO(QWidget *parent)
   while (query.next()) {
     country = query.record().value("country_name").toString();
     countryId = query.record().value("country_id").toInt();
-    qDebug() << "salida......... " << countryId;
+    qDebug() << "output......... " << countryId;
     countryItems.append(country);
     _country_items.append(QPair<QString, int>(country, countryId));
     ui->zipcodeComboBox->addItem(query.value("zipcode").toString());
@@ -38,8 +50,9 @@ AddressDTO::AddressDTO(QWidget *parent)
 //---------------------
 AddressDTO::~AddressDTO() { delete ui; }
 //---------------------
-void AddressDTO::on_buttonBox_accepted() {
-  // send data to database
+void AddressDTO::on_buttonBox_rejected() {}
+//---------------------
+void AddressDTO::verify() {
   qDebug() << "Checking DTO here into button " << ui->cityLineEdit->text();
   _address.setCity(ui->cityLineEdit->text());
   _address.setState(ui->stateLineEdit->text());
@@ -53,15 +66,27 @@ void AddressDTO::on_buttonBox_accepted() {
   } else {
     _address.setType(SHIPPING_ADDRESS);
   }
-  accept();
+
+  if (!_address.getCity().isEmpty() && !_address.getState().isEmpty() &&
+      !_address.getStreetNumber().isEmpty()) {
+    accept();
+    return;
+  }
+
+  QMessageBox::StandardButton answer;
+  answer = QMessageBox::warning(
+      this, tr("Incomplete Form"),
+      tr("The form does not contain all the necessary information.\n"
+         "Do you want to discard it?"),
+      QMessageBox::Yes | QMessageBox::No);
+
+  if (answer == QMessageBox::Yes) reject();
 }
 //---------------------
-void AddressDTO::on_buttonBox_rejected() {}
-
 void AddressDTO::on_zipcodeComboBox_currentIndexChanged(const QString &arg1) {
   qDebug() << "index has changed " << arg1.toInt();
 }
-
+//---------------------
 void AddressDTO::on_zipcodeComboBox_currentIndexChanged(int index) {
   qDebug() << "here output country " << countryItems[index];
   ui->countryLineEdit->setText(countryItems[index]);

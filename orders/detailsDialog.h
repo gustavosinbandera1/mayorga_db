@@ -2,6 +2,7 @@
 #ifndef DETAILSDIALOG_H
 #define DETAILSDIALOG_H
 
+#include <QComboBox>
 #include <QDialog>
 #include <QList>
 #include <QPair>
@@ -23,9 +24,9 @@ QT_END_NAMESPACE
 
 typedef struct DTODetails {
     int price;
-    QString name;
+    QString productName;
     int quantity;
-    int total;
+    int purchase;
 };
 
 
@@ -54,6 +55,7 @@ class DetailsDialog : public QDialog {
   QTableWidget *itemsTable;
   QTextEdit *addressEdit;
   QDialogButtonBox *buttonBox;
+  QComboBox *paymentChoice;
 
   void populateTable(int rows, int colums);
   DbManager *_dbM;

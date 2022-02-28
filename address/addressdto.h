@@ -59,7 +59,7 @@ public:
     Address getDTO() {return _address;}
 
 private slots:
-    void on_buttonBox_accepted();
+    //void on_buttonBox_accepted();
     void on_buttonBox_rejected();
 
 
@@ -78,6 +78,8 @@ private:
     Address _address;
     QStringList countryItems;
     QList<QPair<QString, int>> _country_items;
+
+    void verify();
 };
 
 #endif // ADDRESSDTO_H

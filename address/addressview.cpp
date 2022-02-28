@@ -3,17 +3,18 @@
 #include "ui_addressview.h"
 
 /*
-select * from customer_address  join address ON customer_address.fk_address_id=address.address_id WHERE fk_customer_id = 1;
+select * from customer_address  join address ON
+customer_address.fk_address_id=address.address_id WHERE fk_customer_id = 1;
 */
 AddressView::AddressView(DbManager* mdb, QWidget* parent)
     : QWidget(parent), ui(new Ui::AddressView) {
-    ui->setupUi(this);
-    bool isRelational = true;
-    model = new CustomModel(mdb, "address", isRelational, this);
-
-    ui->addressTableView->setModel(model->getRelationalModel());
-    model->setHeaders({"Id", "City", "State","Country", "Address Type" });
-    model->setRelation(4,"country","country_id","country_name");
+  ui->setupUi(this);
+  bool isRelational = true;
+  model = new CustomModel(mdb, "address", isRelational, this);
+  ui->addressTableView->setModel(model->getRelationalModel());
+  model->setHeaders(
+      {"Id", "City", "State", "Street Number", "Country", "Address Type"});
+  model->setRelation(4, "country", "country_id", "country_name");
 
   ui->addressTableView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::Stretch);
@@ -25,7 +26,8 @@ AddressView::AddressView(DbManager* mdb, QWidget* parent)
   ui->addressTableView->sortByColumn(0, Qt::AscendingOrder);
   ui->addressTableView->reset();
   ui->addressIDLineEdit->setDisabled(true);
-  ui->addressTableView->setEditTriggers(QAbstractItemView::NoEditTriggers); // edit sisabled
+  ui->addressTableView->setEditTriggers(
+      QAbstractItemView::NoEditTriggers);  // edit sisabled
 }
 //---------------------
 AddressView::~AddressView() {
@@ -34,18 +36,21 @@ AddressView::~AddressView() {
 }
 
 void AddressView::updateAddressModel() {
-    qDebug()<<"Updating address rmodel";
- ui->addressTableView->setModel(model->updateRModel());
- model->setHeaders({"Id", "City", "State","Country", "Address Type" });
- model->setRelation(4,"country","country_id","country_name");
- ui->addressTableView->setColumnHidden(3, true);
+  qDebug() << "Updating address "
+              "rmodel**********************************************************"
+              "**********";
+  model->setHeaders(
+      {"Id", "City", "State", "Street Number", "Country", "Address Type"});
+  ui->addressTableView->setModel(model->updateRModel());
+  model->setRelation(4, "country", "country_id", "country_name");
+  ui->addressTableView->setColumnHidden(3, true);
 }
 
 void AddressView::on_addressTableView_clicked(const QModelIndex& index) {
   qDebug() << "Cell clicked ";
-  //QSqlTableModel* tmpModel = aModel->getModel();
-  QSqlRelationalTableModel *tmpRModel = model->getRelationalModel();
-  //ui->addressIDLineEdit->setText(tmpRModel->index(index.row(),0).data().toString());
+  // QSqlTableModel* tmpRModel = model->getModel();
+  QSqlRelationalTableModel* tmpRModel = model->getRelationalModel();
+  // ui->addressIDLineEdit->setText(tmpRModel->index(index.row(),0).data().toString());
   //    ui->cityLineEdit->setText(tmpModel->index(index.row(),1).data().toString());
   //    ui->stateLineEdit->setText(tmpModel->index(index.row(),2).data().toString());
 
@@ -66,13 +71,13 @@ void AddressView::on_addressTableView_clicked(const QModelIndex& index) {
 }
 
 void AddressView::on_streetNumberTextEdit_textChanged() {
-    qDebug() << "on_streetNumberTextEdit_textChanged ";
+  qDebug() << "on_streetNumberTextEdit_textChanged ";
 }
 
 void AddressView::on_streetNumberTextEdit_copyAvailable(bool b) {
-  qDebug() << "on_streetNumberTextEdit_copyAvailable "<< b;
+  qDebug() << "on_streetNumberTextEdit_copyAvailable " << b;
 }
 
 void AddressView::on_streetNumberTextEdit_undoAvailable(bool b) {
-  qDebug() << "on_streetNumberTextEdit_undoAvailable --> "<< b;
+  qDebug() << "on_streetNumberTextEdit_undoAvailable --> " << b;
 }

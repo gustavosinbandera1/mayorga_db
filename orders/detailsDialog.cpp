@@ -19,6 +19,10 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
 
   addressEdit = new QTextEdit;
 
+
+  paymentChoice = new QComboBox();
+  paymentChoice->addItems({"visa","mastercard","cash"});
+
   QSqlQuery qry(_dbM->db());
   QString query = "SELECT * from customer_address";
 
@@ -55,12 +59,13 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
   mainLayout->addWidget(addressEdit, 1, 1);
   mainLayout->addWidget(itemsTable, 0, 2, 2, 1);
 
+  mainLayout->addWidget(paymentChoice, 2, 1, 1, 2);
+
   mainLayout->addWidget(buttonBox, 3, 0, 1, 3);
   setLayout(mainLayout);
 
   setWindowTitle(title);
 }
-
 
 QList<DTODetails> DetailsDialog::orderItems() const {
   QList<DTODetails> _orderList;
@@ -68,24 +73,21 @@ QList<DTODetails> DetailsDialog::orderItems() const {
     DTODetails item;
 
     QString name = itemsTable->item(row, 0)->text();
-    item.name = name;
+    item.productName = name;
 
     int quantity = itemsTable->item(row, 1)->data(Qt::DisplayRole).toInt();
     item.quantity = qMax(0, quantity);
 
-    int price =  itemsTable->item(row, 2)->data(Qt::DisplayRole).toInt();
+    int price = itemsTable->item(row, 2)->data(Qt::DisplayRole).toInt();
     item.price = price;
 
+    int total = itemsTable->item(row, 3)->data(Qt::DisplayRole).toInt();
+    item.purchase = total;
 
-    int total =  itemsTable->item(row, 3)->data(Qt::DisplayRole).toInt();
-    item.total = total;
-
-    if (item.quantity > 0)
-        _orderList.append(item);
+    if (item.quantity > 0) _orderList.append(item);
   }
   return _orderList;
 }
-
 
 //---------------------
 QString DetailsDialog::getSenderName() const { return nameEdit->text(); }
@@ -144,6 +146,10 @@ void DetailsDialog::setupItemsTable() {
     QTableWidgetItem *totalPrice = new QTableWidgetItem("0");
     itemsTable->setItem(row, 3, totalPrice);
     totalPrice->setFlags(totalPrice->flags() ^ Qt::ItemIsEditable);
+
+    itemsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    itemsTable->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   }
 }
 //---------------------

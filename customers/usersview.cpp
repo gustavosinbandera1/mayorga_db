@@ -8,7 +8,7 @@ UsersView::UsersView(DbManager* dbm, QWidget* parent)
   cModel = new CustomModel(dbm, "customer",isRelational, this);
 
   ui->userTableView->setModel(cModel->getRelationalModel());
-  cModel->setHeaders({"Customer_id", "Name","Email", "Phone","Password"});
+  cModel->setHeaders({"Customer id", "Name","Email", "Phone","Password"});
   //cModel->setRelation(4,"address","address_id","city");
 
   ui->userTableView->horizontalHeader()->setSectionResizeMode(
