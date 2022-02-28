@@ -34,8 +34,8 @@ OrderForm::OrderForm(DbManager *dbm, QWidget *parent)
   setCentralWidget(lettersTab);
 }
 //---------------------
-void OrderForm::createLetter(const QString &name, const QString &address,
-                             QList<DTODetails> orderItems) {
+void OrderForm::createLetter(QString &&name, QString &&address,
+                             QList<DTODetails> &&orderItems) {
   QTextEdit *editor = new QTextEdit;
   int tabIndex = lettersTab->addTab(editor, name);
   lettersTab->setCurrentIndex(tabIndex);
@@ -173,14 +173,17 @@ void OrderForm::openDialog() {
     createLetter(dialog.getSenderName(), dialog.getSenderAddress(),
                  dialog.orderItems());
 
-    saveOrder(dialog.orderItems());
+
+    if(!dialog.isEmpty)
+        saveOrder(dialog.orderItems(), dialog.getPaymenMethod());
   }
 }
 //------------------------
-bool OrderForm::saveOrder(QList<DTODetails> orderItems) {
+bool OrderForm::saveOrder(QList<DTODetails> orderItems, QString paymentMethod) {
+
   QSqlQuery q(_dbM->db());
   QDateTime dateTime = QDateTime::currentDateTime();
-  QString payment = "visa";
+  QString payment = paymentMethod;
 
   q.prepare(
       "INSERT INTO orders (fk_customer_id, created_date_time, payment_type) "

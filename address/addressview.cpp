@@ -36,9 +36,6 @@ AddressView::~AddressView() {
 }
 
 void AddressView::updateAddressModel() {
-  qDebug() << "Updating address "
-              "rmodel**********************************************************"
-              "**********";
   model->setHeaders(
       {"Id", "City", "State", "Street Number", "Country", "Address Type"});
   ui->addressTableView->setModel(model->updateRModel());
@@ -47,7 +44,6 @@ void AddressView::updateAddressModel() {
 }
 
 void AddressView::on_addressTableView_clicked(const QModelIndex& index) {
-  qDebug() << "Cell clicked ";
   // QSqlTableModel* tmpRModel = model->getModel();
   QSqlRelationalTableModel* tmpRModel = model->getRelationalModel();
   // ui->addressIDLineEdit->setText(tmpRModel->index(index.row(),0).data().toString());

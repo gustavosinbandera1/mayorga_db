@@ -7,7 +7,6 @@ CustomModel::CustomModel(DbManager *dbm, QString table, bool relational,
   _table = table;
   isRelational = relational;
   if (relational) {
-    qDebug() << "Is relational.........";
     relationalModel = new QSqlRelationalTableModel(this);
     relationalModel->setTable(table);
     relationalModel->select();
@@ -63,13 +62,10 @@ QVariant CustomModel::data(const QModelIndex &index, int role) const {
 void CustomModel::setHeaders(QStringList &&headers) {
   int i = 0;
   for (const auto &header : headers) {
-    qDebug() << header;
     if (isRelational) {
-        qDebug() <<"Relational Model--> "<< header;
       relationalModel->setHeaderData(i, Qt::Horizontal, header);
     } else {
       model->setHeaderData(i, Qt::Horizontal, header);
-        qDebug() <<"NO Relational Model--> "<< header;
     }
     i++;
   }

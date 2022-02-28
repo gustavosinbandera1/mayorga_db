@@ -29,7 +29,6 @@ ProductsView::ProductsView(DbManager *dbm, QWidget *parent)
 
   //ui->productsView->setEditTriggers(QAbstractItemView::NoEditTriggers); // edit sisabled
 
-  qDebug()<< "In products view The user is called : " << UserData::userName;
 }
 //---------------------
 ProductsView::~ProductsView() {
@@ -46,10 +45,8 @@ void ProductsView::on_productsView_doubleClicked(const QModelIndex &index) {
            << " = " << index.data();
 
   if(isInteger(index.data())){
-       qDebug() << "It is an number ";
        ui->productsView->setItemDelegate(SpinBoxDelegate);
   }else if(isString(index.data())){
-       qDebug() << "it is a string ";
        ui->productsView->setItemDelegate(lineDelegate);
        //ui->productsView->setItemDelegate(comboBoxDelegate);
   }

@@ -23,10 +23,10 @@ class OrderForm : public QMainWindow {
   void printFile();
 
  private:
-  void createLetter(const QString &name, const QString &address,
-                    QList<DTODetails> orderItems);
+  void createLetter(QString &&name, QString &&address,
+                    QList<DTODetails> &&orderItems);
 
-  bool saveOrder(QList<DTODetails> orderItems);
+  bool saveOrder(QList<DTODetails> orderItems, QString paymentMethod);
   DbManager* _dbM;
   QAction *printAction;
   QTabWidget *lettersTab;

@@ -8,6 +8,7 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
                              QWidget *parent)
     : QDialog(parent) {
   _dbM = dbm;
+  isEmpty = true;
   quantityDelegate = new QuantityTotalDelegate(this);
   nameLabel = new QLabel(tr("Name:"));
   addressLabel = new QLabel(tr("Address:"));
@@ -19,9 +20,10 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
 
   addressEdit = new QTextEdit;
 
-
   paymentChoice = new QComboBox();
-  paymentChoice->addItems({"visa","mastercard","cash"});
+  paymentChoice->addItems({"visa", "mastercard", "cash"});
+  qDebug() << "salida payment --------------------------------"
+           << paymentChoice->currentText();
 
   QSqlQuery qry(_dbM->db());
   QString query = "SELECT * from customer_address";
@@ -58,16 +60,14 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
   mainLayout->addWidget(addressLabel, 1, 0);
   mainLayout->addWidget(addressEdit, 1, 1);
   mainLayout->addWidget(itemsTable, 0, 2, 2, 1);
-
   mainLayout->addWidget(paymentChoice, 2, 1, 1, 2);
-
   mainLayout->addWidget(buttonBox, 3, 0, 1, 3);
   setLayout(mainLayout);
 
   setWindowTitle(title);
 }
 
-QList<DTODetails> DetailsDialog::orderItems() const {
+QList<DTODetails> DetailsDialog::orderItems()  {
   QList<DTODetails> _orderList;
   for (int row = 0; row < _items.count(); ++row) {
     DTODetails item;
@@ -84,8 +84,12 @@ QList<DTODetails> DetailsDialog::orderItems() const {
     int total = itemsTable->item(row, 3)->data(Qt::DisplayRole).toInt();
     item.purchase = total;
 
-    if (item.quantity > 0) _orderList.append(item);
+    if (item.quantity > 0){
+        _orderList.append(item);
+    }
   }
+  if(_orderList.count()> 0)
+      isEmpty = false;
   return _orderList;
 }
 
@@ -95,6 +99,11 @@ QString DetailsDialog::getSenderName() const { return nameEdit->text(); }
 QString DetailsDialog::getSenderAddress() const {
   return addressEdit->toPlainText();
 }
+
+QString DetailsDialog::getPaymenMethod() const {
+    return paymentChoice->currentText();
+}
+
 //---------------------
 void DetailsDialog::verify() {
   if (!nameEdit->text().isEmpty() && !addressEdit->toPlainText().isEmpty()) {
@@ -159,8 +168,6 @@ void DetailsDialog::on_table_itemChanged(QTableWidgetItem *item) {
     int total;
     int price = itemsTable->item(item->row(), 2)->text().toInt();
     total = price * quantity;
-    qDebug() << "Total: " << total;
-    // total
     itemsTable->item(item->row(), 3)->setText(QString::number(total));
   }
 }

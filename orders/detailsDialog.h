@@ -40,10 +40,13 @@ class DetailsDialog : public QDialog {
   void verify();
 
  public:
- QList<DTODetails> orderItems() const;
+ QList<DTODetails> orderItems();
   QString getSenderName() const;
   QString getSenderAddress() const;
   bool sendOffers();
+  QString getPaymenMethod() const;
+  bool isEmpty;
+
 
  private:
   void setupItemsTable();
@@ -61,6 +64,8 @@ class DetailsDialog : public QDialog {
   DbManager *_dbM;
 
   QuantityTotalDelegate *quantityDelegate;
+
+
 
  private slots:
   void on_actionSave_triggered() ;
