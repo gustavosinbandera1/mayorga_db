@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS products (
 CREATE TABLE IF NOT EXISTS orders (
     order_id BIGSERIAL  PRIMARY KEY,
     fk_customer_id BIGINT ,
-    date DATE ,
+    created_date_time DATE ,
     payment_type CHARACTER VARYING(100),
     CONSTRAINT order_to_customer_fk FOREIGN KEY(fk_customer_id)
       REFERENCES customer (customer_id)

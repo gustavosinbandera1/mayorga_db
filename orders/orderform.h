@@ -25,6 +25,8 @@ class OrderForm : public QMainWindow {
  private:
   void createLetter(const QString &name, const QString &address,
                     QList<DTODetails> orderItems);
+
+  bool saveOrder(QList<DTODetails> orderItems);
   DbManager* _dbM;
   QAction *printAction;
   QTabWidget *lettersTab;

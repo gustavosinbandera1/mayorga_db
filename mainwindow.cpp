@@ -48,11 +48,7 @@ MainWindow::MainWindow(DbManager *dbM, QWidget *parent)
   qDebug() << "el user name " << UserData::userName;
   ui->userEmaillabel->setText(UserData::userName);
 
-//insert into products (name,description, price, weight) values ('smart-tv-4','Smart tv-3', 5921.86, 75.6) ON CONFLICT (sku) DO NOTHING returning  sku;
   qDebug()<< QUuid::createUuid().toString();
-//  qDebug()<< QUuid::createUuid().toString();
-//  qDebug()<< QUuid::createUuid().toString();
-//  qDebug()<< QUuid::createUuid().toString();
 
 }
 //---------------------
@@ -108,8 +104,6 @@ void MainWindow::on_actionAdd_Address_triggered() {
   AddressDTO aDTO(this);
   if (aDTO.exec() == QDialog::Rejected) return;
   Address address = aDTO.getDTO();
-  qDebug()<< "********************* saving address DTO " <<  address.getCity() << "AND" << address.getCountryId();
-
   QSqlQuery q(_dbM->db());
   q.exec(QString("INSERT INTO address"
                  "(city,state, street_number, fk_country_id, address_type) VALUES ('%1','%2','%3',%4,'%5') returning address_id")
@@ -123,11 +117,12 @@ void MainWindow::on_actionAdd_Address_triggered() {
   qDebug()<<"-------------   response "<< lastInsertedId;
 
   q.clear();
-  q.exec(QString("INSERT INTO customer_address"
-                 "(fk_customer_id, fk_address_id) VALUES (%1,%2)")
-             .arg(UserData::userId)
-             .arg(lastInsertedId)
-         );
+  QDateTime dateTime = QDateTime::currentDateTime();
+  q.prepare("INSERT INTO customer_address (fk_customer_id, fk_address_id, created_date_time) VALUES ( :customer_id, :address_id, :dateTime)");
+  q.bindValue(":customer_id",UserData::userId);
+  q.bindValue(":address_id",lastInsertedId);
+  q.bindValue(":dateTime", dateTime);
+
 }
 //---------------------
 void MainWindow::populateTab(QWidget *widget, QMdiArea *mdiArea) {

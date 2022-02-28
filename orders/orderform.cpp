@@ -176,7 +176,15 @@ void OrderForm::openDialog() {
       qDebug()<< __LINE__ << "dIALOG ACCEPTED ------------------------------";
     createLetter(dialog.getSenderName(), dialog.getSenderAddress(),
                  dialog.orderItems());
+
+    saveOrder(dialog.orderItems());
   }
+}
+//------------------------
+bool OrderForm::saveOrder(QList<DTODetails> orderItems) {
+
+    qDebug()<< "Saving Orders ..................";
+    return true;
 }
 //---------------------
 void OrderForm::printFile() {}
