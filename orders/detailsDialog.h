@@ -27,6 +27,7 @@ typedef struct DTODetails {
     QString productName;
     int quantity;
     int purchase;
+    int sku;
 };
 
 
@@ -44,7 +45,7 @@ class DetailsDialog : public QDialog {
   QString getSenderName() const;
   QString getSenderAddress() const;
   bool sendOffers();
-  QString getPaymenMethod() const;
+  QString getPaymentMethod() const;
   bool isEmpty;
 
 
@@ -54,7 +55,8 @@ class DetailsDialog : public QDialog {
   QLabel *nameLabel;
   QLabel *addressLabel;
   QLineEdit *nameEdit;
-  QList<QPair<QString, int>> _items;
+  //QList<QPair<QString, int>> _items;
+  QList<DTODetails> _items;
   QTableWidget *itemsTable;
   QTextEdit *addressEdit;
   QDialogButtonBox *buttonBox;

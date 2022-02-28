@@ -68,7 +68,7 @@ ALTER TABLE orders ADD CONSTRAINT
     );
 
 CREATE TABLE IF NOT EXISTS order_detail (
-    num_detail BIGINT PRIMARY KEY,
+    num_detail BIGSERIAL PRIMARY KEY,
     fk_order_id BIGINT,
     fk_product_sku BIGINT,
     quantity INTEGER,

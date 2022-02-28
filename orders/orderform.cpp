@@ -10,6 +10,9 @@
 #include "login.h"
 #include "ui_orderform.h"
 
+#define SUCCESS true
+#define FAIL false
+
 OrderForm::OrderForm(DbManager *dbm, QWidget *parent)
     : QMainWindow(parent), _dbM(dbm) {
   QMenu *fileMenu = new QMenu(tr("&File"), this);
@@ -173,14 +176,17 @@ void OrderForm::openDialog() {
     createLetter(dialog.getSenderName(), dialog.getSenderAddress(),
                  dialog.orderItems());
 
-
-    if(!dialog.isEmpty)
-        saveOrder(dialog.orderItems(), dialog.getPaymenMethod());
+    if (!dialog.isEmpty) {
+      QList<DTODetails> tmp = dialog.orderItems();
+      int transactionId = saveOrder(tmp, dialog.getPaymentMethod());
+      saveItems(tmp, transactionId);
+    }
   }
 }
 //------------------------
-bool OrderForm::saveOrder(QList<DTODetails> orderItems, QString paymentMethod) {
-
+#include <QListIterator>
+int OrderForm::saveOrder(const QList<DTODetails> &orderItems,
+                         QString &&paymentMethod) {
   QSqlQuery q(_dbM->db());
   QDateTime dateTime = QDateTime::currentDateTime();
   QString payment = paymentMethod;
@@ -195,11 +201,42 @@ bool OrderForm::saveOrder(QList<DTODetails> orderItems, QString paymentMethod) {
   if (!q.exec()) {
     qDebug() << "**************ERROR************";
     // handle error
+    return -1;
   }
   int lastInsertedId = q.lastInsertId().toInt();
   qDebug() << "Last inserted ID: " << lastInsertedId;
 
-  return true;
+  return lastInsertedId;
+}
+
+void OrderForm::saveItems(const QList<DTODetails> &orderItems, int orderId) {
+  // QListIterator<DTODetails> i(orderItems);
+  QSqlQuery q(_dbM->db());
+
+  // while (i.hasNext()) {
+  qDebug() << "data ietms:";
+  for (int i = 0; i < orderItems.count(); i++) {
+    qDebug() << "-----------------------------------------------------";
+    qDebug() << orderItems[i].productName;
+    qDebug() << orderItems[i].price;
+    qDebug() << orderId;
+    qDebug() << "-----------------------------------------------------";
+
+    q.prepare(
+        "INSERT INTO order_detail (fk_order_id, fk_product_sku, quantity, price) "
+        "VALUES ( :order_id, :product_sku, :quantity, :price)");
+    q.bindValue(":order_id", orderId);
+    q.bindValue(":product_sku", orderItems[i].sku);
+    q.bindValue(":quantity", orderItems[i].quantity);
+    q.bindValue(":price", orderItems[i].price);
+
+    if (q.exec()) {
+      qDebug() << "all ok here..";
+    } else {
+      qDebug() << "Error...." << q.lastError().text();
+    }
+    q.clear();
+  }
 }
 //---------------------
 void OrderForm::printFile() {}
