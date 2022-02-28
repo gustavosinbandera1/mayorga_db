@@ -1,6 +1,7 @@
 #ifndef ORDERFORM_H
 #define ORDERFORM_H
 #include <QMainWindow>
+#include "detailsDialog.h"
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -23,8 +24,7 @@ class OrderForm : public QMainWindow {
 
  private:
   void createLetter(const QString &name, const QString &address,
-                    QList<QPair<QString,int> > orderItems,
-                    bool sendOffers);
+                    QList<DTODetails> orderItems);
   DbManager* _dbM;
   QAction *printAction;
   QTabWidget *lettersTab;

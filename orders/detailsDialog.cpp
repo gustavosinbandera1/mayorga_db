@@ -12,27 +12,28 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
   nameLabel = new QLabel(tr("Name:"));
   addressLabel = new QLabel(tr("Address:"));
   addressLabel->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-  offersCheckBox =
-      new QCheckBox(tr("Send information about products and "
-                       "special offers"));
+
   nameEdit = new QLineEdit;
   nameEdit->setReadOnly(true);
   nameEdit->setText(UserData::userName);
 
   addressEdit = new QTextEdit;
 
-
   QSqlQuery qry(_dbM->db());
   QString query = "SELECT * from customer_address";
 
- qDebug()<<"STATUS--->>>> " << qry.exec(QString("SELECT * from customer_address"
-                                                " JOIN address ON"
-                                                " customer_address.fk_address_id = address.address_id"));
- //while (qry.next()) {
-//select * from customer_address join address ON customer_address.fk_address_id=address.address_id  JOIN customer  ON customer_address.fk_customer_id = customer.customer_id ;
+  qDebug() << "STATUS--->>>> "
+           << qry.exec(QString(
+                  "SELECT * from customer_address"
+                  " JOIN address ON"
+                  " customer_address.fk_address_id = address.address_id"));
+  // while (qry.next()) {
+  // select * from customer_address join address ON
+  // customer_address.fk_address_id=address.address_id  JOIN customer  ON
+  // customer_address.fk_customer_id = customer.customer_id ;
   qry.first();
-  qDebug()<< "DATA: " << qry.record().value("street_number").toString();
-      addressEdit->setPlainText(qry.record().value("street_number").toString());
+  qDebug() << "DATA: " << qry.record().value("street_number").toString();
+  addressEdit->setPlainText(qry.record().value("street_number").toString());
   //}
   setupItemsTable();
 
@@ -42,8 +43,8 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
   connect(itemsTable, &QTableWidget::itemChanged,
           []() { qDebug() << "Item changed .........................."; });
 
-  
-  connect(itemsTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(on_table_itemChanged(QTableWidgetItem*)));
+  connect(itemsTable, SIGNAL(itemChanged(QTableWidgetItem *)), this,
+          SLOT(on_table_itemChanged(QTableWidgetItem *)));
   connect(buttonBox, &QDialogButtonBox::accepted, this, &DetailsDialog::verify);
   connect(buttonBox, &QDialogButtonBox::rejected, this, &DetailsDialog::reject);
 
@@ -53,33 +54,45 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
   mainLayout->addWidget(addressLabel, 1, 0);
   mainLayout->addWidget(addressEdit, 1, 1);
   mainLayout->addWidget(itemsTable, 0, 2, 2, 1);
-  mainLayout->addWidget(offersCheckBox, 2, 1, 1, 2);
+
   mainLayout->addWidget(buttonBox, 3, 0, 1, 3);
   setLayout(mainLayout);
 
   setWindowTitle(title);
 }
-//---------------------
-QList<QPair<QString, int> > DetailsDialog::orderItems() const{
-  QList<QPair<QString, int> > orderList;
 
-  for (int row = 0; row < items.count(); ++row) {
-    QPair<QString, int> item;
-    item.first = itemsTable->item(row, 0)->text();
+
+QList<DTODetails> DetailsDialog::orderItems() const {
+  QList<DTODetails> _orderList;
+  for (int row = 0; row < _items.count(); ++row) {
+    DTODetails item;
+
+    QString name = itemsTable->item(row, 0)->text();
+    item.name = name;
+
     int quantity = itemsTable->item(row, 1)->data(Qt::DisplayRole).toInt();
-    item.second = qMax(0, quantity);
-    orderList.append(item);
+    item.quantity = qMax(0, quantity);
+
+    int price =  itemsTable->item(row, 2)->data(Qt::DisplayRole).toInt();
+    item.price = price;
+
+
+    int total =  itemsTable->item(row, 3)->data(Qt::DisplayRole).toInt();
+    item.total = total;
+
+    if (item.quantity > 0)
+        _orderList.append(item);
   }
-  return orderList;
+  return _orderList;
 }
+
+
 //---------------------
 QString DetailsDialog::getSenderName() const { return nameEdit->text(); }
 //---------------------
 QString DetailsDialog::getSenderAddress() const {
   return addressEdit->toPlainText();
 }
-//---------------------
-bool DetailsDialog::sendOffers() { return offersCheckBox->isChecked(); }
 //---------------------
 void DetailsDialog::verify() {
   if (!nameEdit->text().isEmpty() && !addressEdit->toPlainText().isEmpty()) {
@@ -103,9 +116,9 @@ void DetailsDialog::setupItemsTable() {
   qry.prepare(command);
   qry.exec();
 
-
   while (qry.next()) {
-    _items.push_back(QPair<QString,int>(qry.record().value("name").toString(), qry.record().value("price").toInt()));
+    _items.push_back(QPair<QString, int>(qry.record().value("name").toString(),
+                                         qry.record().value("price").toInt()));
   }
 
   itemsTable = new QTableWidget(_items.count(), 4, this);
@@ -122,8 +135,8 @@ void DetailsDialog::setupItemsTable() {
     QTableWidgetItem *quantity = new QTableWidgetItem("0");
     itemsTable->setItem(row, 1, quantity);
 
-    QTableWidgetItem *price = new QTableWidgetItem(
-                QString::number(_items[row].second));  // this value will need to be dinamically load
+    QTableWidgetItem *price = new QTableWidgetItem(QString::number(
+        _items[row].second));  // this value will need to be dinamically load
     itemsTable->setItem(row, 2, price);
 
     price->setFlags(price->flags() ^ Qt::ItemIsEditable);
@@ -140,13 +153,13 @@ void DetailsDialog::on_table_itemChanged(QTableWidgetItem *item) {
     int total;
     int price = itemsTable->item(item->row(), 2)->text().toInt();
     total = price * quantity;
-    qDebug()<<"Total: "<< total;
-    //total
+    qDebug() << "Total: " << total;
+    // total
     itemsTable->item(item->row(), 3)->setText(QString::number(total));
   }
 }
 
-
 void DetailsDialog::on_actionSave_triggered() {
-  qDebug() << "Action: " << "on_actionSave_triggered";
+  qDebug() << "Action: "
+           << "on_actionSave_triggered";
 }
