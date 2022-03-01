@@ -22,8 +22,6 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
 
   paymentChoice = new QComboBox();
   paymentChoice->addItems({"visa", "mastercard", "cash"});
-  qDebug() << "salida payment --------------------------------"
-           << paymentChoice->currentText();
 
   QSqlQuery qry(_dbM->db());
   QString query = "SELECT * from customer_address";
@@ -132,7 +130,6 @@ void DetailsDialog::setupItemsTable() {
   DTODetails tmpDTO;
   while (qry.next()) {
       tmpDTO.sku = qry.record().value("sku").toInt();
-      qDebug()<<"----------------------aqui------------ sku "<< tmpDTO.sku;
       tmpDTO.productName = qry.record().value("name").toString();
       tmpDTO.price = qry.record().value("price").toInt();
       _items.push_back(tmpDTO);

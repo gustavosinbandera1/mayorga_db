@@ -1,53 +1,39 @@
 #include "orderdetailview.h"
-#include "ui_orderdetailview.h"
+
 #include "detailsmodel.h"
 #include "templateModel.h"
+#include "ui_orderdetailview.h"
 
-OrderDetailView::OrderDetailView(DbManager *dbm, QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::OrderDetailView)
-{
-    ui->setupUi(this);
+OrderDetailView::OrderDetailView(DbManager *dbm, QWidget *parent)
+    : QWidget(parent), ui(new Ui::OrderDetailView) {
+  ui->setupUi(this);
 
-    bool isRelational = true;
-    detailModel = new CustomModel(dbm, "order_detail", isRelational, this);
-    _detailModel = new DetailsModel(dbm,this);
-    _detailModel->setHeaders({"uno","dos","tres","cuatro","cinco"});
-    QSqlQuery query;
+  _detailModel = new DetailsModel(dbm, this);
 
+  QSqlQuery query;
+  query.prepare("SELECT city,state, street_number, address_type,name from customer_address "
+                "JOIN address ON customer_address.fk_address_id = address.address_id "
+                "JOIN customer ON customer_address.fk_customer_id = customer.customer_id");
 
-    query.prepare("SELECT * FROM customer_address "
-                  "JOIN address ON "
-                  "customer_address.fk_address_id=address.address_id");
-    //const QString tmp = "SELECT * FROM customer_address JOIN address ON customer_address.fk_address_id=address.address_id";
-    _detailModel->setQuery(query);
-    //detailModel->setHeaders({"Id", "Customer_id", "Date", "Payment type"});
+  _detailModel->setQuery(query);
+  _detailModel->setHeaders({"city", "state", "Street", "address_type","name"});
 
-    //detailModel->setRelation(1, "orders", "order_id", "payment_type");
-   // detailModel->setRelation(2, "products", "sku", "name");
+  ui->orderDetailTableView->setModel(_detailModel);
+  ui->orderDetailTableView->setEnabled(true);
+  ui->orderDetailTableView->verticalHeader()->setVisible(true);
 
-    //ui->orderDetailTableView->setModel(detailModel->getRelationalModel());
-    ui->orderDetailTableView->setModel(_detailModel);
-    ui->orderDetailTableView->setEnabled(true);
+  ui->orderDetailTableView->horizontalHeader()->setSectionResizeMode(
+      QHeaderView::Stretch);
+  ui->orderDetailTableView->horizontalHeader()->setVisible(true);
+  ui->orderDetailTableView->setAlternatingRowColors(true);
+  ui->orderDetailTableView->setSortingEnabled(true);
+  ui->orderDetailTableView->sortByColumn(0, Qt::DescendingOrder);
 
-    ui->orderDetailTableView->horizontalHeader()->setSectionResizeMode(
-        QHeaderView::Stretch);
-    ui->orderDetailTableView->horizontalHeader()->setVisible(true);
-    ui->orderDetailTableView->setAlternatingRowColors(true);
-    ui->orderDetailTableView->setSortingEnabled(true);
-    ui->orderDetailTableView->sortByColumn(0, Qt::DescendingOrder);
-    //ui->orderDetailTableView->reset();
 }
 
-OrderDetailView::~OrderDetailView()
-{
-    delete ui;
+OrderDetailView::~OrderDetailView() { delete ui; }
+
+void OrderDetailView::updateOrderDetailModel() {
+  _detailModel->updateModel();
+  // ui->orderDetailTableView->setModel(_detailModel);
 }
-
-void OrderDetailView::updateOrderDetailModel()
-{
-    _detailModel->updateModel();
-    //ui->orderDetailTableView->setModel(_detailModel);
-}
-
-

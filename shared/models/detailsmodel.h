@@ -42,6 +42,7 @@ class DetailsModel : public QAbstractTableModel {
   QStringList _headers;
   QSqlQueryModel *_model;
   QSqlQuery lastQuery;
+  int numAvailableHeaders;
 };
 
 #endif  // DETAILSMODEL_H

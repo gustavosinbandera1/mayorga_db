@@ -12,7 +12,8 @@ DetailsModel::DetailsModel(DbManager *dbm, QObject *parent)
 QVariant DetailsModel::headerData(int section, Qt::Orientation orientation,
                                   int role) const {
   if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
-   // return _headers[section];
+    if (_headers.count() >= numAvailableHeaders) return _headers[section];
+    else return "default";
   }
   (void)section;
   (void)orientation;
@@ -86,14 +87,13 @@ Qt::ItemFlags DetailsModel::flags(const QModelIndex &index) const {
 }
 
 void DetailsModel::setQuery(const QSqlQuery &query) {
-    QSqlQuery query_ = query;
-    query_.exec();
-    _model->setQuery(query);
-
+  QSqlQuery query_ = query;
+  query_.exec();
+  _model->setQuery(query);
+  numAvailableHeaders = _model->columnCount();
+  qDebug() << "COL COUNT " << _model->columnCount();
 }
 
-QSqlQueryModel *DetailsModel::updateModel() {
-    lastQuery.exec();
-}
+QSqlQueryModel *DetailsModel::updateModel() { lastQuery.exec(); }
 
 void DetailsModel::setHeaders(const QStringList headers) { _headers = headers; }
