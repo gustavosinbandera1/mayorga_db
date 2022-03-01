@@ -1,6 +1,6 @@
-#include "templateModel.h"
+#include "readWriteModel.h"
 
-CustomModel::CustomModel(DbManager *dbm, QString table, bool relational,
+ReadWriteModel::ReadWriteModel(DbManager *dbm, QString table, bool relational,
                          QObject *parent)
     : QAbstractTableModel(parent) {
   _dbM = dbm;
@@ -10,13 +10,13 @@ CustomModel::CustomModel(DbManager *dbm, QString table, bool relational,
   model->select();
 }
 
-QSqlTableModel *CustomModel::updateModel() {
+QSqlTableModel *ReadWriteModel::updateModel() {
   model->setTable(_table);
   model->select();
   return model;
 }
 //-------------------
-QVariant CustomModel::headerData(int section, Qt::Orientation orientation,
+QVariant ReadWriteModel::headerData(int section, Qt::Orientation orientation,
                                  int role) const {
   (void)section;
   (void)orientation;
@@ -24,22 +24,22 @@ QVariant CustomModel::headerData(int section, Qt::Orientation orientation,
   return QVariant();
 }
 //-------------------
-int CustomModel::rowCount(const QModelIndex &parent) const {
+int ReadWriteModel::rowCount(const QModelIndex &parent) const {
   if (parent.isValid()) return 0;
   return model->rowCount();
 }
 //-------------------
-int CustomModel::columnCount(const QModelIndex &parent) const {
+int ReadWriteModel::columnCount(const QModelIndex &parent) const {
   if (parent.isValid()) return 0;
   return model->columnCount();
 }
 //-------------------
-QVariant CustomModel::data(const QModelIndex &index, int role) const {
+QVariant ReadWriteModel::data(const QModelIndex &index, int role) const {
   if (!index.isValid()) return QVariant();
   return model->index(index.row(), index.column()).data();
 }
 //-------------------
-void CustomModel::setHeaders(QStringList &&headers) {
+void ReadWriteModel::setHeaders(QStringList &&headers) {
   qDebug() << "THIS WILL NEED TO BE IMPLEMENTED .....";
   int i = 0;
   for (const auto &header : headers) {
@@ -48,4 +48,4 @@ void CustomModel::setHeaders(QStringList &&headers) {
   }
 }
 //-------------------
-void CustomModel::setForeignHeaders(QStringList &&headers) {}
+void ReadWriteModel::setForeignHeaders(QStringList &&headers) {}
