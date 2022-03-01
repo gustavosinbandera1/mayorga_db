@@ -5,7 +5,10 @@
 #include "dbmanager.h"
 #include "templateModel.h"
 
-class AddressModel;
+
+//class AddressModel;
+class QueryModel;
+
 namespace Ui {
 class AddressView;
 }
@@ -30,6 +33,7 @@ class AddressView : public QWidget {
  private:
   Ui::AddressView *ui;
   CustomModel *model;
+  QueryModel *addressModel;
 };
 
 #endif  // ADDRESSVIEW_H

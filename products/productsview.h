@@ -7,6 +7,7 @@
 #include "comboBoxDelegate.h"
 #include "templateModel.h"
 
+class QueryModel;
 class ProductsModel;
 class LineEditorDelegate;
 namespace Ui {
@@ -29,10 +30,11 @@ private slots:
 
 private:
     Ui::ProductsView *ui;
-    CustomModel *pModel;
     SpinboxDelegate *SpinBoxDelegate;
     LineEditorDelegate *lineDelegate;
     ComboBoxDelegate *comboBoxDelegate;
+
+    QueryModel *productModel;
 };
 
 #endif // PRODUCTSVIEW_H

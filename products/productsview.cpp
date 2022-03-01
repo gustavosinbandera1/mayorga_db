@@ -1,5 +1,6 @@
 #include "productsview.h"
 #include "login.h"
+#include <queryModel.h>
 #include <typeinfo>
 #include "ui_productsview.h"
 #include "lineeditordelegate.h"
@@ -7,16 +8,17 @@
 ProductsView::ProductsView(DbManager *dbm, QWidget *parent)
     : QWidget(parent), ui(new Ui::ProductsView) {
   ui->setupUi(this);
-  bool isRelational = false;
-  pModel = new CustomModel(dbm, "products",isRelational ,this);
+  productModel = new QueryModel(dbm, this);
 
+  QSqlQuery query;
+  query.prepare(
+      "SELECT sku,name,description,price,weight from products ");
+  productModel->setQuery(query);
+  productModel->setHeaders({"sku", "name","description","price","weight"});
+  ui->productsView->setModel(productModel);
   // Delegators
   SpinBoxDelegate = new SpinboxDelegate(this);
   lineDelegate = new LineEditorDelegate(this);
-  //comboBoxDelegate = new ComboBoxDelegate(dbm, "products", "name", this);
-
-  ui->productsView->setModel(pModel->getModel());
-  pModel->setHeaders({"Sku", "Name", "Description","Price", "Weight" });
 
   ui->productsView->setSortingEnabled(true);
   ui->productsView->sortByColumn(0, Qt::AscendingOrder);
@@ -37,7 +39,7 @@ ProductsView::~ProductsView() {
 }
 //---------------------
 void ProductsView::updateProductsModel() {
-  ui->productsView->setModel(pModel->updateModel());
+ // ui->productsView->setModel(pModel->updateModel());
 }
 //---------------------
 void ProductsView::on_productsView_doubleClicked(const QModelIndex &index) {

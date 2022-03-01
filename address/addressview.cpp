@@ -1,20 +1,18 @@
 #include "addressview.h"
 
+#include <queryModel.h>
+
 #include "ui_addressview.h"
 
-/*
-select * from customer_address  join address ON
-customer_address.fk_address_id=address.address_id WHERE fk_customer_id = 1;
-*/
 AddressView::AddressView(DbManager* mdb, QWidget* parent)
     : QWidget(parent), ui(new Ui::AddressView) {
   ui->setupUi(this);
-  bool isRelational = true;
-  model = new CustomModel(mdb, "address", isRelational, this);
-  ui->addressTableView->setModel(model->getRelationalModel());
-  model->setHeaders(
-      {"Id", "City", "State", "Street Number", "Country", "Address Type"});
-  model->setRelation(4, "country", "country_id", "country_name");
+  addressModel = new QueryModel(mdb, this);
+  QSqlQuery query;
+  query.prepare("SELECT * from address ");
+  addressModel->setQuery(query);
+  addressModel->setHeaders({"1", "2", "3", "4", "5"});
+  ui->addressTableView->setModel(addressModel);
 
   ui->addressTableView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::Stretch);
@@ -35,20 +33,11 @@ AddressView::~AddressView() {
   delete ui;
 }
 
-void AddressView::updateAddressModel() {
-  model->setHeaders(
-      {"Id", "City", "State", "Street Number", "Country", "Address Type"});
-  ui->addressTableView->setModel(model->updateRModel());
-  model->setRelation(4, "country", "country_id", "country_name");
-  ui->addressTableView->setColumnHidden(3, true);
-}
+void AddressView::updateAddressModel() { addressModel->updateModel(); }
 
 void AddressView::on_addressTableView_clicked(const QModelIndex& index) {
   // QSqlTableModel* tmpRModel = model->getModel();
   QSqlRelationalTableModel* tmpRModel = model->getRelationalModel();
-  // ui->addressIDLineEdit->setText(tmpRModel->index(index.row(),0).data().toString());
-  //    ui->cityLineEdit->setText(tmpModel->index(index.row(),1).data().toString());
-  //    ui->stateLineEdit->setText(tmpModel->index(index.row(),2).data().toString());
 
   ui->addressIDLineEdit->setText(
       tmpRModel->record(index.row()).value("address_id").toString());

@@ -55,7 +55,6 @@ class DetailsDialog : public QDialog {
   QLabel *nameLabel;
   QLabel *addressLabel;
   QLineEdit *nameEdit;
-  //QList<QPair<QString, int>> _items;
   QList<DTODetails> _items;
   QTableWidget *itemsTable;
   QTextEdit *addressEdit;
