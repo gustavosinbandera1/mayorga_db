@@ -3,7 +3,7 @@
 #include <QWidget>
 
 #include "dbmanager.h"
-#include "templateModel.h"
+#include "readWriteModel.h"
 
 class QueryModel;
 class LineEditorDelegate;

@@ -8,11 +8,11 @@
 
 #include "dbmanager.h"
 
-class CustomModel : public QAbstractTableModel {
+class ReadWriteModel : public QAbstractTableModel {
   Q_OBJECT
 
  public:
-  explicit CustomModel(DbManager *dbm, QString table, bool relational,
+  explicit ReadWriteModel(DbManager *dbm, QString table, bool relational,
                        QObject *parent = nullptr);
 
   QSqlTableModel *updateModel();
@@ -28,9 +28,6 @@ class CustomModel : public QAbstractTableModel {
                 int role = Qt::DisplayRole) const override;
 
   QSqlTableModel *getModel() { return this->model; }
-//  QSqlRelationalTableModel *getRelationalModel() {
-//    return this->relationalModel;
-//  }
   void setHeaders(QStringList &&headers);
   void setForeignHeaders(QStringList &&headers);
   void setRelation(int foreignColumn, QString foreignTable, QString foreignKey,
@@ -40,8 +37,6 @@ class CustomModel : public QAbstractTableModel {
   DbManager *_dbM;
   QSqlTableModel *model;
   QString _table;
-  //QSqlRelationalTableModel *relationalModel;
-  //bool isRelational;
 };
 
 #endif  // CUSTOMTABLEMODEL_H

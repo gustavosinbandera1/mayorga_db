@@ -2,7 +2,7 @@
 #define USERSVIEW_H
 
 #include <QWidget>
-#include "templateModel.h"
+#include "readWriteModel.h"
 #include "dbmanager.h"
 
 class LineEditorDelegate;
@@ -20,9 +20,11 @@ class UsersView : public QWidget {
  private slots:
   void on_userTableView_clicked(const QModelIndex &index);
 
- private:
+  void on_userTableView_doubleClicked(const QModelIndex &index);
+
+private:
   Ui::UsersView *ui;
-  CustomModel *userModel;
+  ReadWriteModel *userModel;
   LineEditorDelegate *lineDelegate;
 };
 

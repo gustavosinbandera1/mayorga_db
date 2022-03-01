@@ -1,7 +1,8 @@
 #include "usersview.h"
-#include "ui_usersview.h"
 
 #include <lineeditordelegate.h>
+
+#include "ui_usersview.h"
 
 UsersView::UsersView(DbManager* dbm, QWidget* parent)
     : QWidget(parent), ui(new Ui::UsersView) {
@@ -9,13 +10,11 @@ UsersView::UsersView(DbManager* dbm, QWidget* parent)
 
   bool isRelational = false;
 
-  userModel = new CustomModel(dbm, "customer",isRelational, this);
+  userModel = new ReadWriteModel(dbm, "customer", isRelational, this);
   lineDelegate = new LineEditorDelegate(this);
 
-
   ui->userTableView->setModel(userModel->getModel());
-  userModel->setHeaders({"Customer id", "Name","Email", "Phone","Password"});
-  //cModel->setRelation(4,"address","address_id","city");
+  userModel->setHeaders({"Customer id", "Name", "Email", "Phone", "Password"});
 
   ui->userTableView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::Stretch);
@@ -32,24 +31,27 @@ UsersView::~UsersView() {
 }
 //---------------------
 void UsersView::updateUserModel() {
- ui->userTableView->setModel(userModel->updateModel());
-userModel->setHeaders({"Customer id", "Name","Email", "Phone","Password"});
+  ui->userTableView->setModel(userModel->updateModel());
+  userModel->setHeaders({"Customer id", "Name", "Email", "Phone", "Password"});
 }
 //---------------------
 void UsersView::on_userTableView_clicked(const QModelIndex& index) {
-    qDebug()<<"---------- "<< index.data();
-    //ui->userTableView->setItemDelegate(lineDelegate);
-    int col = index.column();
-    int row = index.row();
-    int columnCount = userModel->columnCount();
-    int rowCount = userModel->rowCount();
+  qDebug() << "---------- " << index.data();
+  int col = index.column();
+  int row = index.row();
+  int columnCount = userModel->columnCount();
+  int rowCount = userModel->rowCount();
 
-    qDebug()<< "Model "<< "x: "<< rowCount<<" y: " << columnCount << " Has changed at " << row << "," << col;
+  qDebug() << "Model "
+           << "x: " << rowCount << " y: " << columnCount << " Has changed at "
+           << row << "," << col;
 
-
-      for (int i = 0; i < userModel->columnCount(); i++) {
-    qDebug() << "data[ "<<index.row()<<"] ["<<i<<"] " << userModel->index(index.row(),i).data();
+  for (int i = 0; i < userModel->columnCount(); i++) {
+    qDebug() << "data[ " << index.row() << "] [" << i << "] "
+             << userModel->index(index.row(), i).data();
   }
-    //qInfo()<< userModel->data(userModel->index(0,0),Qt::DisplayRole);
+}
 
+void UsersView::on_userTableView_doubleClicked(const QModelIndex& index) {
+  ui->userTableView->setItemDelegate(lineDelegate);
 }

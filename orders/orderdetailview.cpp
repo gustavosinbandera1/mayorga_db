@@ -1,6 +1,6 @@
 #include "orderdetailview.h"
 #include "queryModel.h"
-#include "templateModel.h"
+#include "readWriteModel.h"
 #include "ui_orderdetailview.h"
 
 OrderDetailView::OrderDetailView(DbManager *dbm, QWidget *parent)

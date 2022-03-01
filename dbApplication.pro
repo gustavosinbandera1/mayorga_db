@@ -51,7 +51,7 @@ SOURCES += \
     products/productsview.cpp \
     shared/delegates/spinboxDelegate.cpp \
     shared/models/queryModel.cpp \
-    shared/models/templateModel.cpp
+    shared/models/readWriteModel.cpp
 
 
 HEADERS += \
@@ -76,7 +76,7 @@ HEADERS += \
     products/productsview.h \
     shared/delegates/spinboxDelegate.h \
     shared/models/queryModel.h \
-    shared/models/templateModel.h
+    shared/models/readWriteModel.h
 
 FORMS += \
     address/addressdto.ui \

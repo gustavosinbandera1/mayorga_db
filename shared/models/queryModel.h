@@ -5,6 +5,15 @@
 #include <QSqlQueryModel>
 
 #include "dbmanager.h"
+/**
+ * @brief The QueryModel class
+ * aims to be just for reads
+ * models from this class cannot be edited
+ * the reason behinde this behavior is due to
+ * "QSqlQueryModel" cannot be alter , but this type of obkects let us
+ * do complex queries and inject it into desired tables
+ */
+
 
 class QueryModel : public QAbstractTableModel {
   Q_OBJECT
