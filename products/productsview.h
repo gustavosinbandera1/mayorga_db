@@ -21,7 +21,7 @@ class ProductsView : public QWidget
 public:
     explicit ProductsView(DbManager* dbm, QWidget *parent = nullptr);
     ~ProductsView();
-    void updateProductsModel();
+    void updateModel();
     bool isInteger(const QVariant &variant);
     bool isString(const QVariant &variant);
 

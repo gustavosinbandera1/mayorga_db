@@ -8,6 +8,7 @@
 ProductsView::ProductsView(DbManager *dbm, QWidget *parent)
     : QWidget(parent), ui(new Ui::ProductsView) {
   ui->setupUi(this);
+
   productModel = new QueryModel(dbm, this);
 
   QSqlQuery query;
@@ -39,8 +40,8 @@ ProductsView::~ProductsView() {
   delete ui;
 }
 //---------------------
-void ProductsView::updateProductsModel() {
- // ui->productsView->setModel(pModel->updateModel());
+void ProductsView::updateModel() {
+    productModel->updateModel();
 }
 //---------------------
 void ProductsView::on_productsView_doubleClicked(const QModelIndex &index) {
@@ -48,13 +49,13 @@ void ProductsView::on_productsView_doubleClicked(const QModelIndex &index) {
            << " = " << index.data();
 
   if(isInteger(index.data())){
-       ui->productsView->setItemDelegate(SpinBoxDelegate);
+      ui->productsView->setItemDelegate(SpinBoxDelegate);
   }else if(isString(index.data())){
        ui->productsView->setItemDelegate(lineDelegate);
        //ui->productsView->setItemDelegate(comboBoxDelegate);
   }
 }
-
+//----------------------------
 bool ProductsView::isInteger(const QVariant &variant) {
   switch (variant.userType()) {
     case QMetaType::Int:
@@ -66,7 +67,7 @@ bool ProductsView::isInteger(const QVariant &variant) {
   }
   return false;
 }
-
+//----------------------------
 bool ProductsView::isString(const QVariant &variant) {
   return variant.userType() == QMetaType::QString;
 }

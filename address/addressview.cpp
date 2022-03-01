@@ -18,22 +18,19 @@ AddressView::AddressView(DbManager* mdb, QWidget* parent)
       "JOIN country ON address.fk_country_id=country.country_id");
 
   addressModel->setQuery(query);
-  ui->addressTableView->setModel(addressModel);
   addressModel->setHeaders({"address_id", "city", "State", "Street Number",
                             "address Type", "country Id"});
-
+  ui->addressTableView->setModel(addressModel);
   lineDelegate = new LineEditorDelegate(this);
-
-  ui->addressTableView->horizontalHeader()->setSectionResizeMode(
-      QHeaderView::Stretch);
-  ui->addressTableView->setVisible(true);
-  // ui->addressTableView->setColumnHidden(3, true);
-
-  ui->addressTableView->setAlternatingRowColors(true);
 
   ui->addressTableView->setSortingEnabled(true);
   ui->addressTableView->sortByColumn(0, Qt::AscendingOrder);
-  // ui->addressTableView->reset();
+
+  ui->addressTableView->horizontalHeader()->setSectionResizeMode(
+      QHeaderView::Stretch);
+  ui->addressTableView->horizontalHeader()->setVisible(true);
+  ui->addressTableView->setAlternatingRowColors(true);
+
   ui->addressIDLineEdit->setDisabled(true);
 
   ui->addressTableView->setEditTriggers(
@@ -44,9 +41,10 @@ AddressView::~AddressView() {
   qDebug() << "Destroying AddressView";
   delete ui;
 }
+//----------------------------
+void AddressView::updateModel() { addressModel->updateModel(); }
 
-void AddressView::updateAddressModel() { addressModel->updateModel(); }
-
+//----------------------------
 void AddressView::on_addressTableView_clicked(const QModelIndex& index) {
   qDebug() << "Item CLicked!!!!..";
   ui->addressIDLineEdit->setText(addressModel->getModel()
@@ -72,19 +70,19 @@ void AddressView::on_addressTableView_clicked(const QModelIndex& index) {
                                        .value("address_type")
                                        .toString());
 }
-
+//----------------------------
 void AddressView::on_addressTableView_doubleClicked(const QModelIndex& index) {
   ui->addressTableView->setItemDelegate(lineDelegate);
 }
-
+//----------------------------
 void AddressView::on_streetNumberTextEdit_textChanged() {
   qDebug() << "on_streetNumberTextEdit_textChanged ";
 }
-
+//----------------------------
 void AddressView::on_streetNumberTextEdit_copyAvailable(bool b) {
   qDebug() << "on_streetNumberTextEdit_copyAvailable " << b;
 }
-
+//----------------------------
 void AddressView::on_streetNumberTextEdit_undoAvailable(bool b) {
   qDebug() << "on_streetNumberTextEdit_undoAvailable --> " << b;
 }

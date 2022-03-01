@@ -38,7 +38,7 @@ MainWindow::MainWindow(DbManager *dbM, QWidget *parent)
     ui->menuDatabase->setEnabled(true);
   }
   initTabWidget();
-  productsView->updateProductsModel();
+  productsView->updateModel();
   qDebug() << "el user name " << UserData::userName;
   ui->userEmaillabel->setText(UserData::userName);
 
@@ -148,7 +148,7 @@ void MainWindow::on_tabWidget_tabBarClicked(int index) {
   switch (type) {
     case TAB_NAME::PRODUCTS:
       qDebug() << "The user is called : " << UserData::userName;
-      productsView->updateProductsModel();
+      productsView->updateModel();
       break;
     case TAB_NAME::USERS:
       usersView->updateUserModel();
@@ -158,7 +158,7 @@ void MainWindow::on_tabWidget_tabBarClicked(int index) {
       orderDetailView->updateOrderDetailModel();
       break;
     case TAB_NAME::ADDRESSES:
-      addressView->updateAddressModel();
+      addressView->updateModel();
       break;
     case TAB_NAME::CREATE_ORDERS:
 

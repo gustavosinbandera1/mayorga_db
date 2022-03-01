@@ -28,9 +28,9 @@ class CustomModel : public QAbstractTableModel {
                 int role = Qt::DisplayRole) const override;
 
   QSqlTableModel *getModel() { return this->model; }
-  QSqlRelationalTableModel *getRelationalModel() {
-    return this->relationalModel;
-  }
+//  QSqlRelationalTableModel *getRelationalModel() {
+//    return this->relationalModel;
+//  }
   void setHeaders(QStringList &&headers);
   void setForeignHeaders(QStringList &&headers);
   void setRelation(int foreignColumn, QString foreignTable, QString foreignKey,
@@ -40,8 +40,8 @@ class CustomModel : public QAbstractTableModel {
   DbManager *_dbM;
   QSqlTableModel *model;
   QString _table;
-  QSqlRelationalTableModel *relationalModel;
-  bool isRelational;
+  //QSqlRelationalTableModel *relationalModel;
+  //bool isRelational;
 };
 
 #endif  // CUSTOMTABLEMODEL_H

@@ -4,6 +4,8 @@
 #include <QWidget>
 #include "templateModel.h"
 #include "dbmanager.h"
+
+class LineEditorDelegate;
 namespace Ui {
 class UsersView;
 }
@@ -20,7 +22,8 @@ class UsersView : public QWidget {
 
  private:
   Ui::UsersView *ui;
-  CustomModel *cModel;
+  CustomModel *userModel;
+  LineEditorDelegate *lineDelegate;
 };
 
 #endif  // USERSVIEW_H

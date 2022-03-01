@@ -18,7 +18,7 @@ class AddressView : public QWidget {
  public:
   explicit AddressView(DbManager *mdb, QWidget *parent = nullptr);
   ~AddressView();
-  void updateAddressModel();
+  void updateModel();
 
  private slots:
   void on_addressTableView_clicked(const QModelIndex &index);
