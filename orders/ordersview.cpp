@@ -5,6 +5,7 @@
 #include "ordersmodel.h"
 #include "ui_ordersview.h"
 
+
 OrdersView::OrdersView(DbManager *dbm, QWidget *parent)
     : QWidget(parent), ui(new Ui::OrdersView) {
   ui->setupUi(this);

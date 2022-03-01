@@ -1,4 +1,4 @@
-#include "detailsDialog.h"
+#include "loadDetailsDialog.h"
 
 #include <QtWidgets>
 
@@ -84,6 +84,8 @@ QList<DTODetails> DetailsDialog::orderItems()  {
     int total = itemsTable->item(row, 3)->data(Qt::DisplayRole).toInt();
     item.purchase = total;
 
+    qDebug()<<">???????????????>>>"<<  itemsTable->item(row,4)->data(Qt::DisplayRole).toInt();
+     item.sku = itemsTable->item(row,4)->data(Qt::DisplayRole).toInt();
     if (item.quantity > 0){
         _orderList.append(item);
     }
@@ -130,16 +132,17 @@ void DetailsDialog::setupItemsTable() {
   DTODetails tmpDTO;
   while (qry.next()) {
       tmpDTO.sku = qry.record().value("sku").toInt();
+      qDebug()<<"----------------------aqui------------ sku "<< tmpDTO.sku;
       tmpDTO.productName = qry.record().value("name").toString();
       tmpDTO.price = qry.record().value("price").toInt();
       _items.push_back(tmpDTO);
   }
 
-  itemsTable = new QTableWidget(_items.count(), 4, this);
+  itemsTable = new QTableWidget(_items.count(), 5, this);
 
   itemsTable->setItemDelegateForColumn(1, quantityDelegate);
   itemsTable->setHorizontalHeaderLabels(
-      {"Product", "Quantity", "Price", "Total"});
+      {"Product", "Quantity", "Price", "Total","sku"});
 
   for (int row = 0; row < _items.count(); ++row) {
     QTableWidgetItem *name = new QTableWidgetItem(_items[row].productName);
@@ -158,6 +161,10 @@ void DetailsDialog::setupItemsTable() {
     QTableWidgetItem *totalPrice = new QTableWidgetItem("0");
     itemsTable->setItem(row, 3, totalPrice);
     totalPrice->setFlags(totalPrice->flags() ^ Qt::ItemIsEditable);
+
+    QTableWidgetItem *sku = new QTableWidgetItem(QString::number(_items[row].sku));
+    itemsTable->setItem(row, 4, sku);
+    sku->setFlags(sku->flags() ^ Qt::ItemIsEditable);
 
     itemsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 

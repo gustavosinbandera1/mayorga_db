@@ -10,6 +10,7 @@ class UsersView;
 class DbManager;
 class ProductsView;
 class OrderForm;
+class OrderDetailView;
 
 namespace Ui {
 class MainWindow;
@@ -46,6 +47,7 @@ private:
     ProductsView *productsView = nullptr;
     UsersView *usersView = nullptr;
     OrdersView *ordersView = nullptr;
+    OrderDetailView *orderDetailView = nullptr;
     AddressView *addressView = nullptr;
     OrderForm *orderForm = nullptr;
     QString currentUser;

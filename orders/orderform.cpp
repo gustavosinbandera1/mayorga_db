@@ -217,6 +217,7 @@ void OrderForm::saveItems(const QList<DTODetails> &orderItems, int orderId) {
   qDebug() << "data ietms:";
   for (int i = 0; i < orderItems.count(); i++) {
     qDebug() << "-----------------------------------------------------";
+    qDebug() << orderItems[i].sku;
     qDebug() << orderItems[i].productName;
     qDebug() << orderItems[i].price;
     qDebug() << orderId;

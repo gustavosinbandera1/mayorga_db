@@ -34,6 +34,8 @@ SOURCES += \
     address/addressdto.cpp \
     address/addressview.cpp \
     administrators/registeruserDTO.cpp \
+    orders/loadDetailsDialog.cpp \
+    orders/orderdetailview.cpp \
     shared/delegates/quantitytotaldelegate.cpp \
     shared/delegates/comboBoxDelegate.cpp \
     customers/userDTO.cpp \
@@ -42,7 +44,6 @@ SOURCES += \
     login/login.cpp \
     main.cpp \
     mainwindow.cpp \
-    orders/detailsDialog.cpp \
     orders/orderform.cpp \
     orders/ordersview.cpp \
     customers/usersview.cpp \
@@ -58,6 +59,8 @@ HEADERS += \
     address/addressview.h \
     administrators/registeruserDTO.h \
     administrators/ui_registeradmindialog \
+    orders/loadDetailsDialog.h \
+    orders/orderdetailview.h \
     shared/delegates/quantitytotaldelegate.h \
     shared/delegates/comboBoxDelegate.h \
     customers/userDTO.h \
@@ -66,7 +69,6 @@ HEADERS += \
     shared/delegates/lineeditordelegate.h \
     login/login.h \
     mainwindow.h \
-    orders/detailsDialog.h \
     orders/orderform.h \
     orders/ordersview.h \
     customers/usersview.h \
@@ -82,7 +84,8 @@ FORMS += \
     administrators/registeruserDTO.ui \
     login/login.ui \
     mainwindow.ui \
-    orders/detailsDialog.ui \
+    orders/loadDetailsDialog.ui \
+    orders/orderdetailview.ui \
     orders/orderform.ui \
     orders/ordersview.ui \
     products/productsdto.ui \
@@ -95,6 +98,6 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES += \
-    initialData.sql \
-    tableStructure.sql
+#DISTFILES += \
+#    initialData.sql \
+#    tableStructure.sql

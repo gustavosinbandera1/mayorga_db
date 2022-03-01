@@ -6,6 +6,7 @@
 #include <QMdiSubWindow>
 #include <QMessageBox>
 #include <QUuid>
+#include <orderdetailview.h>
 #include "addressview.h"
 #include "login.h"
 #include "orderform.h"
@@ -129,6 +130,7 @@ void MainWindow::populateTab(QWidget *widget, QMdiArea *mdiArea) {
 void MainWindow::initTabWidget() {
   productsView = new ProductsView(_dbM, this);
   ordersView = new OrdersView(_dbM, this);
+  orderDetailView = new OrderDetailView(_dbM, this);
   usersView = new UsersView(_dbM, this);
   addressView = new AddressView(_dbM, this);
   orderForm = new OrderForm(_dbM, this);
@@ -137,6 +139,7 @@ void MainWindow::initTabWidget() {
   populateTab(usersView, ui->userMdiArea);
   populateTab(addressView, ui->addressMdiArea);
   populateTab(ordersView, ui->ordersMdiArea);
+  populateTab(orderDetailView, ui->orderDetailsMdiArea);
   populateTab(orderForm, ui->orderFormMdiArea);
 }
 //---------------------
@@ -152,6 +155,7 @@ void MainWindow::on_tabWidget_tabBarClicked(int index) {
       break;
     case TAB_NAME::ORDERS:
       ordersView->updateOrderModel();
+      orderDetailView->updateOrderDetailModel();
       break;
     case TAB_NAME::ADDRESSES:
       addressView->updateAddressModel();

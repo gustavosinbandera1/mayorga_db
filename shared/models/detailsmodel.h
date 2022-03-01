@@ -2,6 +2,7 @@
 #define DETAILSMODEL_H
 
 #include <QAbstractTableModel>
+#include <QSqlQueryModel>
 
 #include "dbmanager.h"
 
@@ -31,8 +32,16 @@ class DetailsModel : public QAbstractTableModel {
 
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
+
+  void setQuery(const QString& query);
+  QSqlQueryModel* getModel() {return _detailModel;}
+  QSqlQueryModel* updateModel();
+  void setHeaders(const QStringList headers);
+
  private:
-  QStringList detailModel;
+  DbManager *_dbM;
+  QStringList _headers;
+  QSqlQueryModel *_detailModel;
 };
 
 #endif  // DETAILSMODEL_H

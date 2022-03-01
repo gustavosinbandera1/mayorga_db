@@ -1,7 +1,7 @@
 #ifndef ORDERFORM_H
 #define ORDERFORM_H
 #include <QMainWindow>
-#include "detailsDialog.h"
+#include "loadDetailsDialog.h"
 
 QT_BEGIN_NAMESPACE
 class QAction;
