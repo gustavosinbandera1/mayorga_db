@@ -5,9 +5,8 @@
 #include "dbmanager.h"
 #include "templateModel.h"
 
-
-//class AddressModel;
 class QueryModel;
+class LineEditorDelegate;
 
 namespace Ui {
 class AddressView;
@@ -23,17 +22,16 @@ class AddressView : public QWidget {
 
  private slots:
   void on_addressTableView_clicked(const QModelIndex &index);
-
   void on_streetNumberTextEdit_textChanged();
-
   void on_streetNumberTextEdit_copyAvailable(bool b);
-
   void on_streetNumberTextEdit_undoAvailable(bool b);
 
- private:
+  void on_addressTableView_doubleClicked(const QModelIndex &index);
+
+private:
   Ui::AddressView *ui;
-  CustomModel *model;
   QueryModel *addressModel;
+  LineEditorDelegate *lineDelegate;
 };
 
 #endif  // ADDRESSVIEW_H

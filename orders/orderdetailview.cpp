@@ -15,7 +15,7 @@ OrderDetailView::OrderDetailView(DbManager *dbm, QWidget *parent)
                 "JOIN products ON order_detail.fk_product_sku = products.sku");
 
   _detailModel->setQuery(query);
-  _detailModel->setHeaders({"num_detail", "fk_order_id", "fk_product_sku", "name"});
+  _detailModel->setHeaders({"Id", "Order Id", "Sku", "Name"});
 
   ui->orderDetailTableView->setModel(_detailModel);
   ui->orderDetailTableView->setEnabled(true);

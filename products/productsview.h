@@ -30,6 +30,7 @@ private slots:
 
 private:
     Ui::ProductsView *ui;
+
     SpinboxDelegate *SpinBoxDelegate;
     LineEditorDelegate *lineDelegate;
     ComboBoxDelegate *comboBoxDelegate;

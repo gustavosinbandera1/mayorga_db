@@ -13,6 +13,7 @@ ProductsView::ProductsView(DbManager *dbm, QWidget *parent)
   QSqlQuery query;
   query.prepare(
       "SELECT sku,name,description,price,weight from products ");
+
   productModel->setQuery(query);
   productModel->setHeaders({"sku", "name","description","price","weight"});
   ui->productsView->setModel(productModel);

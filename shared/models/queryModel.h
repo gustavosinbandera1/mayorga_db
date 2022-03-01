@@ -33,7 +33,7 @@ class QueryModel : public QAbstractTableModel {
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
   void setQuery(const QSqlQuery& query);
-  QueryModel* getModel() {return this;}
+  QSqlQueryModel* getModel() {return _model;}
   QSqlQueryModel* updateModel();
   void setHeaders(const QStringList headers);
 
