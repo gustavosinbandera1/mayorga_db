@@ -6,11 +6,11 @@
 
 #include "dbmanager.h"
 
-class DetailsModel : public QAbstractTableModel {
+class QueryModel : public QAbstractTableModel {
   Q_OBJECT
 
  public:
-  explicit DetailsModel(DbManager *dbm, QObject *parent = nullptr);
+  explicit QueryModel(DbManager *dbm, QObject *parent = nullptr);
 
   // Header:
   QVariant headerData(int section, Qt::Orientation orientation,
@@ -33,7 +33,7 @@ class DetailsModel : public QAbstractTableModel {
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
   void setQuery(const QSqlQuery& query);
-  DetailsModel* getModel() {return this;}
+  QueryModel* getModel() {return this;}
   QSqlQueryModel* updateModel();
   void setHeaders(const QStringList headers);
 

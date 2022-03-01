@@ -5,7 +5,7 @@
 #include "dbmanager.h"
 #include "templateModel.h"
 
-class OrdersModel;
+class QueryModel;
 namespace Ui {
 class OrdersView;
 }
@@ -24,7 +24,7 @@ private slots:
 
 private:
   Ui::OrdersView *ui;
-  CustomModel *oModel;
+  QueryModel *orderModel;
 };
 
 #endif  // ORDERSVIEW_H

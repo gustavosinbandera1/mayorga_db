@@ -1,15 +1,15 @@
-#include "detailsmodel.h"
+#include "queryModel.h"
 
 #include <QBrush>
 #include <QFont>
 
-DetailsModel::DetailsModel(DbManager *dbm, QObject *parent)
+QueryModel::QueryModel(DbManager *dbm, QObject *parent)
     : QAbstractTableModel(parent) {
   _dbM = dbm;
   _model = new QSqlQueryModel;
 }
 
-QVariant DetailsModel::headerData(int section, Qt::Orientation orientation,
+QVariant QueryModel::headerData(int section, Qt::Orientation orientation,
                                   int role) const {
   if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
     if (_headers.count() >= numAvailableHeaders) return _headers[section];
@@ -21,7 +21,7 @@ QVariant DetailsModel::headerData(int section, Qt::Orientation orientation,
   return QVariant();
 }
 
-bool DetailsModel::setHeaderData(int section, Qt::Orientation orientation,
+bool QueryModel::setHeaderData(int section, Qt::Orientation orientation,
                                  const QVariant &value, int role) {
   if (value != headerData(section, orientation, role)) {
     emit headerDataChanged(orientation, section, section);
@@ -30,19 +30,19 @@ bool DetailsModel::setHeaderData(int section, Qt::Orientation orientation,
   return false;
 }
 
-int DetailsModel::rowCount(const QModelIndex &parent) const {
+int QueryModel::rowCount(const QModelIndex &parent) const {
   if (parent.isValid()) return 0;
 
   return _model->rowCount();
 }
 
-int DetailsModel::columnCount(const QModelIndex &parent) const {
+int QueryModel::columnCount(const QModelIndex &parent) const {
   if (parent.isValid()) return 0;
 
   return _model->columnCount();
 }
 
-QVariant DetailsModel::data(const QModelIndex &index, int role) const {
+QVariant QueryModel::data(const QModelIndex &index, int role) const {
   if (!index.isValid()) return QVariant();
 
   int col = index.column();
@@ -72,7 +72,7 @@ QVariant DetailsModel::data(const QModelIndex &index, int role) const {
   return QVariant();
 }
 
-bool DetailsModel::setData(const QModelIndex &index, const QVariant &value,
+bool QueryModel::setData(const QModelIndex &index, const QVariant &value,
                            int role) {
   if (data(index, role) != value) {
     emit dataChanged(index, index, QVector<int>() << role);
@@ -81,12 +81,12 @@ bool DetailsModel::setData(const QModelIndex &index, const QVariant &value,
   return false;
 }
 
-Qt::ItemFlags DetailsModel::flags(const QModelIndex &index) const {
+Qt::ItemFlags QueryModel::flags(const QModelIndex &index) const {
   if (!index.isValid()) return Qt::NoItemFlags;
   return Qt::ItemIsEditable | Qt::ItemIsEnabled;
 }
 
-void DetailsModel::setQuery(const QSqlQuery &query) {
+void QueryModel::setQuery(const QSqlQuery &query) {
   QSqlQuery query_ = query;
   query_.exec();
   _model->setQuery(query);
@@ -94,6 +94,6 @@ void DetailsModel::setQuery(const QSqlQuery &query) {
   qDebug() << "COL COUNT " << _model->columnCount();
 }
 
-QSqlQueryModel *DetailsModel::updateModel() { lastQuery.exec(); }
+QSqlQueryModel *QueryModel::updateModel() { lastQuery.exec(); }
 
-void DetailsModel::setHeaders(const QStringList headers) { _headers = headers; }
+void QueryModel::setHeaders(const QStringList headers) { _headers = headers; }

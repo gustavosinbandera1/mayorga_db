@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "dbmanager.h"
 
-class DetailsModel;
+class QueryModel;
 namespace Ui {
 class OrderDetailView;
 }
@@ -20,7 +20,7 @@ public:
 
 private:
     Ui::OrderDetailView *ui;
-    DetailsModel* _detailModel;
+    QueryModel* _detailModel;
 };
 
 #endif // ORDERDETAILVIEW_H

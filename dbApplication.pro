@@ -50,7 +50,7 @@ SOURCES += \
     products/productsdto.cpp \
     products/productsview.cpp \
     shared/delegates/spinboxDelegate.cpp \
-    shared/models/detailsmodel.cpp \
+    shared/models/queryModel.cpp \
     shared/models/templateModel.cpp
 
 
@@ -75,7 +75,7 @@ HEADERS += \
     products/productsdto.h \
     products/productsview.h \
     shared/delegates/spinboxDelegate.h \
-    shared/models/detailsmodel.h \
+    shared/models/queryModel.h \
     shared/models/templateModel.h
 
 FORMS += \

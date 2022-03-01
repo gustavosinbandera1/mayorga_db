@@ -1,6 +1,5 @@
 #include "orderdetailview.h"
-
-#include "detailsmodel.h"
+#include "queryModel.h"
 #include "templateModel.h"
 #include "ui_orderdetailview.h"
 
@@ -8,15 +7,15 @@ OrderDetailView::OrderDetailView(DbManager *dbm, QWidget *parent)
     : QWidget(parent), ui(new Ui::OrderDetailView) {
   ui->setupUi(this);
 
-  _detailModel = new DetailsModel(dbm, this);
+  _detailModel = new QueryModel(dbm, this);
 
   QSqlQuery query;
-  query.prepare("SELECT city,state, street_number, address_type,name from customer_address "
-                "JOIN address ON customer_address.fk_address_id = address.address_id "
-                "JOIN customer ON customer_address.fk_customer_id = customer.customer_id");
+
+  query.prepare("SELECT num_detail, fk_order_id,fk_product_sku, name from order_detail "
+                "JOIN products ON order_detail.fk_product_sku = products.sku");
 
   _detailModel->setQuery(query);
-  _detailModel->setHeaders({"city", "state", "Street", "address_type","name"});
+  _detailModel->setHeaders({"num_detail", "fk_order_id", "fk_product_sku", "name"});
 
   ui->orderDetailTableView->setModel(_detailModel);
   ui->orderDetailTableView->setEnabled(true);
