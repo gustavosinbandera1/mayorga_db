@@ -6,13 +6,13 @@
 DetailsModel::DetailsModel(DbManager *dbm, QObject *parent)
     : QAbstractTableModel(parent) {
   _dbM = dbm;
-  _detailModel = new QSqlQueryModel;
+  _model = new QSqlQueryModel;
 }
 
 QVariant DetailsModel::headerData(int section, Qt::Orientation orientation,
                                   int role) const {
   if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
-        return _headers[section];
+   // return _headers[section];
   }
   (void)section;
   (void)orientation;
@@ -32,13 +32,13 @@ bool DetailsModel::setHeaderData(int section, Qt::Orientation orientation,
 int DetailsModel::rowCount(const QModelIndex &parent) const {
   if (parent.isValid()) return 0;
 
-  return _detailModel->rowCount();
+  return _model->rowCount();
 }
 
 int DetailsModel::columnCount(const QModelIndex &parent) const {
   if (parent.isValid()) return 0;
 
-  return _detailModel->columnCount();
+  return _model->columnCount();
 }
 
 QVariant DetailsModel::data(const QModelIndex &index, int role) const {
@@ -48,26 +48,24 @@ QVariant DetailsModel::data(const QModelIndex &index, int role) const {
   int row = index.row();
   switch (role) {
     case Qt::DisplayRole:
-      return _detailModel->record(row).value(col);
+      return _model->record(row).value(col);
 
-    case Qt::FontRole:
-      {
-        QFont boldFont;
-        //boldFont.setBold(true);
-        //boldFont.setWeight(QFont::Bold);
-        //boldFont.setPixelSize(18);
-        return boldFont;
-      }
-      break;
+    case Qt::FontRole: {
+      QFont boldFont;
+      // boldFont.setBold(true);
+      // boldFont.setWeight(QFont::Bold);
+      // boldFont.setPixelSize(18);
+      return boldFont;
+    } break;
     case Qt::BackgroundRole:
-     // return QColor(0,0,0);
-        //return QBrush(Qt::blue);
+      // return QColor(0,0,0);
+      // return QBrush(Qt::blue);
       break;
     case Qt::TextAlignmentRole:
-        return int(Qt::AlignCenter | Qt::AlignVCenter);
+      return int(Qt::AlignCenter | Qt::AlignVCenter);
       break;
     case Qt::CheckStateRole:
-        //return Qt::Checked;
+      // return Qt::Checked;
       break;
   }
   return QVariant();
@@ -76,7 +74,6 @@ QVariant DetailsModel::data(const QModelIndex &index, int role) const {
 bool DetailsModel::setData(const QModelIndex &index, const QVariant &value,
                            int role) {
   if (data(index, role) != value) {
-    // FIXME: Implement me!
     emit dataChanged(index, index, QVector<int>() << role);
     return true;
   }
@@ -88,16 +85,15 @@ Qt::ItemFlags DetailsModel::flags(const QModelIndex &index) const {
   return Qt::ItemIsEditable | Qt::ItemIsEnabled;
 }
 
-void DetailsModel::setQuery(const QString &query) {
-  _detailModel->setQuery(query);
+void DetailsModel::setQuery(const QSqlQuery &query) {
+    QSqlQuery query_ = query;
+    query_.exec();
+    _model->setQuery(query);
+
 }
 
 QSqlQueryModel *DetailsModel::updateModel() {
-
-
+    lastQuery.exec();
 }
 
-void DetailsModel::setHeaders(const QStringList headers)
-{
-    _headers = headers;
-}
+void DetailsModel::setHeaders(const QStringList headers) { _headers = headers; }

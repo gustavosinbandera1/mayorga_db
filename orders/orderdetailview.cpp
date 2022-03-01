@@ -13,11 +13,18 @@ OrderDetailView::OrderDetailView(DbManager *dbm, QWidget *parent) :
     detailModel = new CustomModel(dbm, "order_detail", isRelational, this);
     _detailModel = new DetailsModel(dbm,this);
     _detailModel->setHeaders({"uno","dos","tres","cuatro","cinco"});
-    _detailModel->setQuery(QString("SELECT * FROM orders"));
-    detailModel->setHeaders({"Id", "Customer_id", "Date", "Payment type"});
+    QSqlQuery query;
 
-    detailModel->setRelation(1, "orders", "order_id", "payment_type");
-    detailModel->setRelation(2, "products", "sku", "name");
+
+    query.prepare("SELECT * FROM customer_address "
+                  "JOIN address ON "
+                  "customer_address.fk_address_id=address.address_id");
+    //const QString tmp = "SELECT * FROM customer_address JOIN address ON customer_address.fk_address_id=address.address_id";
+    _detailModel->setQuery(query);
+    //detailModel->setHeaders({"Id", "Customer_id", "Date", "Payment type"});
+
+    //detailModel->setRelation(1, "orders", "order_id", "payment_type");
+   // detailModel->setRelation(2, "products", "sku", "name");
 
     //ui->orderDetailTableView->setModel(detailModel->getRelationalModel());
     ui->orderDetailTableView->setModel(_detailModel);
@@ -39,9 +46,8 @@ OrderDetailView::~OrderDetailView()
 
 void OrderDetailView::updateOrderDetailModel()
 {
-   ui->orderDetailTableView->setModel(detailModel->updateRModel());
-   detailModel->setRelation(1, "orders", "order_id", "payment_type");
-   detailModel->setRelation(2, "products", "sku", "name");
+    _detailModel->updateModel();
+    //ui->orderDetailTableView->setModel(_detailModel);
 }
 
 

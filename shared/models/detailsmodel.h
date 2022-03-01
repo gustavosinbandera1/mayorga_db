@@ -32,16 +32,16 @@ class DetailsModel : public QAbstractTableModel {
 
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-
-  void setQuery(const QString& query);
-  QSqlQueryModel* getModel() {return _detailModel;}
+  void setQuery(const QSqlQuery& query);
+  DetailsModel* getModel() {return this;}
   QSqlQueryModel* updateModel();
   void setHeaders(const QStringList headers);
 
  private:
   DbManager *_dbM;
   QStringList _headers;
-  QSqlQueryModel *_detailModel;
+  QSqlQueryModel *_model;
+  QSqlQuery lastQuery;
 };
 
 #endif  // DETAILSMODEL_H
