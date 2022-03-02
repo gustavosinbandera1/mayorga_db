@@ -40,7 +40,7 @@ int ReadWriteModel::columnCount(const QModelIndex &parent) const {
 //}
 //-------------------
 QVariant ReadWriteModel::data(const QModelIndex &index, int role) const {
-  qDebug() << "THIS WILL NEED TO BE IMPLEMENTED .....";
+  qDebug()<< __LINE__<< ".... Custom data implementation  .....";
     if (!index.isValid()) return QVariant();
      return model->index(index.row(), index.column()).data();
 }

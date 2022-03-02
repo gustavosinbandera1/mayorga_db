@@ -16,7 +16,8 @@ class ReadWriteModel : public QAbstractTableModel {
                        QObject *parent = nullptr);
 
   QSqlTableModel *updateModel();
-  QSqlRelationalTableModel *updateRModel();
+  QSqlTableModel *getModel() {return model;}
+  //QSqlRelationalTableModel *updateRModel();
   QVariant headerData(int section, Qt::Orientation orientation,
                       int role = Qt::DisplayRole) const override;
 

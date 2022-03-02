@@ -11,6 +11,7 @@ LineEditorDelegate::LineEditorDelegate(QObject *parent)
 QWidget *LineEditorDelegate::createEditor(QWidget *parent,
                                           const QStyleOptionViewItem &option,
                                           const QModelIndex &index) const {
+    qDebug()<<"Delegator init**********************";
   QLineEdit *editor = new QLineEdit(parent);
   return editor;
 }

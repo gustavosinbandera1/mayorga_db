@@ -9,14 +9,14 @@
  *
 */
 
-class Product {
+class ProductDataObject {
 public:
-    Product(QString sku,
+    ProductDataObject(QString sku,
             QString description,
             QString price,
             QString weight);
 
-    Product(){};
+    ProductDataObject(){};
 
     QString getSku() const {return sku;}
     void setSku(const QString &value) {sku = value;}
@@ -34,9 +34,9 @@ public:
     void setWeight(const QString &value) {weight = value;}
 
 private:
-    QString sku;
-    QString name;
-    QString description;
+    QString sku = "";
+    QString name= "";
+    QString description ="";
     QString price;
     QString weight;
 
@@ -53,7 +53,9 @@ class ProductsDTO : public QDialog
 public:
     explicit ProductsDTO(QWidget *parent = nullptr);
     ~ProductsDTO();
-    Product getDTO(){return _product;}
+    ProductDataObject getDTO(){return product;} //to remove just test
+    ProductDataObject product;
+    void updateForm();
 
 private slots:
     void on_buttonBox_accepted();
@@ -61,7 +63,7 @@ private slots:
 
 private:
     Ui::ProductsDTO *ui;
-    Product _product;
+
 };
 
 #endif // PRODUCTSDTO_H

@@ -12,13 +12,22 @@ ProductsDTO::~ProductsDTO() {
     delete ui;
 
 }
+
+void ProductsDTO::updateForm()
+{
+    ui->nameLineEdit->setText(product.getName());
+    ui->priceLineEdit->setText(product.getPrice());
+    ui->weightLineEdit->setText(product.getWeight());
+    ui->descLineEdit->setText(product.getDescription());
+
+}
 //---------------------
 void ProductsDTO::on_buttonBox_accepted() {
   // send data to database
-  _product.setName(ui->nameLineEdit->text());
-  _product.setDescription(ui->descLineEdit->text());
-  _product.setPrice(ui->priceLineEdit->text());
-  _product.setWeight(ui->weightLineEdit->text());
+  product.setName(ui->nameLineEdit->text());
+  product.setDescription(ui->descLineEdit->text());
+  product.setPrice(ui->priceLineEdit->text());
+  product.setWeight(ui->weightLineEdit->text());
   accept();
 
 }

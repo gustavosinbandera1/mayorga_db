@@ -36,7 +36,11 @@ void OrdersView::updateOrderModel() {
     sendQuery();
 }
 //---------------------
-void OrdersView::on_ordersTableView_clicked(const QModelIndex &index) {}
+void OrdersView::on_ordersTableView_clicked(const QModelIndex &index) {
+    int col = index.column();
+    int row = index.row();
+
+}
 //----------------------
 void OrdersView::sendQuery()
 {

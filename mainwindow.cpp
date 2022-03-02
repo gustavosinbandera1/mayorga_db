@@ -63,7 +63,7 @@ void MainWindow::on_actionAdd_Products_triggered() {
 
   if (pDTO.exec() == QDialog::Rejected) return;
 
-  Product product = pDTO.getDTO();
+  ProductDataObject product = pDTO.getDTO();
   QSqlQuery q(_dbM->db());
   bool status = q.exec(
       QString("INSERT INTO products"

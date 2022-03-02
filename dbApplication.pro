@@ -102,3 +102,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 #    initialData.sql \
 #    tableStructure.sql
 
+DISTFILES += \
+    initialData.sql \
+    tableStructure.sql
+

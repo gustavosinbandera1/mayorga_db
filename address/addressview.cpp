@@ -8,10 +8,8 @@
 
 #include "addressdto.h"
 #include "lineeditordelegate.h"
-#include "ui_addressview.h"
 #include "login.h"
-
-
+#include "ui_addressview.h"
 
 AddressView::AddressView(DbManager* mdb, QWidget* parent)
     : QWidget(parent), ui(new Ui::AddressView) {
@@ -58,44 +56,32 @@ void AddressView::updateModel() {
 //----------------------------
 void AddressView::on_addressTableView_clicked(const QModelIndex& index) {
   auto reg = addressModel->getModel();
+  int row = index.row();
 
   ui->addressIDLineEdit->setText(
-      reg->record(index.row()).value("address_id").toString());
-  ui->cityLineEdit->setText(reg->record(index.row()).value("city").toString());
+      reg->record(row).value("address_id").toString());
+  ui->cityLineEdit->setText(reg->record(row).value("city").toString());
   ui->stateLineEdit->setText(
-      addressModel->getModel()->record(index.row()).value("state").toString());
+      addressModel->getModel()->record(row).value("state").toString());
 
-  ui->streetNumberTextEdit->setPlainText(addressModel->getModel()
-                                             ->record(index.row())
-                                             .value("street_number")
-                                             .toString());
+  ui->streetNumberTextEdit->setPlainText(
+      addressModel->getModel()->record(row).value("street_number").toString());
 
   ui->countryLineEdit->setText(
-      reg->record(index.row()).value("country_name").toString());
-  ui->addressTypeLineEdit->setText(addressModel->getModel()
-                                       ->record(index.row())
-                                       .value("address_type")
-                                       .toString());
+      reg->record(row).value("country_name").toString());
+  ui->addressTypeLineEdit->setText(
+      addressModel->getModel()->record(row).value("address_type").toString());
   ui->countryIdLineEdit->setText(
-      reg->record(index.row()).value("country_id").toString());
+      reg->record(row).value("country_id").toString());
 
   //------///-----
-  address.setCity(
-      addressModel->getModel()->record(index.row()).value("city").toString());
-
-  address.setState(
-      addressModel->getModel()->record(index.row()).value("state").toString());
-
-  address.setStreetNumber(
-      reg->record(index.row()).value("street_number").toString());
-
-  address.setCountry(reg->record(index.row()).value("country_name").toString());
-  address.setType(addressModel->getModel()
-                      ->record(index.row())
-                      .value("address_type")
-                      .toString());
-  address.setCountryId(reg->record(index.row()).value("country_id").toInt());
-  address.setZipCode(reg->record(index.row()).value("zipcode").toString());
+  address.setCity(reg->record(row).value("city").toString());
+  address.setState(reg->record(row).value("state").toString());
+  address.setStreetNumber(reg->record(row).value("street_number").toString());
+  address.setCountry(reg->record(row).value("country_name").toString());
+  address.setType(reg->record(row).value("address_type").toString());
+  address.setCountryId(reg->record(row).value("country_id").toInt());
+  address.setZipCode(reg->record(row).value("zipcode").toString());
 }
 //----------------------------
 void AddressView::on_addressTableView_doubleClicked(const QModelIndex& index) {
@@ -105,30 +91,31 @@ void AddressView::on_addressTableView_doubleClicked(const QModelIndex& index) {
 void AddressView::sendQuery() {
   QSqlQuery query;
 
-  if(UserData::isAdmin ){
-      query.prepare(
-          "SELECT address_id, city, state, street_number, "
-          "address_type, country_name, country_id , zipcode from address "
-          "JOIN country ON address.fk_country_id=country.country_id");
-  }else{
-      query.prepare(
-         "SELECT address_id, city, state, street_number, "
-         "address_type "
-         "from customer_address "
-          "JOIN customer ON customer_address.fk_customer_id=customer.customer_id "
-          "JOIN address ON customer_address.fk_address_id=address.address_id "
-         "WHERE customer_id=:id"
+  if (UserData::isAdmin) {
+    query.prepare(
+        "SELECT address_id, city, state, street_number, "
+        "address_type, country_name, country_id , zipcode from address "
+        "JOIN country ON address.fk_country_id=country.country_id");
+  } else {
+    query.prepare(
+        "SELECT address_id, city, state, street_number, "
+        "address_type "
+        "from customer_address "
+        "JOIN customer ON customer_address.fk_customer_id=customer.customer_id "
+        "JOIN address ON customer_address.fk_address_id=address.address_id "
+        "WHERE customer_id=:id"
 
-                  );
-      query.bindValue(":id",UserData::userId);
+    );
+    query.bindValue(":id", UserData::userId);
 
-      qDebug()<< "error output "<< query.lastError().text();
+    qDebug() << "error output " << query.lastError().text();
   }
 
   addressModel->submit();
   addressModel->setQuery(query);
   addressModel->setHeaders({"address_id", "city", "State", "Street Number",
-                            "address Type", "country ", "country_id","zipcode"});
+                            "address Type", "country ", "country_id",
+                            "zipcode"});
   ui->addressTableView->setModel(addressModel);
   ui->addressTableView->setColumnHidden(6, true);
   ui->addressTableView->setColumnHidden(7, true);
@@ -173,11 +160,8 @@ void AddressView::on_deleteButton_clicked() {
 }
 
 void AddressView::on_updateButton_clicked() {
-  qDebug() << "SALIDA!!! " << ui->stateLineEdit->text() << " -- "
-           << ui->cityLineEdit->text();
   AddressDTO* aDTO = new AddressDTO(this);
   aDTO->address.setCountry(ui->countryLineEdit->text());
-  // aDTO->getDTO().setZipCode(ui->);
   aDTO->address.setState(ui->stateLineEdit->text());
   aDTO->address.setCity(ui->cityLineEdit->text());
   aDTO->address.setType(ui->addressTypeLineEdit->text());
@@ -185,25 +169,20 @@ void AddressView::on_updateButton_clicked() {
   aDTO->address.setAddressId(ui->addressIDLineEdit->text().toInt());
   aDTO->address.setCountry(ui->countryLineEdit->text());
   aDTO->address.setCountryId(ui->countryIdLineEdit->text().toInt());
-    aDTO->address.setZipCode(address.getZipCode());
+  aDTO->address.setZipCode(address.getZipCode());
   aDTO->updateForm();
 
-  // aDTO->show();
   if (aDTO->exec() == QDialog::Rejected) return;
-  qDebug() << "zip code " << aDTO->address.getZipCode();
-  qDebug() << "Going to update";
   AddressDataObject address = aDTO->address;
   QSqlQuery q(_dbM->db());
-  q.exec(
-      QString("UPDATE address SET "
-              "city='%1', state='%2', street_number='%3', fk_country_id=%4, address_type='%5'  WHERE address_id=%6")
-          .arg(address.getCity())
-          .arg(address.getState())
-          .arg(address.getStreetNumber())
-          .arg(address.getCountryId())
-          .arg(address.getType())
-          .arg(address.getAddressId()));
+  q.exec(QString("UPDATE address SET "
+                 "city='%1', state='%2', street_number='%3', fk_country_id=%4, "
+                 "address_type='%5'  WHERE address_id=%6")
+             .arg(address.getCity())
+             .arg(address.getState())
+             .arg(address.getStreetNumber())
+             .arg(address.getCountryId())
+             .arg(address.getType())
+             .arg(address.getAddressId()));
   qDebug() << "Error " << q.lastError().text();
-
-  qDebug() << "ENDS..........";
 }
