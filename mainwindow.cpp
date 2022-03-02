@@ -96,7 +96,7 @@ void MainWindow::on_actionAdd_Users_triggered() {
 void MainWindow::on_actionAdd_Address_triggered() {
   AddressDTO aDTO(this);
   if (aDTO.exec() == QDialog::Rejected) return;
-  Address address = aDTO.getDTO();
+  Address address = aDTO.address;
   QSqlQuery q(_dbM->db());
   q.exec(QString("INSERT INTO address"
                  "(city,state, street_number, fk_country_id, address_type) "

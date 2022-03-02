@@ -60,8 +60,10 @@ class AddressDTO : public QDialog {
 
  public:
   explicit AddressDTO(QWidget *parent = nullptr);
-  ~AddressDTO();
-  Address getDTO() { return _address; }
+ ~AddressDTO();
+
+  void updateForm();
+  Address address;
 
  private slots:
   void on_buttonBox_rejected();
@@ -73,7 +75,6 @@ class AddressDTO : public QDialog {
 
  private:
   Ui::AddressDTO *ui;
-  Address _address;
   QStringList countryItems;
   QList<QPair<QString, int>> _country_items;
 

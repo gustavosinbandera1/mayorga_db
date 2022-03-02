@@ -30,6 +30,8 @@ class AddressView : public QWidget {
 
   void on_deleteButton_clicked();
 
+  void on_updateButton_clicked();
+
 private:
   Ui::AddressView *ui;
   QueryModel *addressModel;

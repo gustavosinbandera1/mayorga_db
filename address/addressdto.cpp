@@ -12,7 +12,7 @@ AddressDTO::AddressDTO(QWidget *parent)
     : QDialog(parent), ui(new Ui::AddressDTO) {
   ui->setupUi(this);
   ui->userLineEdit->setText(UserData::userName);
-  _address.setUserId(UserData::userId);
+  address.setUserId(UserData::userId);
   ui->userLineEdit->setReadOnly(true);
   ui->countryLineEdit->setReadOnly(true);
 
@@ -32,8 +32,6 @@ AddressDTO::AddressDTO(QWidget *parent)
     qDebug() << "--------------------error--------------------------";
   }
 
-  // tmpRModel->record(index.row()).value("street_number").toString());
-
   countryItems.clear();
   QString country;
   int countryId;
@@ -49,26 +47,40 @@ AddressDTO::AddressDTO(QWidget *parent)
 }
 //---------------------
 AddressDTO::~AddressDTO() { delete ui; }
+
+void AddressDTO::updateForm()
+{
+    ui->cityLineEdit->setText(address.getCity());
+    ui->countryLineEdit->setText(address.getCountry());
+    ui->stateLineEdit->setText(address.getState());
+    ui->billingRadioButton->setEnabled(address.getType()=="billing");
+    ui->billingRadioButton->setEnabled(address.getType()=="shipping");
+    ui->streetTextEdit->setText(address.getStreetNumber());
+     qDebug()<<"ADTO "
+               ""
+               "SALIDA!!! "<< address.getCity()<<" -- "<< address.getState();
+    //ui->c
+}
 //---------------------
 void AddressDTO::on_buttonBox_rejected() {}
 //---------------------
 void AddressDTO::verify() {
   qDebug() << "Checking DTO here into button " << ui->cityLineEdit->text();
-  _address.setCity(ui->cityLineEdit->text());
-  _address.setState(ui->stateLineEdit->text());
-  _address.setZipCode(
+  address.setCity(ui->cityLineEdit->text());
+  address.setState(ui->stateLineEdit->text());
+  address.setZipCode(
       ui->zipcodeComboBox->itemData(ui->zipcodeComboBox->currentIndex())
           .toString());
-  _address.setCountry(ui->countryLineEdit->text());
-  _address.setStreetNumber(ui->streetTextEdit->toPlainText());
+  address.setCountry(ui->countryLineEdit->text());
+  address.setStreetNumber(ui->streetTextEdit->toPlainText());
   if (ui->billingRadioButton->isChecked()) {
-    _address.setType(BILLING_ADDRESS);
+    address.setType(BILLING_ADDRESS);
   } else {
-    _address.setType(SHIPPING_ADDRESS);
+    address.setType(SHIPPING_ADDRESS);
   }
 
-  if (!_address.getCity().isEmpty() && !_address.getState().isEmpty() &&
-      !_address.getStreetNumber().isEmpty()) {
+  if (!address.getCity().isEmpty() && !address.getState().isEmpty() &&
+      !address.getStreetNumber().isEmpty()) {
     accept();
     return;
   }
@@ -91,5 +103,5 @@ void AddressDTO::on_zipcodeComboBox_currentIndexChanged(int index) {
   qDebug() << "here output country " << countryItems[index];
   ui->countryLineEdit->setText(countryItems[index]);
   ui->countryLineEdit->setText(_country_items[index].first);
-  _address.setCountryId(_country_items[index].second);
+  address.setCountryId(_country_items[index].second);
 }
