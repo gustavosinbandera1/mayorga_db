@@ -8,9 +8,9 @@
  * DTO class for receiving fata from UI form  AddressDTO
  */
 
-class Address {
+class AddressDataObject {
  public:
-  Address(){};
+  AddressDataObject(){};
 
   int getUserId() { return user_id; }
   void setUserId(int id) { user_id = id; }
@@ -36,6 +36,9 @@ class Address {
   int getCountryId() const { return country_id; }
   void setCountryId(const int &value) { country_id = value; }
 
+  int getAddressId() const { return address_id; }
+  void setAddressId(const int &value) { address_id = value; }
+
  private:
   int user_id;
   QString city;
@@ -44,6 +47,7 @@ class Address {
   QString country;
   QString streetNumber;
   QString type;
+  int address_id;
   int country_id;
 };
 
@@ -63,7 +67,8 @@ class AddressDTO : public QDialog {
  ~AddressDTO();
 
   void updateForm();
-  Address address;
+  AddressDataObject address;
+  QList<QPair<QString, int>> country_items;
 
  private slots:
   void on_buttonBox_rejected();
@@ -75,9 +80,6 @@ class AddressDTO : public QDialog {
 
  private:
   Ui::AddressDTO *ui;
-  QStringList countryItems;
-  QList<QPair<QString, int>> _country_items;
-
   void verify();
 };
 

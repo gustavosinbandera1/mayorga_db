@@ -32,34 +32,36 @@ AddressDTO::AddressDTO(QWidget *parent)
     qDebug() << "--------------------error--------------------------";
   }
 
-  countryItems.clear();
   QString country;
   int countryId;
+  QString zipcode;
   while (query.next()) {
     country = query.record().value("country_name").toString();
     countryId = query.record().value("country_id").toInt();
-    qDebug() << "output......... " << countryId;
-    countryItems.append(country);
-    _country_items.append(QPair<QString, int>(country, countryId));
-    ui->zipcodeComboBox->addItem(query.value("zipcode").toString());
+    zipcode = query.record().value("zipcode").toString();
+    qDebug() << "initializing Addreess DTO......... "
+             << "Country: " << country << " Id: " << countryId
+             << " zipcde: " << zipcode;
+    country_items.append(QPair<QString, int>(country, countryId));
+    ui->zipcodeComboBox->addItem(zipcode);
     ui->countryLineEdit->setText(country);
   }
 }
 //---------------------
-AddressDTO::~AddressDTO() { delete ui; }
+AddressDTO::~AddressDTO() {
+  qDebug() << "Deleting Address DTO";
+  delete ui;
+}
 
-void AddressDTO::updateForm()
-{
-    ui->cityLineEdit->setText(address.getCity());
-    ui->countryLineEdit->setText(address.getCountry());
-    ui->stateLineEdit->setText(address.getState());
-    ui->billingRadioButton->setEnabled(address.getType()=="billing");
-    ui->billingRadioButton->setEnabled(address.getType()=="shipping");
-    ui->streetTextEdit->setText(address.getStreetNumber());
-     qDebug()<<"ADTO "
-               ""
-               "SALIDA!!! "<< address.getCity()<<" -- "<< address.getState();
-    //ui->c
+void AddressDTO::updateForm() {
+  ui->cityLineEdit->setText(address.getCity());
+  ui->countryLineEdit->setText(address.getCountry());
+  ui->stateLineEdit->setText(address.getState());
+  ui->billingRadioButton->setChecked(address.getType() == "billing");
+  ui->shippingRadioButton->setChecked(address.getType() == "shipping");
+  ui->streetTextEdit->setText(address.getStreetNumber());
+  ui->zipcodeComboBox->setCurrentText(address.getZipCode());
+
 }
 //---------------------
 void AddressDTO::on_buttonBox_rejected() {}
@@ -100,8 +102,7 @@ void AddressDTO::on_zipcodeComboBox_currentIndexChanged(const QString &arg1) {
 }
 //---------------------
 void AddressDTO::on_zipcodeComboBox_currentIndexChanged(int index) {
-  qDebug() << "here output country " << countryItems[index];
-  ui->countryLineEdit->setText(countryItems[index]);
-  ui->countryLineEdit->setText(_country_items[index].first);
-  address.setCountryId(_country_items[index].second);
+    qDebug()<<"the index is "<< index;
+  ui->countryLineEdit->setText(country_items[index].first);
+  address.setCountryId(country_items[index].second);
 }

@@ -114,6 +114,16 @@
            </property>
           </widget>
          </item>
+         <item row="1" column="3">
+          <widget class="QLineEdit" name="countryIdLineEdit"/>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>country id</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
       </layout>
@@ -125,24 +135,17 @@
        </item>
        <item row="2" column="0" colspan="2">
         <layout class="QGridLayout" name="gridLayout_3">
-         <item row="0" column="1">
-          <widget class="QPushButton" name="deleteButton">
-           <property name="text">
-            <string>Delete</string>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="0">
-          <widget class="QPushButton" name="saveButton">
-           <property name="text">
-            <string>Save</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
           <widget class="QPushButton" name="updateButton">
            <property name="text">
             <string>Update</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="deleteButton">
+           <property name="text">
+            <string>Delete</string>
            </property>
           </widget>
          </item>

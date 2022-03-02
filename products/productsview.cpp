@@ -68,3 +68,4 @@ bool ProductsView::isInteger(const QVariant &variant) {
 bool ProductsView::isString(const QVariant &variant) {
   return variant.userType() == QMetaType::QString;
 }
+

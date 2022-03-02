@@ -2,6 +2,7 @@
 #define ADDRESSVIEW_H
 #include <QWidget>
 
+#include "addressdto.h"
 #include "dbmanager.h"
 #include "readWriteModel.h"
 
@@ -37,6 +38,8 @@ private:
   QueryModel *addressModel;
   LineEditorDelegate *lineDelegate;
   DbManager* _dbM;
+  AddressDataObject address;
+
   void sendQuery();
 };
 

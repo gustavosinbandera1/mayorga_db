@@ -28,6 +28,7 @@ public:
 private slots:
     void on_productsView_doubleClicked(const QModelIndex &index);
 
+
 private:
     Ui::ProductsView *ui;
 

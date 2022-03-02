@@ -37,7 +37,12 @@ void Login::on_buttonBox_accepted() {
     UserData::userEmail ="n@gmail.com";
     UserData::userName ="gustavo";
     UserData::userId = 1;
-    UserData::isAdmin = true;
+    UserData::isAdmin = false;
+
+//    UserData::userEmail ="n@gmail.com";
+//    UserData::userName ="Newgustavo";
+//    UserData::userId = 2;
+//    UserData::isAdmin = false;
 
     accept();
     return;
@@ -56,7 +61,6 @@ void Login::on_buttonBox_accepted() {
         password = _dbM->getPasswordFromTable("administrator", ui->userLineEdit->text());
     }
 
-    //currentUser.setEmail(ui->userLineEdit->text());
     UserData::userName = ui->userLineEdit->text();
      UserData::userEmail =ui->userLineEdit->text();
     UserData::isAdmin = bool(mType);
