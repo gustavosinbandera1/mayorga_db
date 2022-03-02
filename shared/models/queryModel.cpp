@@ -51,16 +51,24 @@ QVariant QueryModel::data(const QModelIndex &index, int role) const {
     case Qt::DisplayRole:
       return _model->record(row).value(col);
 
+    case Qt::EditRole :
+      qDebug()<<"****************** edit role ";
+
     case Qt::FontRole: {
       QFont boldFont;
-      // boldFont.setBold(true);
-      // boldFont.setWeight(QFont::Bold);
-      // boldFont.setPixelSize(18);
-      return boldFont;
+       boldFont.setBold(true);
+       //boldFont.setWeight(QFont::Bold);
+       //boldFont.setPixelSize(18);
+      //return boldFont;
+       //return QBrush(QColor(0, 255, 0));
     } break;
     case Qt::BackgroundRole:
-      // return QColor(0,0,0);
-      // return QBrush(Qt::blue);
+      if(index.row()%2)
+        return QBrush(Qt::gray);
+          //return QColor('red');
+      //else
+       //return QColor('white');
+       return QBrush(QColor("orange"));
       break;
     case Qt::TextAlignmentRole:
       return int(Qt::AlignCenter | Qt::AlignVCenter);
@@ -72,15 +80,6 @@ QVariant QueryModel::data(const QModelIndex &index, int role) const {
   return QVariant();
 }
 
-bool QueryModel::setData(const QModelIndex &index, const QVariant &value,
-                           int role) {
-  if (data(index, role) != value) {
-    emit dataChanged(index, index, QVector<int>() << role);
-    return true;
-  }
-  return false;
-}
-
 Qt::ItemFlags QueryModel::flags(const QModelIndex &index) const {
   if (!index.isValid()) return Qt::NoItemFlags;
   return Qt::ItemIsEditable | Qt::ItemIsEnabled;
@@ -88,12 +87,16 @@ Qt::ItemFlags QueryModel::flags(const QModelIndex &index) const {
 
 void QueryModel::setQuery(const QSqlQuery &query) {
   QSqlQuery query_ = query;
+  lastQuery = query;
   query_.exec();
   _model->setQuery(query);
   numAvailableHeaders = _model->columnCount();
   qDebug() << "COL COUNT " << _model->columnCount();
 }
 
-QSqlQueryModel *QueryModel::updateModel() { lastQuery.exec(); }
+QSqlQueryModel *QueryModel::updateModel() {
+      _model->clear();
+    setQuery(lastQuery);
+}
 
 void QueryModel::setHeaders(const QStringList headers) { _headers = headers; }

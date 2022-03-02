@@ -7,16 +7,9 @@
 OrdersView::OrdersView(DbManager *dbm, QWidget *parent)
     : QWidget(parent), ui(new Ui::OrdersView) {
   ui->setupUi(this);
-
+    _dbM = dbm;
   orderModel = new QueryModel(dbm, this);
-  QSqlQuery query;
-  query.prepare(
-      "SELECT order_id, payment_type, name, email from orders "
-      "JOIN customer ON orders.fk_customer_id=customer.customer_id");
-
-  orderModel->setQuery(query);
-  orderModel->setHeaders({"order_id", "payment_type", "name", "email"});
-  ui->ordersTableView->setModel(orderModel);
+  sendQuery();
 
   ui->ordersTableView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::Stretch);
@@ -24,6 +17,9 @@ OrdersView::OrdersView(DbManager *dbm, QWidget *parent)
   ui->ordersTableView->setAlternatingRowColors(true);
   ui->ordersTableView->setSortingEnabled(true);
   ui->ordersTableView->sortByColumn(0, Qt::DescendingOrder);
+
+  ui->ordersTableView->setEditTriggers(
+      QAbstractItemView::NoEditTriggers);
   ui->ordersTableView->reset();
 }
 //---------------------
@@ -32,6 +28,24 @@ OrdersView::~OrdersView() {
   delete ui;
 }
 //---------------------
-void OrdersView::updateOrderModel() { orderModel->updateModel(); }
+void OrdersView::updateOrderModel() {
+    if (orderModel != nullptr) {
+      delete orderModel;
+      orderModel = new QueryModel(_dbM, this);
+    }
+    sendQuery();
+}
 //---------------------
 void OrdersView::on_ordersTableView_clicked(const QModelIndex &index) {}
+//----------------------
+void OrdersView::sendQuery()
+{
+    QSqlQuery query;
+    query.prepare(
+        "SELECT order_id, payment_type, name, email from orders "
+        "JOIN customer ON orders.fk_customer_id=customer.customer_id");
+
+    orderModel->setQuery(query);
+    orderModel->setHeaders({"order_id", "payment_type", "name", "email"});
+    ui->ordersTableView->setModel(orderModel);
+}

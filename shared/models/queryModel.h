@@ -3,6 +3,7 @@
 
 #include <QAbstractTableModel>
 #include <QSqlQueryModel>
+#include <QSqlTableModel>
 
 #include "dbmanager.h"
 /**
@@ -35,9 +36,9 @@ class QueryModel : public QAbstractTableModel {
   QVariant data(const QModelIndex &index,
                 int role = Qt::DisplayRole) const override;
 
-  // Editable:
-  bool setData(const QModelIndex &index, const QVariant &value,
-               int role = Qt::EditRole) override;
+//  // Editable:
+//  bool setData(const QModelIndex &index, const QVariant &value,
+//               int role = Qt::EditRole) override;
 
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
@@ -50,6 +51,8 @@ class QueryModel : public QAbstractTableModel {
   DbManager *_dbM;
   QStringList _headers;
   QSqlQueryModel *_model;
+
+  QSqlTableModel *modelT;
   QSqlQuery lastQuery;
   int numAvailableHeaders;
 };

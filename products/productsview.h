@@ -5,10 +5,10 @@
 #include "dbmanager.h"
 #include "spinboxDelegate.h"
 #include "comboBoxDelegate.h"
-#include "readWriteModel.h"
+//#include "readWriteModel.h"
 
-class QueryModel;
-class ProductsModel;
+class ReadWriteModel;
+//class QueryModel;
 class LineEditorDelegate;
 namespace Ui {
 class ProductsView;
@@ -35,7 +35,8 @@ private:
     LineEditorDelegate *lineDelegate;
     ComboBoxDelegate *comboBoxDelegate;
 
-    QueryModel *productModel;
+    //QueryModel *productModel;
+    ReadWriteModel *_productModel;
 };
 
 #endif // PRODUCTSVIEW_H

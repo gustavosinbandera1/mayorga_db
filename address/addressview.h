@@ -28,10 +28,14 @@ class AddressView : public QWidget {
 
   void on_addressTableView_doubleClicked(const QModelIndex &index);
 
+  void on_deleteButton_clicked();
+
 private:
   Ui::AddressView *ui;
   QueryModel *addressModel;
   LineEditorDelegate *lineDelegate;
+  DbManager* _dbM;
+  void sendQuery();
 };
 
 #endif  // ADDRESSVIEW_H

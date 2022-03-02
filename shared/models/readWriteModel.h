@@ -23,20 +23,22 @@ class ReadWriteModel : public QAbstractTableModel {
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
   int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+  //bool setData(const QModelIndex &index, const QVariant &value, int role);
 
   QVariant data(const QModelIndex &index,
                 int role = Qt::DisplayRole) const override;
 
-  QSqlTableModel *getModel() { return this->model; }
   void setHeaders(QStringList &&headers);
   void setForeignHeaders(QStringList &&headers);
   void setRelation(int foreignColumn, QString foreignTable, QString foreignKey,
                    QString columnToRender);
-
  private:
   DbManager *_dbM;
   QSqlTableModel *model;
   QString _table;
+
+  // QAbstractItemModel interface
+
 };
 
 #endif  // CUSTOMTABLEMODEL_H

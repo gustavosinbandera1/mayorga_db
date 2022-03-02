@@ -27,6 +27,8 @@ OrderDetailView::OrderDetailView(DbManager *dbm, QWidget *parent)
   ui->orderDetailTableView->setAlternatingRowColors(true);
   ui->orderDetailTableView->setSortingEnabled(true);
   ui->orderDetailTableView->sortByColumn(0, Qt::DescendingOrder);
+  ui->orderDetailTableView->setEditTriggers(
+      QAbstractItemView::NoEditTriggers);
 
 }
 

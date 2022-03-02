@@ -36,9 +36,10 @@ void LineEditorDelegate::setModelData(QWidget *editor,
                             QMessageBox::Save | QMessageBox::Discard);
 
   if (reply == QMessageBox::Save) {
-    qDebug() << "Yes was clicked................";
+    qDebug() << "Yes was clicked setting model data from delegator................";
     QLineEdit *lineEdit = static_cast<QLineEdit *>(editor);
     QString str = lineEdit->text();
+    qDebug()<<"Setting data to model ";
     model->setData(index, str, Qt::EditRole);
   } else if (reply == QMessageBox::Discard)
     qDebug() << "Discard was clicked................";

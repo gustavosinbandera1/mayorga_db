@@ -13,7 +13,7 @@ UsersView::UsersView(DbManager* dbm, QWidget* parent)
   userModel = new ReadWriteModel(dbm, "customer", isRelational, this);
   lineDelegate = new LineEditorDelegate(this);
 
-  ui->userTableView->setModel(userModel->getModel());
+  ui->userTableView->setModel(userModel);
   userModel->setHeaders({"Customer id", "Name", "Email", "Phone", "Password"});
 
   ui->userTableView->horizontalHeader()->setSectionResizeMode(
@@ -32,7 +32,7 @@ UsersView::~UsersView() {
 //---------------------
 void UsersView::updateUserModel() {
   ui->userTableView->setModel(userModel->updateModel());
-  userModel->setHeaders({"Customer id", "Name", "Email", "Phone", "Password"});
+  userModel->setHeaders({"Customer Id", "Name", "Email", "Phone", "Password"});
 }
 //---------------------
 void UsersView::on_userTableView_clicked(const QModelIndex& index) {

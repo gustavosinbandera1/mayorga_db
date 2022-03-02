@@ -25,6 +25,8 @@ private slots:
 private:
   Ui::OrdersView *ui;
   QueryModel *orderModel;
+  DbManager *_dbM;
+  void sendQuery();
 };
 
 #endif  // ORDERSVIEW_H

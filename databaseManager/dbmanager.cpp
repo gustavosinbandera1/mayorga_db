@@ -34,9 +34,9 @@ DbManager::DbManager(const QString& host, const QString& username,
       "/home/gustavo/QT-PROJECTS/dbApplication/tableStructure.sql");
   ExecuteSqlScriptFile(
       "/home/gustavo/QT-PROJECTS/dbApplication/initialData.sql");
-  addUser("user-1", "3007433507", "g@gmail.com", getHash("1234"),
-          "administrator");
-  addUser("user-1", "3007433507", "n@gmail.com", getHash("1234"), "customer");
+//  addUser("user-1", "3007433507", "g@gmail.com", getHash("1234"),
+//          "administrator");
+//  addUser("user-1", "3007433507", "n@gmail.com", getHash("1234"), "customer");
   // removeUser("gustavosinbandera123@gmail.com","administrator");
 }
 //---------------------

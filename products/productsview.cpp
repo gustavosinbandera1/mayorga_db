@@ -1,6 +1,6 @@
 #include "productsview.h"
 #include "login.h"
-#include <queryModel.h>
+#include <readWriteModel.h>
 #include <typeinfo>
 #include "ui_productsview.h"
 #include "lineeditordelegate.h"
@@ -9,16 +9,12 @@ ProductsView::ProductsView(DbManager *dbm, QWidget *parent)
     : QWidget(parent), ui(new Ui::ProductsView) {
   ui->setupUi(this);
 
-  productModel = new QueryModel(dbm, this);
+  _productModel = new ReadWriteModel(dbm,"products",false, this);
 
-  QSqlQuery query;
-  query.prepare(
-      "SELECT sku,name,description,price,weight from products ");
 
-  productModel->setQuery(query);
-  productModel->setHeaders({"sku", "name","description","price","weight"});
-  ui->productsView->setModel(productModel);
-  // Delegators
+  ui->productsView->setModel(_productModel);
+  _productModel->setHeaders({"sku","name","description","price","weight"});
+
   SpinBoxDelegate = new SpinboxDelegate(this);
   lineDelegate = new LineEditorDelegate(this);
 
@@ -41,7 +37,8 @@ ProductsView::~ProductsView() {
 }
 //---------------------
 void ProductsView::updateModel() {
-    productModel->updateModel();
+    ui->productsView->setModel(_productModel->updateModel());
+    _productModel->setHeaders({"sku","name","description","price","weight"});
 }
 //---------------------
 void ProductsView::on_productsView_doubleClicked(const QModelIndex &index) {
