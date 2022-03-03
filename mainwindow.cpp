@@ -43,6 +43,7 @@ MainWindow::MainWindow(DbManager *dbM, QWidget *parent)
   ui->userEmaillabel->setText(UserData::userName);
 
   qDebug() << QUuid::createUuid().toString();
+  addressView->updateModel();
 }
 //---------------------
 MainWindow::~MainWindow() {
@@ -119,6 +120,7 @@ void MainWindow::on_actionAdd_Address_triggered() {
   q.bindValue(":address_id", lastInsertedId);
   q.bindValue(":dateTime", dateTime);
   q.exec();
+
 }
 //---------------------
 void MainWindow::populateTab(QWidget *widget, QMdiArea *mdiArea) {
@@ -148,10 +150,10 @@ void MainWindow::on_tabWidget_tabBarClicked(int index) {
   switch (type) {
     case TAB_NAME::PRODUCTS:
       qDebug() << "The user is called : " << UserData::userName;
-      productsView->updateModel();
+     // productsView->updateModel();
       break;
     case TAB_NAME::USERS:
-      usersView->updateUserModel();
+     //usersView->updateUserModel();
       break;
     case TAB_NAME::ORDERS:
       ordersView->updateOrderModel();

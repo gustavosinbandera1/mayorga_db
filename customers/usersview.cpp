@@ -11,7 +11,7 @@ UsersView::UsersView(DbManager* dbm, QWidget* parent)
   bool isRelational = false;
 
   userModel = new ReadWriteModel(dbm, "customer", isRelational, this);
-  lineDelegate = new LineEditorDelegate(this);
+ //lineDelegate = new LineEditorDelegate(this);
 
   ui->userTableView->setModel(userModel);
   userModel->setHeaders({"Customer id", "Name", "Email", "Phone", "Password"});
@@ -31,7 +31,7 @@ UsersView::~UsersView() {
 }
 //---------------------
 void UsersView::updateUserModel() {
-  ui->userTableView->setModel(userModel->updateModel());
+  ui->userTableView->setModel(userModel);
   userModel->setHeaders({"Customer Id", "Name", "Email", "Phone", "Password"});
 }
 //---------------------

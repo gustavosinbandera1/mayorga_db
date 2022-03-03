@@ -1,11 +1,7 @@
 #include "addressview.h"
-
 #include <queryModel.h>
-
 #include <QDialog>
 #include <QMessageBox>
-//#include <login.h>
-
 #include "addressdto.h"
 #include "lineeditordelegate.h"
 #include "login.h"
@@ -132,33 +128,7 @@ void AddressView::on_streetNumberTextEdit_copyAvailable(bool b) {
 void AddressView::on_streetNumberTextEdit_undoAvailable(bool b) {
   qDebug() << "on_streetNumberTextEdit_undoAvailable --> " << b;
 }
-
-void AddressView::on_deleteButton_clicked() {
-  if (!ui->addressIDLineEdit->text().isEmpty()) {
-    QMessageBox::StandardButton answer;
-    answer = QMessageBox::warning(this, tr("Are you sure"),
-                                  tr("This operation cannot be undo .\n"
-                                     "Do you want to continue?"),
-                                  QMessageBox::Yes | QMessageBox::No);
-
-    if (answer == QMessageBox::Yes) {
-      QSqlQuery query;
-      qDebug() << "output "
-               << query.exec(QString("DELETE FROM address "
-                                     "WHERE address_id=%1")
-                                 .arg(ui->addressIDLineEdit->text().toInt()));
-      qDebug() << "Error: " << query.lastError().text().size();
-      if (query.lastError().text().size() > 1) {
-        QMessageBox::warning(
-            this, tr("Error .."),
-            tr("Register cannot be deleted it has some dependencies.\n"
-               "Press  to continue?"),
-            QMessageBox::Ok);
-      }
-    }
-  }
-}
-
+//-------------------------------------------
 void AddressView::on_updateButton_clicked() {
   AddressDTO* aDTO = new AddressDTO(this);
   aDTO->address.setCountry(ui->countryLineEdit->text());
@@ -185,4 +155,34 @@ void AddressView::on_updateButton_clicked() {
              .arg(address.getType())
              .arg(address.getAddressId()));
   qDebug() << "Error " << q.lastError().text();
+  //addressModel->updateModel();
+  this->updateModel();
 }
+//-------------------------------------
+void AddressView::on_deleteButton_clicked() {
+  if (!ui->addressIDLineEdit->text().isEmpty()) {
+    QMessageBox::StandardButton answer;
+    answer = QMessageBox::warning(this, tr("Are you sure"),
+                                  tr("This operation cannot be undo .\n"
+                                     "Do you want to continue?"),
+                                  QMessageBox::Yes | QMessageBox::No);
+
+    if (answer == QMessageBox::Yes) {
+      QSqlQuery query;
+      qDebug() << "output "
+               << query.exec(QString("DELETE FROM customer_address "
+                                     "WHERE fk_address_id=%1")
+                                 .arg(ui->addressIDLineEdit->text().toInt()));
+      qDebug() << "Error: " << query.lastError().text();
+       addressModel->updateModel();
+      if (query.lastError().text().size() > 1) {
+        QMessageBox::warning(
+            this, tr("Error .."),
+            tr("Register cannot be deleted it has some dependencies.\n"
+               "Press  to continue?"),
+            QMessageBox::Ok);
+      }
+    }
+  }
+}
+

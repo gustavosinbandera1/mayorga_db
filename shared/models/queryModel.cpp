@@ -64,11 +64,11 @@ QVariant QueryModel::data(const QModelIndex &index, int role) const {
     } break;
     case Qt::BackgroundRole:
       if(index.row()%2)
-        return QBrush(Qt::gray);
+        return QBrush(QColor(4,234,199,40));
           //return QColor('red');
       //else
        //return QColor('white');
-       return QBrush(QColor("orange"));
+       return QBrush(QColor(111,133,129,60));
       break;
     case Qt::TextAlignmentRole:
       return int(Qt::AlignCenter | Qt::AlignVCenter);
