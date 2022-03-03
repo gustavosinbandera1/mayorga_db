@@ -1,6 +1,5 @@
 #include <queryModel.h>
 #include <QDebug>
-#include "ordersmodel.h"
 #include "ordersview.h"
 #include "ui_ordersview.h"
 
@@ -56,4 +55,15 @@ void OrdersView::sendQuery()
     orderModel->setQuery(query);
     orderModel->setHeaders({"order_id", "payment_type", "name", "email"});
     ui->ordersTableView->setModel(orderModel);
+}
+
+void OrdersView::on_ordersTableView_doubleClicked(const QModelIndex &index)
+{
+    int col = index.column();
+    int row = index.row();
+    auto reg = orderModel->getModel()->record(row);
+    QString order_id =  reg.value("order_id").toString();
+    qDebug()<<"OrderID: "<< order_id;
+
+
 }

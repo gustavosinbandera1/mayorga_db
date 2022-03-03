@@ -22,6 +22,8 @@ class OrdersView : public QWidget {
 private slots:
     void on_ordersTableView_clicked(const QModelIndex &index);
 
+    void on_ordersTableView_doubleClicked(const QModelIndex &index);
+
 private:
   Ui::OrdersView *ui;
   QueryModel *orderModel;

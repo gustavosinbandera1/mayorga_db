@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+class QCheckBox;
+
 class UserDataObject {
  public:
   UserDataObject(){};
@@ -30,7 +32,7 @@ namespace Ui {
 class UserDTO;
 }
 
-class QCheckBox;
+
 class UserDTO : public QDialog {
   Q_OBJECT
 

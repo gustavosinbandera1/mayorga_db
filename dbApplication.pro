@@ -36,6 +36,7 @@ SOURCES += \
    # administrators/userDTO.cpp \
     orders/loadDetailsDialog.cpp \
     orders/orderdetailview.cpp \
+    orderviewer.cpp \
     shared/delegates/quantitytotaldelegate.cpp \
     shared/delegates/comboBoxDelegate.cpp \
     databaseManager/dbmanager.cpp \
@@ -61,6 +62,7 @@ HEADERS += \
     administrators/userDTO.h \
     orders/loadDetailsDialog.h \
     orders/orderdetailview.h \
+    orderviewer.h \
     shared/delegates/quantitytotaldelegate.h \
     shared/delegates/comboBoxDelegate.h \
     databaseManager/db_config.h \
@@ -88,6 +90,8 @@ FORMS += \
     orders/orderdetailview.ui \
     orders/orderform.ui \
     orders/ordersview.ui \
+    orders/orderviewer.ui \
+    orderviewer.ui \
     products/productsdto.ui \
     products/productsview.ui \
     userscontrolform.ui \
