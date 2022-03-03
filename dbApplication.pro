@@ -33,12 +33,11 @@ INCLUDEPATH += $$PWD/administrators
 SOURCES += \
     address/addressdto.cpp \
     address/addressview.cpp \
-    administrators/registeruserDTO.cpp \
+   # administrators/userDTO.cpp \
     orders/loadDetailsDialog.cpp \
     orders/orderdetailview.cpp \
     shared/delegates/quantitytotaldelegate.cpp \
     shared/delegates/comboBoxDelegate.cpp \
-    customers/userDTO.cpp \
     databaseManager/dbmanager.cpp \
     shared/delegates/lineeditordelegate.cpp \
     login/login.cpp \
@@ -47,6 +46,7 @@ SOURCES += \
     orders/orderform.cpp \
     orders/ordersview.cpp \
     customers/usersview.cpp \
+    customers/userDTO.cpp \
     products/productsdto.cpp \
     products/productsview.cpp \
     shared/delegates/spinboxDelegate.cpp \
@@ -57,13 +57,12 @@ SOURCES += \
 HEADERS += \
     address/addressdto.h \
     address/addressview.h \
-    administrators/registeruserDTO.h \
     administrators/ui_registeradmindialog \
+    administrators/userDTO.h \
     orders/loadDetailsDialog.h \
     orders/orderdetailview.h \
     shared/delegates/quantitytotaldelegate.h \
     shared/delegates/comboBoxDelegate.h \
-    customers/userDTO.h \
     databaseManager/db_config.h \
     databaseManager/dbmanager.h \
     shared/delegates/lineeditordelegate.h \
@@ -72,6 +71,7 @@ HEADERS += \
     orders/orderform.h \
     orders/ordersview.h \
     customers/usersview.h \
+    customers/userDTO.h \
     products/productsdto.h \
     products/productsview.h \
     shared/delegates/spinboxDelegate.h \
@@ -81,7 +81,7 @@ HEADERS += \
 FORMS += \
     address/addressdto.ui \
     address/addressview.ui \
-    administrators/registeruserDTO.ui \
+    #administrators/userDTO.ui \
     login/login.ui \
     mainwindow.ui \
     orders/loadDetailsDialog.ui \
@@ -91,7 +91,8 @@ FORMS += \
     products/productsdto.ui \
     products/productsview.ui \
     userscontrolform.ui \
-    customers/usersview.ui
+    customers/usersview.ui \
+    customers/userDTO.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

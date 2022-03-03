@@ -9,7 +9,6 @@
 //#include "readWriteModel.h"
 
 class ReadWriteModel;
-//class QueryModel;
 class LineEditorDelegate;
 namespace Ui {
 class ProductsView;
@@ -29,26 +28,18 @@ public:
 
 private slots:
     void on_productsView_doubleClicked(const QModelIndex &index);
-
-
     void on_updateButton_clicked();
-
     void on_deleteButton_clicked();
-
     void on_newButton_clicked();
-
     void on_productsView_clicked(const QModelIndex &index);
 
 private:
     Ui::ProductsView *ui;
     DbManager* _dbM;
-
     SpinboxDelegate *SpinBoxDelegate;
     LineEditorDelegate *lineDelegate;
     ComboBoxDelegate *comboBoxDelegate;
-
-    //QueryModel *productModel;
-    ReadWriteModel *_productModel;
+    ReadWriteModel *productModel;
     ProductDataObject product;
 };
 

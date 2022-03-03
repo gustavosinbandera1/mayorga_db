@@ -17,7 +17,6 @@ class ReadWriteModel : public QAbstractTableModel {
 
   QSqlTableModel *updateModel();
   QSqlTableModel *getModel() {return model;}
-  //QSqlRelationalTableModel *updateRModel();
   QVariant headerData(int section, Qt::Orientation orientation,
                       int role = Qt::DisplayRole) const override;
 
@@ -28,7 +27,7 @@ class ReadWriteModel : public QAbstractTableModel {
 
   QVariant data(const QModelIndex &index,
                 int role = Qt::DisplayRole) const override;
-   Qt::ItemFlags flags(const QModelIndex &index) const override;
+  // Qt::ItemFlags flags(const QModelIndex &index) const override;
   void setHeaders(QStringList &&headers);
   void setForeignHeaders(QStringList &&headers);
   void setRelation(int foreignColumn, QString foreignTable, QString foreignKey,
@@ -37,6 +36,7 @@ class ReadWriteModel : public QAbstractTableModel {
   DbManager *_dbM;
   QSqlTableModel *model;
   QString _table;
+  QStringList headers;
 
   // QAbstractItemModel interface
 

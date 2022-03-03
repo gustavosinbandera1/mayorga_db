@@ -164,7 +164,7 @@ public:
 };
 
 namespace Ui {
-    class RegisterAdminDTO: public Ui_RegisterAdminDialog {};
+    class UserDTO: public Ui_RegisterAdminDialog {};
 } // namespace Ui
 
 QT_END_NAMESPACE

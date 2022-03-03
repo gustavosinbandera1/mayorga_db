@@ -15,13 +15,13 @@ ProductsView::ProductsView(DbManager *dbm, QWidget *parent)
     : QWidget(parent), ui(new Ui::ProductsView) {
   ui->setupUi(this);
   _dbM = dbm;
-  _productModel = new ReadWriteModel(dbm, "products", false, this);
+  productModel = new ReadWriteModel(dbm, "products", false, this);
   SpinBoxDelegate = new SpinboxDelegate(this);
   lineDelegate = new LineEditorDelegate(this);
 
   
-  ui->productsView->setModel(_productModel);
-  _productModel->setHeaders({"sku", "name", "description", "price", "weight"});
+  ui->productsView->setModel(productModel);
+  productModel->setHeaders({"sku", "name", "description", "price", "weight"});
 
   ui->productsView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::Stretch);
@@ -34,30 +34,29 @@ ProductsView::ProductsView(DbManager *dbm, QWidget *parent)
   // if(!UserData::isAdmin)
   // ui->productsView->setEditTriggers(QAbstractItemView::NoEditTriggers); //
 }
-//---------------------
+//----------------------------------------------------//
+//----------------------------------------------------//
 ProductsView::~ProductsView() {
   qInfo() << "Destroying ProductsView";
   delete ui;
 }
-//---------------------
+//----------------------------------------------------//
+//----------------------------------------------------//
 void ProductsView::updateModel() {
-  ui->productsView->setModel(_productModel);
-  _productModel->setHeaders({"sku", "name", "description", "price", "weight"});
+  ui->productsView->setModel(productModel);
+  productModel->setHeaders({"sku", "name", "description", "price", "weight"});
 }
-//---------------------
+//----------------------------------------------------//
+//----------------------------------------------------//
 void ProductsView::on_productsView_doubleClicked(const QModelIndex &index) {
-  qDebug() << "Doble click on item " << index.row() << " , " << index.column()
-           << " = " << index.data();
-  int col = index.column();
-  int row = index.row();
-
   if (isInteger(index.data())) {
     ui->productsView->setItemDelegate(SpinBoxDelegate);
   } else if (isString(index.data())) {
     ui->productsView->setItemDelegate(lineDelegate);
   }
 }
-//----------------------------
+//----------------------------------------------------//
+//----------------------------------------------------//
 bool ProductsView::isInteger(const QVariant &variant) {
   switch (variant.userType()) {
     case QMetaType::Int:
@@ -69,11 +68,13 @@ bool ProductsView::isInteger(const QVariant &variant) {
   }
   return false;
 }
-//----------------------------
+//----------------------------------------------------//
+//----------------------------------------------------//
 bool ProductsView::isString(const QVariant &variant) {
   return variant.userType() == QMetaType::QString;
 }
-//--------------------------------------
+//----------------------------------------------------//
+//----------------------------------------------------//
 void ProductsView::on_updateButton_clicked() {
   ProductsDTO *pDTO = new ProductsDTO(this);
   pDTO->product.setName(this->product.getName());
@@ -82,7 +83,6 @@ void ProductsView::on_updateButton_clicked() {
   pDTO->product.setPrice(this->product.getPrice());
   pDTO->product.setWeight(this->product.getWeight());
   pDTO->updateForm();
-  // pDTO->show();
 
   if (pDTO->exec() == QDialog::Rejected) return;
 
@@ -98,9 +98,10 @@ void ProductsView::on_updateButton_clicked() {
              .arg(product.getWeight())
              .arg(product.getSku()));
   qDebug() << "****************** error : >> " << q.lastError().text();
-  _productModel->updateModel();
+  productModel->updateModel();
 }
-//-----------------------------------
+//----------------------------------------------------//
+//----------------------------------------------------//
 void ProductsView::on_deleteButton_clicked() {
   if (!product.getSku().isEmpty()) {
     QMessageBox::StandardButton answer;
@@ -115,7 +116,7 @@ void ProductsView::on_deleteButton_clicked() {
                << query.exec(QString("DELETE FROM products "
                                      "WHERE sku=%1")
                                  .arg(product.getSku()));
-      _productModel->updateModel();
+      productModel->updateModel();
       qDebug() << "Error: " << query.lastError().text().size();
       if (query.lastError().text().size() > 1) {
         QMessageBox::warning(
@@ -127,7 +128,8 @@ void ProductsView::on_deleteButton_clicked() {
     }
   }
 }
-
+//----------------------------------------------------//
+//----------------------------------------------------//
 void ProductsView::on_newButton_clicked() {
     ProductsDTO *pDTO = new ProductsDTO(this);
 
@@ -143,16 +145,17 @@ void ProductsView::on_newButton_clicked() {
             .arg(product.getPrice().toDouble())
             .arg(product.getWeight().toDouble()));
     qDebug() << "****************** error : >> " << q.lastError().text();
-    _productModel->updateModel();
+    productModel->updateModel();
 }
-
+//----------------------------------------------------//
+//----------------------------------------------------//
 void ProductsView::on_productsView_clicked(const QModelIndex &index) {
   int col = index.column();
   int row = index.row();
-  auto reg = _productModel->getModel()->record(row);
+  auto reg = productModel->getModel()->record(row);
 
   // product.setSku()
-  auto tmp = _productModel->data(index).toString();
+  auto tmp = productModel->data(index).toString();
   qDebug() << "product output ---------" << tmp << " -- ";
   qDebug() << row << "," << col;
 

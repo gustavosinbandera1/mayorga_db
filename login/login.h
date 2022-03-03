@@ -1,7 +1,7 @@
 #ifndef DIALOG_H
 #define DIALOG_H
-#include <userDTO.h>
-
+//#include <userDataObject.h>
+#include "userDTO.h"
 #include <QDialog>
 
 #include "dbmanager.h"
@@ -65,6 +65,6 @@ class Login : public QDialog {
   DbManager *_dbM;
   void isAdmin();
   int mType;
-  User currentUser;
+  UserDataObject currentUser;
 };
 #endif  // DIALOG_H

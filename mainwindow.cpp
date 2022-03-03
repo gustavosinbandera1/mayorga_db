@@ -13,7 +13,7 @@
 #include "ordersview.h"
 #include "productsdto.h"
 #include "productsview.h"
-#include "registeruserDTO.h"
+#include "userDTO.h"
 #include "ui_mainwindow.h"
 #include "usersview.h"
 
@@ -76,14 +76,14 @@ void MainWindow::on_actionAdd_Products_triggered() {
 }
 //---------------------
 void MainWindow::on_actionAdd_Users_triggered() {
-  RegisterUserDTO d(this);
+  UserDTO d(this);
   auto adminCheckBox = d.getAdminCheckBox();
   adminCheckBox->setChecked(false);
   adminCheckBox->setEnabled(true);
   if (d.exec() == QDialog::Rejected) {
     return;
   }
-  User admin = d.getAdmin();
+  UserDataObject admin = d.getAdmin();
   QSqlQuery q(_dbM->db());
   q.exec(
       QString("INSERT INTO customer"

@@ -28,9 +28,7 @@ class AddressView : public QWidget {
   void on_streetNumberTextEdit_undoAvailable(bool b);
 
   void on_addressTableView_doubleClicked(const QModelIndex &index);
-
   void on_deleteButton_clicked();
-
   void on_updateButton_clicked();
 
 private:

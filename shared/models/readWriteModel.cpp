@@ -21,9 +21,13 @@ QSqlTableModel *ReadWriteModel::updateModel() {
 //-------------------
 QVariant ReadWriteModel::headerData(int section, Qt::Orientation orientation,
                                     int role) const {
-  (void)section;
-  (void)orientation;
-  (void)role;
+
+    if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
+        if(section < headers.count())
+            return headers[section];
+        else return "default";
+    }
+
   return QVariant();
 }
 //-------------------
@@ -81,18 +85,21 @@ QVariant ReadWriteModel::data(const QModelIndex &index, int role) const {
     return QVariant();
 }
 
-Qt::ItemFlags ReadWriteModel::flags(const QModelIndex &index) const
-{
-    if (!index.isValid()) return Qt::NoItemFlags;
-    return Qt::ItemIsEditable | Qt::ItemIsEnabled;
-}
+//Qt::ItemFlags ReadWriteModel::flags(const QModelIndex &index) const
+//{
+//    if (!index.isValid()) return Qt::NoItemFlags;
+//    return Qt::ItemIsEditable | Qt::ItemIsEnabled;
+//}
 //-------------------
 void ReadWriteModel::setHeaders(QStringList &&headers) {
   int i = 0;
-  for (const auto &header : headers) {
-    model->setHeaderData(i, Qt::Horizontal, header);
-    i++;
-  }
+  this->headers = headers;
+  qDebug()<<"SETTING HEADERS NOW-----------------";
+
+//  for (const auto &header : headers) {
+//    model->setHeaderData(i, Qt::Horizontal, header);
+//    i++;
+//  }
 }
 //-------------------
 void ReadWriteModel::setForeignHeaders(QStringList &&headers) {}

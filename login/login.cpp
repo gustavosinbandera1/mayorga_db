@@ -1,6 +1,6 @@
 #include "login.h"
 #include "ui_login.h"
-#include "registeruserDTO.h"
+#include "userDTO.h"
 #include <QSqlQuery>
 #include <QMessageBox>
 #include <QDebug>
@@ -85,14 +85,14 @@ void Login::on_buttonBox_rejected() {
 }
 //---------------------
 void Login::on_registerAdminButton_clicked() {
-    RegisterUserDTO d(this);
+    UserDTO d(this);
     auto adminCheckBox = d.getAdminCheckBox();
     adminCheckBox->setChecked(true);
     adminCheckBox->setEnabled(false);
     if(d.exec() == QDialog::Rejected) {
         return;
     }
-    User admin = d.getAdmin();
+    UserDataObject admin = d.getAdmin();
     QSqlQuery q(_dbM->db());
     q.exec(QString("INSERT INTO administrator"
                    "(name, phone, email, password) VALUES ('%1', '%2', '%3', '%4')")

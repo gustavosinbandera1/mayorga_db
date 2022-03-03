@@ -74,10 +74,6 @@ class AddressDTO : public QDialog {
   void on_buttonBox_rejected();
   void on_zipcodeComboBox_currentIndexChanged(const QString &arg1);
   void on_zipcodeComboBox_currentIndexChanged(int index);
-  //    void on_textEdit_copyAvailable(bool b);
-  //    void on_textEdit_redoAvailable(bool b);
-  //    void on_textEdit_textChanged();
-
  private:
   Ui::AddressDTO *ui;
   void verify();
