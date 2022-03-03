@@ -174,7 +174,9 @@ void AddressView::on_deleteButton_clicked() {
                                      "WHERE fk_address_id=%1")
                                  .arg(ui->addressIDLineEdit->text().toInt()));
       qDebug() << "Error: " << query.lastError().text();
-       addressModel->updateModel();
+
+      addressModel->updateModel();
+
       if (query.lastError().text().size() > 1) {
         QMessageBox::warning(
             this, tr("Error .."),

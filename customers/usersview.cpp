@@ -2,6 +2,8 @@
 
 #include <lineeditordelegate.h>
 
+#include <QMessageBox>
+
 #include "ui_usersview.h"
 #include "userDTO.h"
 
@@ -35,6 +37,10 @@ UsersView::~UsersView() {
 //----------------------------//
 //----------------------------//
 void UsersView::updateModel() {
+    if(userModel != nullptr){
+        delete userModel;
+        userModel = new ReadWriteModel(_dbM,"customer",false,this);
+    }
   ui->userTableView->setModel(userModel);
   userModel->setHeaders({"Customer Id", "Name", "Email", "Phone", "Password"});
 }
@@ -53,41 +59,82 @@ void UsersView::on_userTableView_clicked(const QModelIndex& index) {
   user.setName(reg.value("name").toString());
   user.setEmail(reg.value("email").toString());
   user.setPhone(reg.value("phone").toString());
-
 }
 //----------------------------//
 //----------------------------//
 void UsersView::on_updateButton_clicked() {
-    UserDTO *uDTO = new UserDTO(this);
+  UserDTO* uDTO = new UserDTO(this);
 
-    uDTO->user.setName(this->user.getName());
-    uDTO->user.setEmail(this->user.getEmail());
-    uDTO->user.setPhone(this->user.getPhone());
-    //PASSSWORD HERE ---------->>>>>>
-    uDTO->updateForm();
+  uDTO->user.setName(this->user.getName());
+  uDTO->user.setEmail(this->user.getEmail());
+  uDTO->user.setPhone(this->user.getPhone());
+  // PASSSWORD HERE ---------->>>>>>
+  uDTO->updateForm();
 
-    if(uDTO->exec() == QDialog::Rejected) return;
+  if (uDTO->exec() == QDialog::Rejected) return;
 
-    UserDataObject user = uDTO->user;
+  UserDataObject _user = uDTO->user;
+  QSqlQuery q(_dbM->db());
+
+  qDebug()<<"searching .... "<< this->user.getEmail();
+  q.exec(QString("UPDATE customer SET name='%1', phone='%2', email='%3' WHERE email='%4' ")
+         .arg(_user.getName())
+         .arg(_user.getPhone())
+         .arg(_user.getEmail())
+         .arg(this->user.getEmail())
+         );
+
+ qDebug()<<"Hopefully working "<< q.lastError().text();
+}
+//----------------------------//
+//----------------------------//
+#include "QCheckBox"
+void UsersView::on_newButton_clicked() {
+    UserDTO d(this);
+    auto adminCheckBox = d.getAdminCheckBox();
+    adminCheckBox->setChecked(false);
+    adminCheckBox->setEnabled(false);
+    if (d.exec() == QDialog::Rejected) {
+      return;
+    }
+    UserDataObject admin = d.getAdmin();
     QSqlQuery q(_dbM->db());
-    qDebug()<<"Going to update "<<"Name: " << user.getName()
-           <<" -- "<<"Email: "<< user.getEmail()
-          << "Phone: " << user.getPhone();
-
-    q.exec(QString("UPDATE customer SET name='%1',email='%2', "
-                   "phone='%3' "
-                   "WHERE email='%4'")
-               .arg(user.getName())
-               .arg(user.getEmail())
-               .arg(user.getPhone())
-               .arg(user.getEmail())
-           );
-    qDebug() << "****************** error : >> " << q.lastError().text();
+    q.exec(
+        QString("INSERT INTO customer"
+                "(name, phone, email, password) VALUES ('%1', '%2', '%3', '%4')")
+            .arg(admin.getName())
+            .arg(admin.getPhone())
+            .arg(admin.getEmail())
+            .arg(_dbM->getHash(admin.getPassword())));
 
 }
 //----------------------------//
 //----------------------------//
-void UsersView::on_newButton_clicked() {}
-//-------------------------
-void UsersView::on_deleteButton_clicked() {}
+void UsersView::on_deleteButton_clicked() {
+  if (!user.getEmail().isEmpty()) {
+    QMessageBox::StandardButton answer;
+    answer = QMessageBox::warning(this, tr("Are you sure"),
+                                  tr("This operation cannot be undo .\n"
+                                     "Do you want to continue?"),
+                                  QMessageBox::Yes | QMessageBox::No);
 
+    if (answer == QMessageBox::Yes) {
+      QSqlQuery query;
+      qDebug() << "output "
+               << query.exec(QString("DELETE FROM customer "
+                                     "WHERE email = '%1' ")
+                                 .arg(user.getEmail()));
+      qDebug() << "Error: " << query.lastError().text();
+
+      userModel->updateModel();
+
+      if (query.lastError().text().size() > 1) {
+        QMessageBox::warning(
+            this, tr("Error .."),
+            tr("Register cannot be deleted it has some dependencies.\n"
+               "Press  to continue?"),
+            QMessageBox::Ok);
+      }
+    }
+  }
+}

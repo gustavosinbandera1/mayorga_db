@@ -153,7 +153,7 @@ void MainWindow::on_tabWidget_tabBarClicked(int index) {
      // productsView->updateModel();
       break;
     case TAB_NAME::USERS:
-     //usersView->updateUserModel();
+     usersView->updateModel();
       break;
     case TAB_NAME::ORDERS:
       ordersView->updateOrderModel();
