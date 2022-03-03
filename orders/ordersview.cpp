@@ -22,12 +22,14 @@ OrdersView::OrdersView(DbManager *dbm, QWidget *parent)
       QAbstractItemView::NoEditTriggers);
   ui->ordersTableView->reset();
 }
-//---------------------
+//----------------------//
+//----------------------//
 OrdersView::~OrdersView() {
   qDebug() << "Destroying OrdersView";
   delete ui;
 }
-//---------------------
+//----------------------//
+//----------------------//
 void OrdersView::updateOrderModel() {
     if (orderModel != nullptr) {
       delete orderModel;
@@ -35,13 +37,15 @@ void OrdersView::updateOrderModel() {
     }
     sendQuery();
 }
-//---------------------
+//----------------------//
+//----------------------//
 void OrdersView::on_ordersTableView_clicked(const QModelIndex &index) {
     int col = index.column();
     int row = index.row();
 
 }
-//----------------------
+//----------------------//
+//----------------------//
 void OrdersView::sendQuery()
 {
     QSqlQuery query;

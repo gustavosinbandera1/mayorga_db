@@ -64,8 +64,9 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
 
   setWindowTitle(title);
 }
-//-----------------------------------
-QList<DTODetails> DetailsDialog::orderItems()  {
+//----------------------//
+//----------------------//
+QList<DTODetails> DetailsDialog::orderItems() {
   QList<DTODetails> _orderList;
   for (int row = 0; row < _items.count(); ++row) {
     DTODetails item;
@@ -82,29 +83,31 @@ QList<DTODetails> DetailsDialog::orderItems()  {
     int total = itemsTable->item(row, 3)->data(Qt::DisplayRole).toInt();
     item.purchase = total;
 
-    qDebug()<<">???????????????>>>"<<  itemsTable->item(row,4)->data(Qt::DisplayRole).toInt();
-     item.sku = itemsTable->item(row,4)->data(Qt::DisplayRole).toInt();
-    if (item.quantity > 0){
-        _orderList.append(item);
+    item.sku = itemsTable->item(row, 4)->data(Qt::DisplayRole).toInt();
+    if (item.quantity > 0) {
+      _orderList.append(item);
     }
   }
-  if(_orderList.count()> 0)
-      isEmpty = false;
+  if (_orderList.count() > 0) isEmpty = false;
   return _orderList;
 }
 
-//---------------------
+//----------------------//
+//----------------------//
 QString DetailsDialog::getSenderName() const { return nameEdit->text(); }
-//---------------------
+//----------------------//
+//----------------------//
 QString DetailsDialog::getSenderAddress() const {
   return addressEdit->toPlainText();
 }
-//-----------------------------------
+//----------------------//
+//----------------------//
 QString DetailsDialog::getPaymentMethod() const {
-    return paymentChoice->currentText();
+  return paymentChoice->currentText();
 }
 
-//---------------------
+//----------------------//
+//----------------------//
 void DetailsDialog::verify() {
   if (!nameEdit->text().isEmpty() && !addressEdit->toPlainText().isEmpty()) {
     accept();
@@ -120,7 +123,8 @@ void DetailsDialog::verify() {
 
   if (answer == QMessageBox::Yes) reject();
 }
-//-----------------------------------
+//----------------------//
+//----------------------//
 void DetailsDialog::setupItemsTable() {
   QString command = QString("SELECT name,price,sku FROM %1 ").arg("products");
   QSqlQuery qry;  //(_dbM->db());
@@ -129,17 +133,17 @@ void DetailsDialog::setupItemsTable() {
 
   DTODetails tmpDTO;
   while (qry.next()) {
-      tmpDTO.sku = qry.record().value("sku").toInt();
-      tmpDTO.productName = qry.record().value("name").toString();
-      tmpDTO.price = qry.record().value("price").toInt();
-      _items.push_back(tmpDTO);
+    tmpDTO.sku = qry.record().value("sku").toInt();
+    tmpDTO.productName = qry.record().value("name").toString();
+    tmpDTO.price = qry.record().value("price").toInt();
+    _items.push_back(tmpDTO);
   }
 
   itemsTable = new QTableWidget(_items.count(), 5, this);
 
   itemsTable->setItemDelegateForColumn(1, quantityDelegate);
   itemsTable->setHorizontalHeaderLabels(
-      {"Product", "Quantity", "Price", "Total","sku"});
+      {"Product", "Quantity", "Price", "Total", "sku"});
 
   for (int row = 0; row < _items.count(); ++row) {
     QTableWidgetItem *name = new QTableWidgetItem(_items[row].productName);
@@ -159,7 +163,8 @@ void DetailsDialog::setupItemsTable() {
     itemsTable->setItem(row, 3, totalPrice);
     totalPrice->setFlags(totalPrice->flags() ^ Qt::ItemIsEditable);
 
-    QTableWidgetItem *sku = new QTableWidgetItem(QString::number(_items[row].sku));
+    QTableWidgetItem *sku =
+        new QTableWidgetItem(QString::number(_items[row].sku));
     itemsTable->setItem(row, 4, sku);
     sku->setFlags(sku->flags() ^ Qt::ItemIsEditable);
 
@@ -168,7 +173,8 @@ void DetailsDialog::setupItemsTable() {
     itemsTable->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   }
 }
-//---------------------
+//----------------------//
+//----------------------//
 void DetailsDialog::on_table_itemChanged(QTableWidgetItem *item) {
   if (item->column() == 1) {
     int quantity = itemsTable->item(item->row(), 1)->text().toInt();
@@ -178,7 +184,8 @@ void DetailsDialog::on_table_itemChanged(QTableWidgetItem *item) {
     itemsTable->item(item->row(), 3)->setText(QString::number(total));
   }
 }
-//-----------------------------------
+//----------------------//
+//----------------------//
 void DetailsDialog::on_actionSave_triggered() {
   qDebug() << "Action: "
            << "on_actionSave_triggered";
