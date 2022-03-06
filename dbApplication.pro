@@ -34,6 +34,7 @@ SOURCES += \
     address/addressdto.cpp \
     address/addressview.cpp \
    # administrators/userDTO.cpp \
+    databaseManager/qsqlconnectiondialog.cpp \
     orders/loadDetailsDialog.cpp \
     orders/orderdetailview.cpp \
     orderviewer.cpp \
@@ -60,6 +61,7 @@ HEADERS += \
     address/addressview.h \
     administrators/ui_registeradmindialog \
     administrators/userDTO.h \
+    databaseManager/qsqlconnectiondialog.h \
     orders/loadDetailsDialog.h \
     orders/orderdetailview.h \
     orderviewer.h \
@@ -84,6 +86,7 @@ FORMS += \
     address/addressdto.ui \
     address/addressview.ui \
     #administrators/userDTO.ui \
+    databaseManager/qsqlconnectiondialog.ui \
     login/login.ui \
     mainwindow.ui \
     orders/loadDetailsDialog.ui \
@@ -108,6 +111,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 #    tableStructure.sql
 
 DISTFILES += \
+    Medize.qss \
     initialData.sql \
     tableStructure.sql
 

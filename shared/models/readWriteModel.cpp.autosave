@@ -41,7 +41,7 @@ int ReadWriteModel::rowCount(const QModelIndex &parent) const {
   if (parent.isValid()) return 0;
   return model->rowCount();
 }
-//-------------------
+//------------------- 
 int ReadWriteModel::columnCount(const QModelIndex &parent) const {
   if (parent.isValid()) return 0;
   return model->columnCount();

@@ -51,8 +51,6 @@ class QueryModel : public QAbstractTableModel {
   DbManager *_dbM;
   QStringList _headers;
   QSqlQueryModel *_model;
-
-  QSqlTableModel *modelT;
   QSqlQuery lastQuery;
   int numAvailableHeaders;
 };

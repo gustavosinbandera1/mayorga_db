@@ -5,6 +5,7 @@
 #include <QAbstractTableModel>
 #include <QSqlRelationalTableModel>
 #include <QSqlTableModel>
+#include <QTimer>
 
 #include "dbmanager.h"
 
@@ -13,17 +14,18 @@ class ReadWriteModel : public QAbstractTableModel {
 
  public:
   explicit ReadWriteModel(DbManager *dbm, QString table, bool relational,
-                       QObject *parent = nullptr);
+                          QObject *parent = nullptr);
 
   QSqlTableModel *updateModel();
-  QSqlTableModel *getModel() {return model;}
+  QSqlTableModel *getModel() { return model; }
   QVariant headerData(int section, Qt::Orientation orientation,
                       int role = Qt::DisplayRole) const override;
 
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
   int columnCount(const QModelIndex &parent = QModelIndex()) const override;
-  //bool setData(const QModelIndex &index, const QVariant &value, int role);
+
+  // bool setData(const QModelIndex &index, const QVariant &value, int role);
 
   QVariant data(const QModelIndex &index,
                 int role = Qt::DisplayRole) const override;
@@ -32,14 +34,17 @@ class ReadWriteModel : public QAbstractTableModel {
   void setForeignHeaders(QStringList &&headers);
   void setRelation(int foreignColumn, QString foreignTable, QString foreignKey,
                    QString columnToRender);
+
+ private slots:
+  void timerHit();
+
  private:
   DbManager *_dbM;
   QSqlTableModel *model;
   QString _table;
   QStringList headers;
 
-  // QAbstractItemModel interface
-
+  QTimer *timer;
 };
 
 #endif  // CUSTOMTABLEMODEL_H
