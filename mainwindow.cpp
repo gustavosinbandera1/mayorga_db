@@ -36,7 +36,7 @@ MainWindow::MainWindow(DbManager *dbM, QWidget *parent)
   if (UserData::isAdmin) {
     ui->menuDatabase->setEnabled(true);
   } else {
-    ui->menuDatabase->setEnabled(false);
+    ui->menuDatabase->setEnabled(true);
   }
   initTabWidget();
   productsView->updateModel();

@@ -104,7 +104,8 @@ void UsersView::on_newButton_clicked() {
              .arg(admin.getName())
              .arg(admin.getPhone())
              .arg(admin.getEmail())
-             .arg(_dbM->getHash(admin.getPassword())));
+             .arg(_dbM->getHash(admin.getPassword()))
+             .arg(admin.getRole()));
 }
 //----------------------------//
 //----------------------------//

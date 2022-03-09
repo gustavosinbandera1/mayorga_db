@@ -9,6 +9,8 @@ UserDTO::UserDTO(QWidget *parent) : QDialog(parent), ui(new Ui::UserDTO) {
   ui->setupUi(this);
   ui->passwordLineEdit->setEchoMode(QLineEdit::Password);
   ui->repeatPasswordLineEdit->setEchoMode(QLineEdit::Password);
+
+  ui->roleComboBox->addItems({"administrator", "customer"});
 }
 //----------------------------//
 //----------------------------//
@@ -32,7 +34,7 @@ void UserDTO::on_buttonBox_accepted() {
   user.setEmail(ui->emailLineEdit->text());
   user.setName(ui->userLineEdit->text());
   user.setPassword(ui->passwordLineEdit->text());
-  // user.setRole(ui->roleLineEdit->text());
+  user.setRole(ui->roleComboBox->currentText());
 
   if (user.getPassword() != ui->repeatPasswordLineEdit->text()) {
     QMessageBox::critical(this, "Error", "passowrd mismatch");

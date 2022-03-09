@@ -4,8 +4,6 @@
 #include "readWriteModel.h"
 #include "ui_orderdetailview.h"
 
-
-
 OrderDetailView::OrderDetailView(DbManager *dbm, QWidget *parent)
     : QWidget(parent), ui(new Ui::OrderDetailView) {
   ui->setupUi(this);
@@ -41,10 +39,11 @@ void OrderDetailView::updateOrderDetailModel() {
 void OrderDetailView::sendQuery() {
   QSqlQuery query;
   query.prepare(
-      "SELECT num_detail, fk_order_id,fk_product_sku, name from order_detail "
+      "SELECT num_detail, fk_order_id,fk_product_sku, name, quantity from "
+      "order_detail "
       "JOIN products ON order_detail.fk_product_sku = products.sku");
 
   _detailModel->setQuery(query);
-  _detailModel->setHeaders({"Id", "Order Id", "Sku", "Name"});
+  _detailModel->setHeaders({"Id", "Order Id", "Sku", "Name", "Quantity"});
   ui->orderDetailTableView->setModel(_detailModel);
 }
