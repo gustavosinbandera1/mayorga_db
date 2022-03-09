@@ -65,11 +65,5 @@ int main(int argc, char *argv[]) {
   if (QSqlDatabase::connectionNames().isEmpty())
     QMetaObject::invokeMethod(&browser, "addConnection", Qt::QueuedConnection);
 
-  ///////////////////////////
-  //   OrderForm form;
-  //   form.resize(640, 480);
-  //   form.createSample();
-  //   form.show();
-
   return a.exec();
 }

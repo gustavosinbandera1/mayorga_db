@@ -2,6 +2,7 @@
 #define ORDERSVIEW_H
 
 #include <QWidget>
+
 #include "dbmanager.h"
 #include "readWriteModel.h"
 
@@ -14,17 +15,17 @@ class OrdersView : public QWidget {
   Q_OBJECT
 
  public:
-  explicit OrdersView(DbManager* dbm, QWidget *parent = nullptr);
+  explicit OrdersView(DbManager *dbm, QWidget *parent = nullptr);
   ~OrdersView();
-    void updateOrderModel();
-    void updateOrderRModel();
+  void updateOrderModel();
+  // void updateOrderRModel();
 
-private slots:
-    void on_ordersTableView_clicked(const QModelIndex &index);
+ private slots:
+  void on_ordersTableView_clicked(const QModelIndex &index);
 
-    void on_ordersTableView_doubleClicked(const QModelIndex &index);
+  void on_ordersTableView_doubleClicked(const QModelIndex &index);
 
-private:
+ private:
   Ui::OrdersView *ui;
   QueryModel *orderModel;
   DbManager *_dbM;

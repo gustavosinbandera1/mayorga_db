@@ -1,12 +1,16 @@
-#include <queryModel.h>
-#include <QDebug>
 #include "ordersview.h"
+
+#include <queryModel.h>
+
+#include <QDebug>
+
+#include "orderviewer.h"
 #include "ui_ordersview.h"
 
 OrdersView::OrdersView(DbManager *dbm, QWidget *parent)
     : QWidget(parent), ui(new Ui::OrdersView) {
   ui->setupUi(this);
-    _dbM = dbm;
+  _dbM = dbm;
   orderModel = new QueryModel(dbm, this);
   sendQuery();
 
@@ -17,8 +21,7 @@ OrdersView::OrdersView(DbManager *dbm, QWidget *parent)
   ui->ordersTableView->setSortingEnabled(true);
   ui->ordersTableView->sortByColumn(0, Qt::DescendingOrder);
 
-  ui->ordersTableView->setEditTriggers(
-      QAbstractItemView::NoEditTriggers);
+  ui->ordersTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
   ui->ordersTableView->reset();
 }
 //----------------------//
@@ -30,40 +33,40 @@ OrdersView::~OrdersView() {
 //----------------------//
 //----------------------//
 void OrdersView::updateOrderModel() {
-    if (orderModel != nullptr) {
-      delete orderModel;
-      orderModel = new QueryModel(_dbM, this);
-    }
-    sendQuery();
+  if (orderModel != nullptr) {
+    delete orderModel;
+    orderModel = new QueryModel(_dbM, this);
+  }
+  sendQuery();
 }
 //----------------------//
 //----------------------//
 void OrdersView::on_ordersTableView_clicked(const QModelIndex &index) {
-    int col = index.column();
-    int row = index.row();
-
+  int col = index.column();
+  int row = index.row();
+  qDebug() << "clicked .. " << col << " " << row;
 }
 //----------------------//
 //----------------------//
-void OrdersView::sendQuery()
-{
-    QSqlQuery query;
-    query.prepare(
-        "SELECT order_id, payment_type, name, email from orders "
-        "JOIN customer ON orders.fk_customer_id=customer.customer_id");
+void OrdersView::sendQuery() {
+  QSqlQuery query;
+  query.prepare(
+      "SELECT order_id, payment_type, name, email from orders "
+      "JOIN customer ON orders.fk_customer_id=customer.customer_id");
 
-    orderModel->setQuery(query);
-    orderModel->setHeaders({"order_id", "payment_type", "name", "email"});
-    ui->ordersTableView->setModel(orderModel);
+  orderModel->setQuery(query);
+  orderModel->setHeaders({"order_id", "payment_type", "name", "email"});
+  ui->ordersTableView->setModel(orderModel);
 }
 
-void OrdersView::on_ordersTableView_doubleClicked(const QModelIndex &index)
-{
-    int col = index.column();
-    int row = index.row();
-    auto reg = orderModel->getModel()->record(row);
-    QString order_id =  reg.value("order_id").toString();
-    qDebug()<<"OrderID: "<< order_id;
-
-
+void OrdersView::on_ordersTableView_doubleClicked(const QModelIndex &index) {
+  int col = index.column();
+  int row = index.row();
+  auto reg = orderModel->getModel()->record(row);
+  // QString order_id = reg.value("order_id").toString();
+  int orderID = reg.value("order_id").toInt();
+  // qDebug() << "Output: " << orderID << " -- " << order_id;
+  qDebug() << "OrderID: " << orderID;
+  OrderViewer *oViewer = new OrderViewer(_dbM, orderID, this);
+  oViewer->show();
 }

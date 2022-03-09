@@ -220,11 +220,13 @@ void OrderForm::saveItems(const QList<DTODetails> &orderItems, int orderId) {
     qDebug() << orderItems[i].sku;
     qDebug() << orderItems[i].productName;
     qDebug() << orderItems[i].price;
+    qDebug() << orderItems[i].purchase;
     qDebug() << orderId;
     qDebug() << "-----------------------------------------------------";
 
     q.prepare(
-        "INSERT INTO order_detail (fk_order_id, fk_product_sku, quantity, price) "
+        "INSERT INTO order_detail (fk_order_id, fk_product_sku, quantity, "
+        "price) "
         "VALUES ( :order_id, :product_sku, :quantity, :price)");
     q.bindValue(":order_id", orderId);
     q.bindValue(":product_sku", orderItems[i].sku);
