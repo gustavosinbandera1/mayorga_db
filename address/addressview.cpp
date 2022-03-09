@@ -106,12 +106,12 @@ void AddressView::sendQuery() {
   qDebug() << "error output " << query.lastError().text();
   addressModel->submit();
   addressModel->setQuery(query);
-  addressModel->setHeaders({"address_id", "city", "State", "Street Number",
-                            "address Type", "country ", "country_id",
-                            "zipcode"});
+  addressModel->setHeaders({"Address id", "City", "State", "Street Number",
+                            "address Type", "Country ", "Country id",
+                            "Zip code"});
   ui->addressTableView->setModel(addressModel);
-  ui->addressTableView->setColumnHidden(6, true);
-  ui->addressTableView->setColumnHidden(7, true);
+  // ui->addressTableView->setColumnHidden(6, true);
+  // ui->addressTableView->setColumnHidden(7, true);
 }
 //----------------------------
 void AddressView::on_streetNumberTextEdit_textChanged() {

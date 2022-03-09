@@ -63,7 +63,7 @@ QVariant ReadWriteModel::data(const QModelIndex &index, int role) const {
 
   switch (role) {
     case Qt::DisplayRole:
-      // if (row == 0 && col == 0) return QTime::currentTime().toString();
+      if (row == 0 && col == 0) return QTime::currentTime().toString();
 
       return model->index(index.row(), index.column()).data();
 
@@ -105,7 +105,6 @@ void ReadWriteModel::setHeaders(QStringList &&headers) {
 }
 //-------------------
 void ReadWriteModel::timerHit() {
-  // QModelIndex topLeft = createIndex(0, 0);
-  //  emit dataChanged(topLeft, topLeft);
-  //  qDebug() << "timer triggered!!";
+  QModelIndex topLeft = createIndex(0, 0);
+  emit dataChanged(topLeft, topLeft);
 }

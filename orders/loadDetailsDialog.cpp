@@ -13,37 +13,31 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
   nameLabel = new QLabel(tr("Name:"));
   addressLabel = new QLabel(tr("Address:"));
   addressLabel->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-
   nameEdit = new QLineEdit;
   nameEdit->setReadOnly(true);
   nameEdit->setText(UserData::userName);
-
   addressEdit = new QTextEdit;
-
   paymentChoice = new QComboBox();
   paymentChoice->addItems({"visa", "mastercard", "cash"});
 
   QSqlQuery qry(_dbM->db());
-
-  qDebug() << "STATUS--->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ";
-
-  //  qry.prepare(
-  //      "SELECT address_id, city, state, street_number, "
-  //      "address_type "
-  //      "from customer_address "
-  //      "JOIN customer ON customer_address.fk_customer_id=customer.customer_id
-  //      " "JOIN address ON customer_address.fk_address_id=address.address_id "
-
-  //  );
-  // qry.bindValue(":id", UserData::userId);
-
   qry.prepare(
-      "SELECT * "
-      "from customer_address ");
+      "SELECT address_id, city, state, street_number, "
+      "address_type "
+      "from customer_address "
+      "JOIN customer ON customer_address.fk_customer_id=customer.customer_id "
+      "JOIN address ON customer_address.fk_address_id=address.address_id "
+      "WHERE customer_address.fk_customer_id=:id"
+
+  );
+  qry.bindValue(":id", UserData::userId);
+  qry.exec();
 
   qDebug() << "error output " << qry.lastError().text();
 
   qDebug() << "Size: " << qry.size();
+  qDebug() << "--> " << qry.next();
+
   qDebug() << "DATA: " << qry.record().value("street_number").toString();
   addressEdit->setPlainText(qry.record().value("street_number").toString());
   //}
@@ -198,4 +192,22 @@ void DetailsDialog::on_table_itemChanged(QTableWidgetItem *item) {
 void DetailsDialog::on_actionSave_triggered() {
   qDebug() << "Action: "
            << "on_actionSave_triggered";
+}
+
+void DetailsDialog::sendQuery() {
+  QSqlQuery query;
+  query.prepare(
+      "SELECT address_id, city, state, street_number, "
+      "address_type , country_name, country_id , zipcode "
+      "from customer_address "
+      "JOIN customer ON customer_address.fk_customer_id=customer.customer_id "
+      "JOIN address ON customer_address.fk_address_id=address.address_id "
+      "JOIN country ON address.fk_country_id=country.country_id "
+      "WHERE customer_address.fk_customer_id=:id");
+  query.bindValue(":id", UserData::userId);
+
+  qDebug() << "error output " << query.lastError().text();
+
+  // ui->addressTableView->setColumnHidden(6, true);
+  // ui->addressTableView->setColumnHidden(7, true);
 }

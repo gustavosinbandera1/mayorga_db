@@ -46,6 +46,8 @@ class DetailsDialog : public QDialog {
   QString getPaymentMethod() const;
   bool isEmpty;
 
+  void sendQuery();
+
  private:
   void setupItemsTable();
 

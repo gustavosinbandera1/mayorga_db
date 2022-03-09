@@ -19,7 +19,7 @@ ProductsView::ProductsView(DbManager *dbm, QWidget *parent)
   SpinBoxDelegate = new SpinboxDelegate(this);
   lineDelegate = new LineEditorDelegate(this);
 
-  ui->productsView->setModel(productModel->getModel());
+  ui->productsView->setModel(productModel);
   productModel->setHeaders({"sku", "name", "description", "price", "weight"});
 
   ui->productsView->horizontalHeader()->setSectionResizeMode(
@@ -44,8 +44,8 @@ ProductsView::~ProductsView() {
 //----------------------------------------------------//
 //----------------------------------------------------//
 void ProductsView::updateModel() {
-  ui->productsView->setModel(productModel->getModel());
-  productModel->setHeaders({"sku", "name", "description", "price", "weight"});
+  ui->productsView->setModel(productModel);
+  productModel->setHeaders({"Sku", "Name", "Description", "Price", "Weight"});
 }
 //----------------------------------------------------//
 //----------------------------------------------------//

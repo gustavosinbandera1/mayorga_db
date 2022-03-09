@@ -14,9 +14,9 @@ UsersView::UsersView(DbManager* dbm, QWidget* parent)
   _dbM = dbm;
   userModel = new ReadWriteModel(dbm, "customer", false, this);
   lineDelegate = new LineEditorDelegate(this);
-  ui->userTableView->setModel(userModel->getModel());
+  ui->userTableView->setModel(userModel);
   userModel->setHeaders(
-      {"Customer id", "Name", "Email", "Phone", "Password", "role"});
+      {"Customer id", "Name", "Email", "Phone", "Password", "Role"});
 
   ui->userTableView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::Stretch);
@@ -42,9 +42,9 @@ void UsersView::updateModel() {
     delete userModel;
     userModel = new ReadWriteModel(_dbM, "customer", false, this);
   }
-  ui->userTableView->setModel(userModel->getModel());
+  ui->userTableView->setModel(userModel);
   userModel->setHeaders(
-      {"Customer Id", "Name", "Email", "Phone", "Password", "role"});
+      {"Customer Id", "Name", "Email", "Phone", "Password", "Role"});
 }
 //----------------------------//
 //----------------------------//
