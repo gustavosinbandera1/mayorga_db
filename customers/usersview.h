@@ -2,9 +2,10 @@
 #define USERSVIEW_H
 
 #include <QWidget>
-#include "readWriteModel.h"
+
 #include "dbmanager.h"
-#include "userDTO.h"
+#include "readWriteModel.h"
+#include "userdto.h"
 
 class LineEditorDelegate;
 namespace Ui {
@@ -17,7 +18,7 @@ class UsersView : public QWidget {
  public:
   explicit UsersView(DbManager *dbm, QWidget *parent = nullptr);
   ~UsersView();
-    void updateModel();
+  void updateModel();
  private slots:
   void on_userTableView_clicked(const QModelIndex &index);
 
@@ -26,13 +27,13 @@ class UsersView : public QWidget {
   void on_deleteButton_clicked();
   void on_updateButton_clicked();
 
-private:
+ private:
   Ui::UsersView *ui;
   DbManager *_dbM;
   ReadWriteModel *userModel;
   LineEditorDelegate *lineDelegate;
   UserDataObject user;
-
+  QStringList headers;
 };
 
 #endif  // USERSVIEW_H

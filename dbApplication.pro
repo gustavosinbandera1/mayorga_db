@@ -21,23 +21,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 INCLUDEPATH += $$PWD/databaseManager
+INCLUDEPATH += $$PWD/sql
 INCLUDEPATH += $$PWD/products
 INCLUDEPATH += $$PWD/customers
 INCLUDEPATH += $$PWD/login
 INCLUDEPATH += $$PWD/orders
 INCLUDEPATH += $$PWD/address
+INCLUDEPATH += $$PWD/client
 INCLUDEPATH += $$PWD/shared/delegates
 INCLUDEPATH += $$PWD/shared/models
+INCLUDEPATH += $$PWD/shared/widgets
 INCLUDEPATH += $$PWD/administrators
 
 SOURCES += \
     address/addressdto.cpp \
     address/addressview.cpp \
    # administrators/userDTO.cpp \
+    client/browser.cpp \
+    customers/userdto.cpp \
     databaseManager/qsqlconnectiondialog.cpp \
     orders/loadDetailsDialog.cpp \
     orders/orderdetailview.cpp \
-    orderviewer.cpp \
+    #orderviewer.cpp \
     shared/delegates/quantitytotaldelegate.cpp \
     shared/delegates/comboBoxDelegate.cpp \
     databaseManager/dbmanager.cpp \
@@ -48,23 +53,25 @@ SOURCES += \
     orders/orderform.cpp \
     orders/ordersview.cpp \
     customers/usersview.cpp \
-    customers/userDTO.cpp \
     products/productsdto.cpp \
     products/productsview.cpp \
     shared/delegates/spinboxDelegate.cpp \
     shared/models/queryModel.cpp \
-    shared/models/readWriteModel.cpp
+    shared/models/readWriteModel.cpp \
+    shared/widgets/connectionwidget.cpp
 
 
 HEADERS += \
     address/addressdto.h \
     address/addressview.h \
     administrators/ui_registeradmindialog \
-    administrators/userDTO.h \
+    #administrators/userDTO.h \
+    client/browser.h \
+    customers/userdto.h \
     databaseManager/qsqlconnectiondialog.h \
     orders/loadDetailsDialog.h \
     orders/orderdetailview.h \
-    orderviewer.h \
+    #orderviewer.h \
     shared/delegates/quantitytotaldelegate.h \
     shared/delegates/comboBoxDelegate.h \
     databaseManager/db_config.h \
@@ -75,17 +82,19 @@ HEADERS += \
     orders/orderform.h \
     orders/ordersview.h \
     customers/usersview.h \
-    customers/userDTO.h \
     products/productsdto.h \
     products/productsview.h \
     shared/delegates/spinboxDelegate.h \
     shared/models/queryModel.h \
-    shared/models/readWriteModel.h
+    shared/models/readWriteModel.h \
+    shared/widgets/connectionwidget.h
 
 FORMS += \
     address/addressdto.ui \
     address/addressview.ui \
     #administrators/userDTO.ui \
+    client/browserwidget.ui \
+    customers/userdto.ui \
     databaseManager/qsqlconnectiondialog.ui \
     login/login.ui \
     mainwindow.ui \
@@ -93,28 +102,32 @@ FORMS += \
     orders/orderdetailview.ui \
     orders/orderform.ui \
     orders/ordersview.ui \
-    orders/orderviewer.ui \
+    #orders/orderviewer.ui \
     orderviewer.ui \
     products/productsdto.ui \
     products/productsview.ui \
     userscontrolform.ui \
-    customers/usersview.ui \
-    customers/userDTO.ui
+    customers/usersview.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-#DISTFILES += \
-#    initialData.sql \
-#    tableStructure.sql
 
 DISTFILES += \
+    Combinear.qss \
     Medize.qss \
     initialData.sql \
+    initialData.sql \
+    sql/initialData.sql \
+    sql/tableStructure.sql \
     tableStructure.sql
 
 
-
+copydata.commands = $(COPY_DIR) $$PWD/sql $$OUT_PWD
+first.depends = $(first) copydata
+export(first.depends)
+export(copydata.commands)
+QMAKE_EXTRA_TARGETS += first copydata
 

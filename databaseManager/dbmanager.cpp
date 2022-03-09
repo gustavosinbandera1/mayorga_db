@@ -1,5 +1,6 @@
 #include "dbmanager.h"
 
+#include <QApplication>
 #include <QCryptographicHash>
 
 #define DRIVER "QPSQL"
@@ -30,14 +31,19 @@ DbManager::DbManager(const QString& host, const QString& username,
     return;
   }
 
-  ExecuteSqlScriptFile(
-      "/home/gustavo/QT-PROJECTS/dbApplication/tableStructure.sql");
-  ExecuteSqlScriptFile(
-      "/home/gustavo/QT-PROJECTS/dbApplication/initialData.sql");
-//  addUser("user-1", "3007433507", "g@gmail.com", getHash("1234"),
-//          "administrator");
-//  addUser("user-1", "3007433507", "n@gmail.com", getHash("1234"), "customer");
-  // removeUser("gustavosinbandera123@gmail.com","administrator");
+  QString mainPath = QApplication::applicationDirPath();
+
+  qDebug() << "Dir: " << mainPath + "/sql/tableStructure.sql";
+  ExecuteSqlScriptFile(mainPath + +"/sql/tableStructure.sql");
+  ExecuteSqlScriptFile(mainPath + "/sql/initialData.sql");
+
+  addUser("user-1", "3007433537", "g@gmail.com", getHash("1234"),
+          "administrator");
+  addUser("user-2", "3007433536", "n@gmail.com", getHash("1234"), "customer");
+
+  addUser("user-3", "3007433538", "gustavosinbandera1234@gmail.com",
+          getHash("1234"), "administrator");
+  removeUser("gustavosinbandera1234@gmail.com");
 }
 //---------------------
 /**
@@ -58,7 +64,8 @@ QString DbManager::getHash(QString data) {
  * @param email
  * @return
  */
-QPair<QString, int> DbManager::getPasswordFromTable(const QString& table, const QString& email) {
+QPair<QString, int> DbManager::getPasswordFromTable(const QString& table,
+                                                    const QString& email) {
   QString command =
       QString("SELECT * FROM %1  WHERE email LIKE '%2' ").arg(table, email);
   QSqlQuery qry(m_db);
@@ -66,11 +73,13 @@ QPair<QString, int> DbManager::getPasswordFromTable(const QString& table, const 
   qry.exec();
   if (qry.first()) {
     qDebug() << "Size: " << qry.size();
+
     qDebug() << " Good Loogd Customer... " << qry.value("email").toString();
-    return QPair<QString,int>(qry.value("password").toString(), qry.value("customer_id").toInt());
+    return QPair<QString, int>(qry.value("password").toString(),
+                               qry.value("customer_id").toInt());
   }
 
-  return QPair<QString,int>("",-1);
+  return QPair<QString, int>("", -1);
 }
 //---------------------
 /**
@@ -93,20 +102,21 @@ DbManager::~DbManager() {
  */
 bool DbManager::addUser(const QString& name, const QString& phone,
                         const QString& email, const QString& password,
-                        const QString& rol) {
+                        const QString& role) {
   bool success = false;
 
   if (!email.isEmpty() && !password.isEmpty()) {
-    QString c = QString("INSERT INTO %1 ").arg(rol);
+    QString c = QString("INSERT INTO customer ");
 
     QSqlQuery query;
     query.prepare(c +
-                  " (name, phone,password, email)"
-                  "VALUES (?, ?, ?, ?) ON CONFLICT (email) DO NOTHING");
+                  " (name, phone,password, email,role)"
+                  "VALUES (?, ?, ?, ?, ?) ON CONFLICT (email) DO NOTHING");
     query.bindValue(0, name);
     query.bindValue(1, phone);
     query.bindValue(2, password);
     query.bindValue(3, email);
+    query.bindValue(4, role);
 
     if (query.exec())
       success = true;
@@ -123,12 +133,12 @@ bool DbManager::addUser(const QString& name, const QString& phone,
  * @param email
  * @return
  */
-bool DbManager::removeUser(const QString& email, const QString& rol) {
+bool DbManager::removeUser(const QString& email) {
   bool success = false;
   QString command =
-      QString("DELETE FROM %1  WHERE email LIKE '%2' ").arg(rol, email);
+      QString("DELETE FROM customer  WHERE email LIKE '%1' ").arg(email);
 
-  if (userExists(email, rol)) {
+  if (userExists(email)) {
     QSqlQuery query;
     query.prepare(command);
     success = query.exec();
@@ -148,10 +158,10 @@ bool DbManager::removeUser(const QString& email, const QString& rol) {
  * @param username
  * @return
  */
-bool DbManager::userExists(const QString& email, const QString& rol) const {
+bool DbManager::userExists(const QString& email) const {
   bool exists = false;
   QString command =
-      QString("SELECT email FROM %1  WHERE email LIKE '%2' ").arg(rol, email);
+      QString("SELECT email FROM customer  WHERE email LIKE '%1' ").arg(email);
 
   QSqlQuery query(m_db);
   query.prepare(command);
@@ -214,7 +224,7 @@ int DbManager::ExecuteSqlScriptFile(const QString& fileName) {
  * @return
  */
 bool DbManager::checkUserCredentials(QString email, QString pwd) {
-    (void)email;
-    (void)pwd;
-    return false;
+  (void)email;
+  (void)pwd;
+  return false;
 }

@@ -1,5 +1,7 @@
 #include "productsdto.h"
+
 #include <QDebug>
+
 #include "ui_productsdto.h"
 
 ProductsDTO::ProductsDTO(QWidget *parent)
@@ -8,18 +10,15 @@ ProductsDTO::ProductsDTO(QWidget *parent)
 }
 //---------------------
 ProductsDTO::~ProductsDTO() {
-    qInfo()<<"Releasing ProductsDTO";
-    delete ui;
-
+  qInfo() << "Releasing ProductsDTO";
+  delete ui;
 }
 
-void ProductsDTO::updateForm()
-{
-    ui->nameLineEdit->setText(product.getName());
-    ui->priceLineEdit->setText(product.getPrice());
-    ui->weightLineEdit->setText(product.getWeight());
-    ui->descLineEdit->setText(product.getDescription());
-
+void ProductsDTO::updateForm() {
+  ui->nameLineEdit->setText(product.getName());
+  ui->priceLineEdit->setText(product.getPrice());
+  ui->weightLineEdit->setText(product.getWeight());
+  ui->descLineEdit->setText(product.getDescription());
 }
 //---------------------
 void ProductsDTO::on_buttonBox_accepted() {
@@ -29,7 +28,6 @@ void ProductsDTO::on_buttonBox_accepted() {
   product.setPrice(ui->priceLineEdit->text());
   product.setWeight(ui->weightLineEdit->text());
   accept();
-
 }
 //---------------------
 void ProductsDTO::on_buttonBox_rejected() { reject(); }

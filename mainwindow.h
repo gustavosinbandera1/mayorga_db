@@ -16,45 +16,47 @@ namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
+class MainWindow : public QMainWindow {
+  Q_OBJECT
 
-public:
-    explicit MainWindow(DbManager *dbM, QWidget *parent = nullptr);
-    ~MainWindow();
+ public:
+  explicit MainWindow(DbManager *dbM, QWidget *parent = nullptr);
+  ~MainWindow();
 
-private slots:
+ private slots:
 
-    void on_actionQuit_triggered();
+  void on_actionQuit_triggered();
 
-    void on_actionAbout_triggered();
+  void on_actionAbout_triggered();
 
-    void on_actionAdd_Products_triggered();
+  void on_actionAdd_Products_triggered();
 
-    void on_actionAdd_Users_triggered();
+  void on_actionAdd_Users_triggered();
 
-    void on_actionAdd_Address_triggered();
+  void on_actionAdd_Address_triggered();
 
+  void on_tabWidget_tabBarClicked(int index);
 
-    void on_tabWidget_tabBarClicked(int index);
+  void on_NewAddressOrder_clicked();
 
-    void on_NewAddressOrder_clicked();
+  // void on_action_search_triggered();
 
-private:
-    Ui::MainWindow *ui;
-    DbManager *_dbM;
-    ProductsView *productsView = nullptr;
-    UsersView *usersView = nullptr;
-    OrdersView *ordersView = nullptr;
-    OrderDetailView *orderDetailView = nullptr;
-    AddressView *addressView = nullptr;
-    OrderForm *orderForm = nullptr;
-    QString currentUser;
+ private:
+  Ui::MainWindow *ui;
+  DbManager *_dbM;
+  ProductsView *productsView = nullptr;
+  UsersView *usersView = nullptr;
+  OrdersView *ordersView = nullptr;
+  OrderDetailView *orderDetailView = nullptr;
+  AddressView *addressView = nullptr;
+  OrderForm *orderForm = nullptr;
+  // QString currentUser;
 
-    void releaseMemory(QObject* obj) {if(obj != nullptr) delete obj;}
-    void populateTab(QWidget* widget, QMdiArea *mdiArea);
-    void initTabWidget();
+  void releaseMemory(QObject *obj) {
+    if (obj != nullptr) delete obj;
+  }
+  void populateTab(QWidget *widget, QMdiArea *mdiArea);
+  void initTabWidget();
 };
 
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H

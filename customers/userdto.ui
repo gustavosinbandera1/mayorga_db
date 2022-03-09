@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>RegisterAdminDialog</class>
- <widget class="QDialog" name="RegisterAdminDialog">
+ <class>UserDTO</class>
+ <widget class="QDialog" name="UserDTO">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>354</height>
+    <height>381</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>300</width>
-    <height>325</height>
-   </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>300</width>
-    <height>354</height>
+    <height>381</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -27,11 +21,11 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <layout class="QVBoxLayout" name="verticalLayout_6">
+    <layout class="QVBoxLayout" name="verticalLayout_7">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="label_2">
          <property name="text">
           <string>User</string>
          </property>
@@ -43,9 +37,9 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="label_3">
          <property name="text">
           <string>Password</string>
          </property>
@@ -57,9 +51,9 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QLabel" name="label_3">
+        <widget class="QLabel" name="label_7">
          <property name="text">
           <string>repeat Password</string>
          </property>
@@ -99,11 +93,18 @@
       </layout>
      </item>
      <item>
-      <widget class="QCheckBox" name="adminCheckBox">
-       <property name="text">
-        <string>Add as an administrator</string>
-       </property>
-      </widget>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Role</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="roleComboBox"/>
+       </item>
+      </layout>
      </item>
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">

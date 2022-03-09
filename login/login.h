@@ -1,17 +1,17 @@
 #ifndef DIALOG_H
 #define DIALOG_H
 //#include <userDataObject.h>
-#include "userDTO.h"
 #include <QDialog>
 
 #include "dbmanager.h"
+#include "userdto.h"
 
 class UserData {
-public:
-static QString userName; //email
-static QString userEmail;
-static int userId;
-static bool isAdmin;
+ public:
+  static QString userName;  // email
+  static QString userEmail;
+  static int userId;
+  static bool isAdmin;
 };
 
 QT_BEGIN_NAMESPACE
@@ -24,7 +24,6 @@ class Login : public QDialog {
   Q_OBJECT
 
  public:
-    enum Type { USERS, ADMIN };
   /**
    * @brief Login
    * @param dbM database object
@@ -38,13 +37,6 @@ class Login : public QDialog {
    */
   QString getCurrentUser() { return currentUser.getEmail(); }
 
-  /**
-   * @brief getType return auth type
-   * @return
-   */
-  bool getType() { return mType; }
-
-
  private slots:
   /**
    * @brief on_buttonBox_accepted this slot is executed when accept button
@@ -55,16 +47,10 @@ class Login : public QDialog {
    * @brief on_buttonBox_rejected this slot close the whole app
    */
   void on_buttonBox_rejected();
-  /**
-   * @brief on_registerAdminButton_clicked to create new admin users
-   */
-  void on_registerAdminButton_clicked();
 
  private:
   Ui::Dialog *ui;
   DbManager *_dbM;
-  void isAdmin();
-  int mType;
   UserDataObject currentUser;
 };
 #endif  // DIALOG_H

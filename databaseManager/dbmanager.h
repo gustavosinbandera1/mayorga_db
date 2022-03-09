@@ -29,6 +29,8 @@ class DbManager {
   DbManager(const QString& host, const QString& username,
             const QString& password, const QString& database);
   QSqlDatabase& db() { return m_db; }
+
+  DbManager() {}
   /**
    * @brief Destructor
    *
@@ -50,14 +52,14 @@ class DbManager {
    * @param name - name of person to remove.
    * @return true - person removed successfully, false - person not removed
    */
-  bool removeUser(const QString& username, const QString& rol);
+  bool removeUser(const QString& username);
 
   /**
    * @brief Check if person of name "name" exists in db
    * @param name - name of person to check.
    * @return true - person exists, false - person does not exist
    */
-  bool userExists(const QString& email, const QString& rol) const;
+  bool userExists(const QString& email) const;
 
   /**
    * @brief Remove all persons from db
@@ -83,11 +85,12 @@ class DbManager {
 
   bool checkUserCredentials(QString email, QString pwd);
 
-  QPair<QString, int>  getPasswordFromTable(const QString& table, const QString& email);
+  QPair<QString, int> getPasswordFromTable(const QString& table,
+                                           const QString& email);
 
  private:
-  QSqlDatabase m_db;
   QString _host, _port, _user, _password, _database;
+  QSqlDatabase m_db;
 };
 
 #endif  // DBMANAGER_H

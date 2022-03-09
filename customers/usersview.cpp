@@ -4,8 +4,9 @@
 
 #include <QMessageBox>
 
+#include "QCheckBox"
 #include "ui_usersview.h"
-#include "userDTO.h"
+#include "userdto.h"
 
 UsersView::UsersView(DbManager* dbm, QWidget* parent)
     : QWidget(parent), ui(new Ui::UsersView) {
@@ -13,9 +14,9 @@ UsersView::UsersView(DbManager* dbm, QWidget* parent)
   _dbM = dbm;
   userModel = new ReadWriteModel(dbm, "customer", false, this);
   lineDelegate = new LineEditorDelegate(this);
-
-  ui->userTableView->setModel(userModel);
-  userModel->setHeaders({"Customer id", "Name", "Email", "Phone", "Password"});
+  ui->userTableView->setModel(userModel->getModel());
+  userModel->setHeaders(
+      {"Customer id", "Name", "Email", "Phone", "Password", "role"});
 
   ui->userTableView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::Stretch);
@@ -37,12 +38,13 @@ UsersView::~UsersView() {
 //----------------------------//
 //----------------------------//
 void UsersView::updateModel() {
-    if(userModel != nullptr){
-        delete userModel;
-        userModel = new ReadWriteModel(_dbM,"customer",false,this);
-    }
-  ui->userTableView->setModel(userModel);
-  userModel->setHeaders({"Customer Id", "Name", "Email", "Phone", "Password"});
+  if (userModel != nullptr) {
+    delete userModel;
+    userModel = new ReadWriteModel(_dbM, "customer", false, this);
+  }
+  ui->userTableView->setModel(userModel->getModel());
+  userModel->setHeaders(
+      {"Customer Id", "Name", "Email", "Phone", "Password", "role"});
 }
 //----------------------------//
 //----------------------------//
@@ -76,37 +78,33 @@ void UsersView::on_updateButton_clicked() {
   UserDataObject _user = uDTO->user;
   QSqlQuery q(_dbM->db());
 
-  qDebug()<<"searching .... "<< this->user.getEmail();
-  q.exec(QString("UPDATE customer SET name='%1', phone='%2', email='%3' WHERE email='%4' ")
-         .arg(_user.getName())
-         .arg(_user.getPhone())
-         .arg(_user.getEmail())
-         .arg(this->user.getEmail())
-         );
+  qDebug() << "searching .... " << this->user.getEmail();
+  q.exec(QString("UPDATE customer SET name='%1', phone='%2', email='%3' WHERE "
+                 "email='%4' ")
+             .arg(_user.getName())
+             .arg(_user.getPhone())
+             .arg(_user.getEmail())
+             .arg(this->user.getEmail()));
 
- qDebug()<<"Hopefully working "<< q.lastError().text();
+  qDebug() << "Hopefully working " << q.lastError().text();
 }
 //----------------------------//
 //----------------------------//
-#include "QCheckBox"
 void UsersView::on_newButton_clicked() {
-    UserDTO d(this);
-    auto adminCheckBox = d.getAdminCheckBox();
-    adminCheckBox->setChecked(false);
-    adminCheckBox->setEnabled(false);
-    if (d.exec() == QDialog::Rejected) {
-      return;
-    }
-    UserDataObject admin = d.getAdmin();
-    QSqlQuery q(_dbM->db());
-    q.exec(
-        QString("INSERT INTO customer"
-                "(name, phone, email, password) VALUES ('%1', '%2', '%3', '%4')")
-            .arg(admin.getName())
-            .arg(admin.getPhone())
-            .arg(admin.getEmail())
-            .arg(_dbM->getHash(admin.getPassword())));
+  UserDTO dto(this);
 
+  if (dto.exec() == QDialog::Rejected) {
+    return;
+  }
+  UserDataObject admin = dto.getUser();
+  QSqlQuery q(_dbM->db());
+  q.exec(QString("INSERT INTO customer"
+                 "(name, phone, email, password, role) VALUES ('%1', '%2', "
+                 "'%3', '%4', '%5')")
+             .arg(admin.getName())
+             .arg(admin.getPhone())
+             .arg(admin.getEmail())
+             .arg(_dbM->getHash(admin.getPassword())));
 }
 //----------------------------//
 //----------------------------//

@@ -48,37 +48,41 @@
 **
 ****************************************************************************/
 
-#ifndef QSQLCONNECTIONDIALOG_H
-#define QSQLCONNECTIONDIALOG_H
+#ifndef CONNECTIONWIDGET_H
+#define CONNECTIONWIDGET_H
 
-#include <QDialog>
-#include <QMessageBox>
+#include <QWidget>
 
-#include "ui_qsqlconnectiondialog.h"
+QT_FORWARD_DECLARE_CLASS(QTreeWidget)
+QT_FORWARD_DECLARE_CLASS(QTreeWidgetItem)
+QT_FORWARD_DECLARE_CLASS(QSqlDatabase)
+QT_FORWARD_DECLARE_CLASS(QMenu)
 
-class QSqlConnectionDialog : public QDialog {
-  Q_OBJECT
- public:
-  QSqlConnectionDialog(QWidget *parent = nullptr);
-  ~QSqlConnectionDialog();
+class ConnectionWidget: public QWidget
+{
+    Q_OBJECT
+public:
+    ConnectionWidget(QWidget *parent = nullptr);
+    virtual ~ConnectionWidget();
 
-  QString driverName() const;
-  QString databaseName() const;
-  QString userName() const;
-  QString password() const;
-  QString hostName() const;
-  int port() const;
-  bool useInMemoryDatabase() const;
+    QSqlDatabase currentDatabase() const;
 
- private slots:
-  void on_okButton_clicked();
-  void on_cancelButton_clicked() { reject(); }
-  void on_dbCheckBox_clicked() {
-    ui.connGroupBox->setEnabled(!ui.dbCheckBox->isChecked());
-  }
+signals:
+    void tableActivated(const QString &table);
+    void metaDataRequested(const QString &tableName);
 
- private:
-  Ui::QSqlConnectionDialogUi ui;
+public slots:
+    void refresh();
+    void showMetaData();
+    void on_tree_itemActivated(QTreeWidgetItem *item, int column);
+    void on_tree_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
+
+private:
+    void setActive(QTreeWidgetItem *);
+
+    QTreeWidget *tree;
+    QAction *metaDataAction;
+    QString activeDb;
 };
 
 #endif

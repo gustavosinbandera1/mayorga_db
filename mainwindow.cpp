@@ -1,20 +1,24 @@
 #include "mainwindow.h"
+
 #include <addressdto.h>
 #include <bits/unique_ptr.h>
-#include <ui_registeradmindialog.h>
+#include <orderdetailview.h>
+
 #include <QDate>
 #include <QMdiSubWindow>
 #include <QMessageBox>
 #include <QUuid>
-#include <orderdetailview.h>
+
 #include "addressview.h"
+#include "browser.h"
 #include "login.h"
 #include "orderform.h"
 #include "ordersview.h"
 #include "productsdto.h"
 #include "productsview.h"
-#include "userDTO.h"
 #include "ui_mainwindow.h"
+#include "ui_userdto.h"
+#include "userdto.h"
 #include "usersview.h"
 
 enum class TAB_NAME {
@@ -29,13 +33,10 @@ enum class TAB_NAME {
 MainWindow::MainWindow(DbManager *dbM, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), _dbM(dbM) {
   ui->setupUi(this);
-  Login *d = static_cast<Login *>(parent);
-  currentUser = d->getCurrentUser();
-
-  if (d->getType() == Login::ADMIN) {
+  if (UserData::isAdmin) {
     ui->menuDatabase->setEnabled(true);
   } else {
-    ui->menuDatabase->setEnabled(true);
+    ui->menuDatabase->setEnabled(false);
   }
   initTabWidget();
   productsView->updateModel();
@@ -77,13 +78,10 @@ void MainWindow::on_actionAdd_Products_triggered() {
 //---------------------
 void MainWindow::on_actionAdd_Users_triggered() {
   UserDTO d(this);
-  auto adminCheckBox = d.getAdminCheckBox();
-  adminCheckBox->setChecked(false);
-  adminCheckBox->setEnabled(true);
   if (d.exec() == QDialog::Rejected) {
     return;
   }
-  UserDataObject admin = d.getAdmin();
+  UserDataObject admin = d.getUser();
   QSqlQuery q(_dbM->db());
   q.exec(
       QString("INSERT INTO customer"
@@ -120,7 +118,6 @@ void MainWindow::on_actionAdd_Address_triggered() {
   q.bindValue(":address_id", lastInsertedId);
   q.bindValue(":dateTime", dateTime);
   q.exec();
-
 }
 //---------------------
 void MainWindow::populateTab(QWidget *widget, QMdiArea *mdiArea) {
@@ -150,16 +147,18 @@ void MainWindow::on_tabWidget_tabBarClicked(int index) {
   switch (type) {
     case TAB_NAME::PRODUCTS:
       qDebug() << "The user is called : " << UserData::userName;
-     // productsView->updateModel();
+      productsView->updateModel();
       break;
     case TAB_NAME::USERS:
-     usersView->updateModel();
+      usersView->updateModel();
       break;
     case TAB_NAME::ORDERS:
+      qDebug() << "Tab Orders..";
       ordersView->updateOrderModel();
       orderDetailView->updateOrderDetailModel();
       break;
     case TAB_NAME::ADDRESSES:
+      qDebug() << "Tab Addresses..";
       addressView->updateModel();
       break;
     case TAB_NAME::CREATE_ORDERS:
@@ -171,7 +170,5 @@ void MainWindow::on_tabWidget_tabBarClicked(int index) {
 }
 //---------------------
 void MainWindow::on_NewAddressOrder_clicked() {
-
-    on_actionAdd_Address_triggered();
+  on_actionAdd_Address_triggered();
 }
-//---------------------

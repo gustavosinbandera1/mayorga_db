@@ -19,17 +19,18 @@ ProductsView::ProductsView(DbManager *dbm, QWidget *parent)
   SpinBoxDelegate = new SpinboxDelegate(this);
   lineDelegate = new LineEditorDelegate(this);
 
-  
-  ui->productsView->setModel(productModel);
+  ui->productsView->setModel(productModel->getModel());
   productModel->setHeaders({"sku", "name", "description", "price", "weight"});
 
   ui->productsView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::Stretch);
   ui->productsView->horizontalHeader()->setVisible(true);
   ui->productsView->setAlternatingRowColors(true);
-  ui->productsView->setSortingEnabled(true);
+
+  ui->productsView->setEnabled(true);
   ui->productsView->sortByColumn(0, Qt::AscendingOrder);
-   ui->productsView->reset();
+  ui->productsView->setSortingEnabled(true);
+  ui->productsView->reset();
 
   // if(!UserData::isAdmin)
   // ui->productsView->setEditTriggers(QAbstractItemView::NoEditTriggers); //
@@ -43,7 +44,7 @@ ProductsView::~ProductsView() {
 //----------------------------------------------------//
 //----------------------------------------------------//
 void ProductsView::updateModel() {
-  ui->productsView->setModel(productModel);
+  ui->productsView->setModel(productModel->getModel());
   productModel->setHeaders({"sku", "name", "description", "price", "weight"});
 }
 //----------------------------------------------------//
@@ -131,21 +132,21 @@ void ProductsView::on_deleteButton_clicked() {
 //----------------------------------------------------//
 //----------------------------------------------------//
 void ProductsView::on_newButton_clicked() {
-    ProductsDTO *pDTO = new ProductsDTO(this);
+  ProductsDTO *pDTO = new ProductsDTO(this);
 
-    if (pDTO->exec() == QDialog::Rejected) return;
+  if (pDTO->exec() == QDialog::Rejected) return;
 
-    ProductDataObject product = pDTO->product;
-    QSqlQuery q(_dbM->db());
-    bool status = q.exec(
-        QString("INSERT INTO products"
-                "(name,description, price, weight) VALUES ( '%1', '%2', %3, %4)")
-            .arg(product.getName())
-            .arg(product.getDescription())
-            .arg(product.getPrice().toDouble())
-            .arg(product.getWeight().toDouble()));
-    qDebug() << "****************** error : >> " << q.lastError().text();
-    productModel->updateModel();
+  ProductDataObject product = pDTO->product;
+  QSqlQuery q(_dbM->db());
+  bool status = q.exec(
+      QString("INSERT INTO products"
+              "(name,description, price, weight) VALUES ( '%1', '%2', %3, %4)")
+          .arg(product.getName())
+          .arg(product.getDescription())
+          .arg(product.getPrice().toDouble())
+          .arg(product.getWeight().toDouble()));
+  qDebug() << "****************** error : >> " << q.lastError().text();
+  productModel->updateModel();
 }
 //----------------------------------------------------//
 //----------------------------------------------------//

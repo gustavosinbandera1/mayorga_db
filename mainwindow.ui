@@ -43,7 +43,7 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -154,7 +154,6 @@
     <addaction name="menuDatabase"/>
     <addaction name="actionQuit"/>
     <addaction name="menuOrders"/>
-    <addaction name="actionotro"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -223,6 +222,11 @@
   <action name="actionAdd_Address">
    <property name="text">
     <string>Add Address</string>
+   </property>
+  </action>
+  <action name="action_search">
+   <property name="text">
+    <string>&amp;Search</string>
    </property>
   </action>
  </widget>

@@ -25,15 +25,12 @@ class ReadWriteModel : public QAbstractTableModel {
 
   int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
-  // bool setData(const QModelIndex &index, const QVariant &value, int role);
+  bool setData(const QModelIndex &index, const QVariant &value, int role);
 
   QVariant data(const QModelIndex &index,
                 int role = Qt::DisplayRole) const override;
-  // Qt::ItemFlags flags(const QModelIndex &index) const override;
+  Qt::ItemFlags flags(const QModelIndex &index) const override;
   void setHeaders(QStringList &&headers);
-  void setForeignHeaders(QStringList &&headers);
-  void setRelation(int foreignColumn, QString foreignTable, QString foreignKey,
-                   QString columnToRender);
 
  private slots:
   void timerHit();

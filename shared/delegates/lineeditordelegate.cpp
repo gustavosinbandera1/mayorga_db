@@ -11,7 +11,7 @@ LineEditorDelegate::LineEditorDelegate(QObject *parent)
 QWidget *LineEditorDelegate::createEditor(QWidget *parent,
                                           const QStyleOptionViewItem &option,
                                           const QModelIndex &index) const {
-    qDebug()<<"Delegator init**********************";
+  qDebug() << "Delegator init**********************";
   QLineEdit *editor = new QLineEdit(parent);
   return editor;
 }
@@ -19,7 +19,7 @@ QWidget *LineEditorDelegate::createEditor(QWidget *parent,
 void LineEditorDelegate::setEditorData(QWidget *editor,
                                        const QModelIndex &index) const {
   QString str = index.model()->data(index, Qt::DisplayRole).toString();
-  qInfo() << "Data is " << str;
+  qInfo() << "set editor  Data is " << str;
 
   QLineEdit *lineEdit = static_cast<QLineEdit *>(editor);
   lineEdit->setText(str);
@@ -37,10 +37,11 @@ void LineEditorDelegate::setModelData(QWidget *editor,
                             QMessageBox::Save | QMessageBox::Discard);
 
   if (reply == QMessageBox::Save) {
-    qDebug() << "Yes was clicked setting model data from delegator................";
+    qDebug()
+        << "Yes was clicked setting model data from delegator................";
     QLineEdit *lineEdit = static_cast<QLineEdit *>(editor);
     QString str = lineEdit->text();
-    qDebug()<<"Setting data to model ";
+    qDebug() << "Setting data to model ";
     model->setData(index, str, Qt::EditRole);
   } else if (reply == QMessageBox::Discard)
     qDebug() << "Discard was clicked................";

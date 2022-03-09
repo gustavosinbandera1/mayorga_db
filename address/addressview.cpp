@@ -1,7 +1,10 @@
 #include "addressview.h"
+
 #include <queryModel.h>
+
 #include <QDialog>
 #include <QMessageBox>
+
 #include "addressdto.h"
 #include "lineeditordelegate.h"
 #include "login.h"
@@ -24,6 +27,8 @@ AddressView::AddressView(DbManager* mdb, QWidget* parent)
   ui->addressTableView->horizontalHeader()->setVisible(true);
   ui->addressTableView->setAlternatingRowColors(true);
 
+  ui->addressTableView->setModel(addressModel->getModel());
+
   ui->addressIDLineEdit->setReadOnly(true);
   ui->addressTypeLineEdit->setReadOnly(true);
   ui->cityLineEdit->setReadOnly(true);
@@ -43,6 +48,7 @@ AddressView::~AddressView() {
 //----------------------------
 void AddressView::updateModel() {
   if (addressModel != nullptr) {
+    qDebug() << "deleting address model..";
     delete addressModel;
     addressModel = new QueryModel(_dbM, this);
   }
@@ -112,7 +118,7 @@ void AddressView::sendQuery() {
   addressModel->setHeaders({"address_id", "city", "State", "Street Number",
                             "address Type", "country ", "country_id",
                             "zipcode"});
-  ui->addressTableView->setModel(addressModel);
+  ui->addressTableView->setModel(addressModel->getModel());
   ui->addressTableView->setColumnHidden(6, true);
   ui->addressTableView->setColumnHidden(7, true);
 }
@@ -155,7 +161,7 @@ void AddressView::on_updateButton_clicked() {
              .arg(address.getType())
              .arg(address.getAddressId()));
   qDebug() << "Error " << q.lastError().text();
-  //addressModel->updateModel();
+  // addressModel->updateModel();
   this->updateModel();
 }
 //-------------------------------------
@@ -187,4 +193,3 @@ void AddressView::on_deleteButton_clicked() {
     }
   }
 }
-

@@ -48,37 +48,71 @@
 **
 ****************************************************************************/
 
-#ifndef QSQLCONNECTIONDIALOG_H
-#define QSQLCONNECTIONDIALOG_H
+#ifndef BROWSER_H
+#define BROWSER_H
 
-#include <QDialog>
-#include <QMessageBox>
+#include <QSqlTableModel>
+#include <QWidget>
 
-#include "ui_qsqlconnectiondialog.h"
+#include "ui_browserwidget.h"
 
-class QSqlConnectionDialog : public QDialog {
+class ConnectionWidget;
+QT_FORWARD_DECLARE_CLASS(QTableView)
+QT_FORWARD_DECLARE_CLASS(QPushButton)
+QT_FORWARD_DECLARE_CLASS(QTextEdit)
+QT_FORWARD_DECLARE_CLASS(QSqlError)
+
+class Browser : public QWidget, private Ui::Browser {
   Q_OBJECT
  public:
-  QSqlConnectionDialog(QWidget *parent = nullptr);
-  ~QSqlConnectionDialog();
+  Browser(QWidget *parent = nullptr);
+  virtual ~Browser();
 
-  QString driverName() const;
-  QString databaseName() const;
-  QString userName() const;
-  QString password() const;
-  QString hostName() const;
-  int port() const;
-  bool useInMemoryDatabase() const;
+  QSqlError addConnection(const QString &driver, const QString &dbName,
+                          const QString &host, const QString &user,
+                          const QString &passwd, int port = -1);
+  void refreshConnection();
 
- private slots:
-  void on_okButton_clicked();
-  void on_cancelButton_clicked() { reject(); }
-  void on_dbCheckBox_clicked() {
-    ui.connGroupBox->setEnabled(!ui.dbCheckBox->isChecked());
+ public slots:
+  void exec();
+  void showTable(const QString &table);
+  void showMetaData(const QString &table);
+  void addConnection();
+  void about();
+
+  void on_connectionWidget_tableActivated(const QString &table) {
+    showTable(table);
   }
 
- private:
-  Ui::QSqlConnectionDialogUi ui;
+  void on_connectionWidget_metaDataRequested(const QString &table) {
+    showMetaData(table);
+  }
+
+  void on_submitButton_clicked() {
+    exec();
+    sqlEdit->setFocus();
+  }
+  void on_clearButton_clicked() {
+    sqlEdit->clear();
+    sqlEdit->setFocus();
+  }
+
+ signals:
+  void statusMessage(const QString &message);
+};
+
+class CustomModel : public QSqlTableModel {
+  Q_OBJECT
+ public:
+  explicit CustomModel(QObject *parent = nullptr,
+                       QSqlDatabase db = QSqlDatabase())
+      : QSqlTableModel(parent, db) {}
+
+  QVariant data(const QModelIndex &idx, int role) const override {
+    if (role == Qt::BackgroundRole && isDirty(idx))
+      return QBrush(QColor(Qt::yellow));
+    return QSqlTableModel::data(idx, role);
+  }
 };
 
 #endif

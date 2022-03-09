@@ -49,69 +49,55 @@
 ****************************************************************************/
 
 #include "qsqlconnectiondialog.h"
-#include "ui_qsqlconnectiondialog.h"
 
 #include <QSqlDatabase>
 
-QSqlConnectionDialog::QSqlConnectionDialog(QWidget *parent)
-    : QDialog(parent)
-{
-    ui.setupUi(this);
+#include "ui_qsqlconnectiondialog.h"
 
-    QStringList drivers = QSqlDatabase::drivers();
+QSqlConnectionDialog::QSqlConnectionDialog(QWidget *parent) : QDialog(parent) {
+  ui.setupUi(this);
 
-    if (!drivers.contains("QSQLITE"))
-        ui.dbCheckBox->setEnabled(false);
+  QStringList drivers = QSqlDatabase::drivers();
 
-    ui.comboDriver->addItems(drivers);
+  if (!drivers.contains("QSQLITE")) ui.dbCheckBox->setEnabled(false);
+
+  ui.comboDriver->addItems(drivers);
 }
 
-QSqlConnectionDialog::~QSqlConnectionDialog()
-{
+QSqlConnectionDialog::~QSqlConnectionDialog() {}
+
+QString QSqlConnectionDialog::driverName() const {
+  return ui.comboDriver->currentText();
 }
 
-QString QSqlConnectionDialog::driverName() const
-{
-    return ui.comboDriver->currentText();
+QString QSqlConnectionDialog::databaseName() const {
+  return ui.editDatabase->text();
 }
 
-QString QSqlConnectionDialog::databaseName() const
-{
-    return ui.editDatabase->text();
+QString QSqlConnectionDialog::userName() const {
+  return ui.editUsername->text();
 }
 
-QString QSqlConnectionDialog::userName() const
-{
-    return ui.editUsername->text();
+QString QSqlConnectionDialog::password() const {
+  return ui.editPassword->text();
 }
 
-QString QSqlConnectionDialog::password() const
-{
-    return ui.editPassword->text();
+QString QSqlConnectionDialog::hostName() const {
+  return ui.editHostname->text();
 }
 
-QString QSqlConnectionDialog::hostName() const
-{
-    return ui.editHostname->text();
+int QSqlConnectionDialog::port() const { return ui.portSpinBox->value(); }
+
+bool QSqlConnectionDialog::useInMemoryDatabase() const {
+  return ui.dbCheckBox->isChecked();
 }
 
-int QSqlConnectionDialog::port() const
-{
-    return ui.portSpinBox->value();
-}
-
-bool QSqlConnectionDialog::useInMemoryDatabase() const
-{
-    return ui.dbCheckBox->isChecked();
-}
-
-void QSqlConnectionDialog::on_okButton_clicked()
-{
-    if (ui.comboDriver->currentText().isEmpty()) {
-        QMessageBox::information(this, tr("No database driver selected"),
-                                 tr("Please select a database driver"));
-        ui.comboDriver->setFocus();
-    } else {
-        accept();
-    }
+void QSqlConnectionDialog::on_okButton_clicked() {
+  if (ui.comboDriver->currentText().isEmpty()) {
+    QMessageBox::information(this, tr("No database driver selected"),
+                             tr("Please select a database driver"));
+    ui.comboDriver->setFocus();
+  } else {
+    accept();
+  }
 }

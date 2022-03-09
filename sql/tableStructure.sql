@@ -1,17 +1,15 @@
-CREATE TABLE IF NOT EXISTS administrator (
-    customer_id BIGSERIAL PRIMARY KEY,
-    name  CHARACTER VARYING(50)  NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    phone CHARACTER VARYING(12) UNIQUE NOT NULL,
-    password CHARACTER VARYING(50) NOT NULL
-    );
-
 CREATE TABLE IF NOT EXISTS customer (
     customer_id BIGSERIAL PRIMARY KEY,
     name  CHARACTER VARYING(50)  NOT NULL,
     email TEXT NOT NULL UNIQUE,
     phone CHARACTER VARYING(12) UNIQUE NOT NULL,
-    password CHARACTER VARYING(50) NOT NULL
+    password CHARACTER VARYING(50) NOT NULL,
+    role CHARACTER VARYING(15)
+    );
+
+ALTER TABLE customer ADD CONSTRAINT
+    role_type_constraint CHECK(
+    role = 'administrator' OR role = 'customer'
     );
 
 CREATE TABLE IF NOT EXISTS country (
@@ -47,7 +45,7 @@ CREATE TABLE IF NOT EXISTS customer_address(
 
 CREATE TABLE IF NOT EXISTS products (
     sku BIGSERIAL NOT NULL PRIMARY KEY,
-    name CHARACTER VARYING(30) NOT NULL,
+    name CHARACTER VARYING(30) NOT NULL UNIQUE,
     description CHARACTER VARYING(100),
     price NUMERIC(7,2),
     weight NUMERIC(7,2)

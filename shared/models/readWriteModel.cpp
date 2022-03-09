@@ -20,6 +20,8 @@ ReadWriteModel::ReadWriteModel(DbManager *dbm, QString table, bool relational,
 }
 //-------------------
 QSqlTableModel *ReadWriteModel::updateModel() {
+  qDebug()
+      << "............................Updating product model................";
   model->setTable(_table);
   model->select();
   return model;
@@ -47,10 +49,12 @@ int ReadWriteModel::columnCount(const QModelIndex &parent) const {
   return model->columnCount();
 }
 
-// bool ReadWriteModel::setData(const QModelIndex &index, const QVariant &value,
-//                             int role) {
-
-//}
+bool ReadWriteModel::setData(const QModelIndex &index, const QVariant &value,
+                             int role) {
+  qDebug() << "SET DATA WAS CALLED ... " << value;
+  model->setData(index, value.toString());
+  emit dataChanged(index, index, {Qt::DisplayRole, Qt::EditRole});
+}
 //-------------------
 QVariant ReadWriteModel::data(const QModelIndex &index, int role) const {
   if (!index.isValid()) return QVariant();
@@ -59,13 +63,13 @@ QVariant ReadWriteModel::data(const QModelIndex &index, int role) const {
 
   switch (role) {
     case Qt::DisplayRole:
-      if (row == 0 && col == 0) return QTime::currentTime().toString();
+      // if (row == 0 && col == 0) return QTime::currentTime().toString();
 
       return model->index(index.row(), index.column()).data();
 
     case Qt::EditRole:
-      qDebug() << "****************** edit role ";
-
+      qDebug() << "****************** edit role doing nothing " << index.data();
+      return model->data(index);
     case Qt::FontRole: {
       // QFont boldFont;
       // boldFont.setBold(true);
@@ -91,26 +95,17 @@ QVariant ReadWriteModel::data(const QModelIndex &index, int role) const {
   return QVariant();
 }
 
-// Qt::ItemFlags ReadWriteModel::flags(const QModelIndex &index) const
-//{
-//    if (!index.isValid()) return Qt::NoItemFlags;
-//    return Qt::ItemIsEditable | Qt::ItemIsEnabled;
-//}
+Qt::ItemFlags ReadWriteModel::flags(const QModelIndex &index) const {
+  if (!index.isValid()) return Qt::NoItemFlags;
+  return Qt::ItemIsEditable | Qt::ItemIsEnabled;
+}
 //-------------------
 void ReadWriteModel::setHeaders(QStringList &&headers) {
   this->headers = headers;
-  qDebug() << "SETTING HEADERS NOW-----------------";
-
-  //  for (const auto &header : headers) {
-  //    model->setHeaderData(i, Qt::Horizontal, header);
-  //    i++;
-  //  }
 }
 //-------------------
-void ReadWriteModel::setForeignHeaders(QStringList &&headers) {}
-
 void ReadWriteModel::timerHit() {
-  QModelIndex topLeft = createIndex(0, 0);
-  emit dataChanged(topLeft, topLeft);
-  qDebug() << "timer triggered!!";
+  // QModelIndex topLeft = createIndex(0, 0);
+  //  emit dataChanged(topLeft, topLeft);
+  //  qDebug() << "timer triggered!!";
 }

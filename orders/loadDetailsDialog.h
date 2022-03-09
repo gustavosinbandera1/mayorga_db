@@ -21,15 +21,13 @@ class QTextEdit;
 class QWidget;
 QT_END_NAMESPACE
 
-
-typedef struct DTODetails {
-    int price;
-    QString productName;
-    int quantity;
-    int purchase;
-    int sku;
+struct DTODetails {
+  int price;
+  QString productName;
+  int quantity;
+  int purchase;
+  int sku;
 };
-
 
 class DetailsDialog : public QDialog {
   Q_OBJECT
@@ -41,13 +39,12 @@ class DetailsDialog : public QDialog {
   void verify();
 
  public:
- QList<DTODetails> orderItems();
+  QList<DTODetails> orderItems();
   QString getSenderName() const;
   QString getSenderAddress() const;
   bool sendOffers();
   QString getPaymentMethod() const;
   bool isEmpty;
-
 
  private:
   void setupItemsTable();
@@ -66,10 +63,8 @@ class DetailsDialog : public QDialog {
 
   QuantityTotalDelegate *quantityDelegate;
 
-
-
  private slots:
-  void on_actionSave_triggered() ;
+  void on_actionSave_triggered();
   void on_table_itemChanged(QTableWidgetItem *item);
 };
 
