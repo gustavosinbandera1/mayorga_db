@@ -74,7 +74,8 @@ QPair<QString, int> DbManager::getPasswordFromTable(const QString& table,
   if (qry.first()) {
     qDebug() << "Size: " << qry.size();
 
-    qDebug() << " Good Loogd Customer... " << qry.value("email").toString();
+    qDebug() << " Good Loogd Customer... " << qry.value("email").toString()
+             << " ** " << qry.value("role").toString();
     return QPair<QString, int>(qry.value("password").toString(),
                                qry.value("customer_id").toInt());
   }

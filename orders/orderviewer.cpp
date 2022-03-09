@@ -15,17 +15,8 @@ OrderViewer::OrderViewer(DbManager* dbm, int orderId, QWidget* parent)
   connect(ui->okButton, SIGNAL(&clicked()), this, SLOT(close()));
   model = new QueryModel(dbm, this);
   sendQuery();
-
-  //     q.clear();
-  //    q.exec(QString(
-  //        "select sku, quantity , order_id, order_detail.price,   sum(quantity
-  //        * " "order_detail.price)  AS subTotal  " "from order_detail " " JOIN
-  //        orders ON " "order_detail.fk_order_id=orders.order_id " "JOIN
-  //        products ON " "order_detail.fk_product_sku=products.sku where
-  //        order_id = 1 GROUP BY " "sku,quantity,orders.order_id,
-  //        order_detail.price "
-
-  //      ));
+  ui->orderViewerTable->horizontalHeader()->setSectionResizeMode(
+      QHeaderView::Stretch);
 }
 
 OrderViewer::~OrderViewer() { delete ui; }
@@ -48,20 +39,23 @@ void OrderViewer::sendQuery() {
 
   query.next();
   qDebug() << "Total: " << query.record().value(0).toDouble();
-
+  ui->TotalLabel->setText(QString::number(query.record().value(0).toDouble()));
   //  query.clear();
 
   query.clear();
-  query.prepare(
-      QString(
-          "select sku, quantity , order_id, order_detail.price, sum(quantity * "
-          " order_detail.price) AS subTotal from order_detail JOIN "
-          "orders ON "
-          "order_detail.fk_order_id=orders.order_id JOIN products "
-          "ON order_detail.fk_product_sku=products.sku where order_id = %1 "
-          "GROUP BY "
-          "sku,quantity,orders.order_id, order_detail.price ")
-          .arg(orderID));
+  query.prepare(QString("select sku, quantity , order_id, order_detail.price, "
+                        " sum(quantity * "
+                        "order_detail.price) AS subTotal "
+                        "FROM order_detail "
+                        "JOIN orders ON "
+                        "order_detail.fk_order_id=orders.order_id "
+                        "JOIN products ON "
+                        "order_detail.fk_product_sku=products.sku "
+                        "WHERE order_id = %1 "
+                        "GROUP BY "
+                        "sku,quantity,orders.order_id, order_detail.price ")
+                    .arg(orderID));
+
   model->setQuery(query);
   query.next();
 
