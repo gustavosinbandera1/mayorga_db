@@ -4,6 +4,7 @@
 
 #include <QDialog>
 #include <QMessageBox>
+#include <QTime>
 
 #include "addressdto.h"
 #include "lineeditordelegate.h"
@@ -27,7 +28,7 @@ AddressView::AddressView(DbManager* mdb, QWidget* parent)
   ui->addressTableView->horizontalHeader()->setVisible(true);
   ui->addressTableView->setAlternatingRowColors(true);
 
-  ui->addressTableView->setModel(addressModel->getModel());
+  ui->addressTableView->setModel(addressModel);
 
   ui->addressIDLineEdit->setReadOnly(true);
   ui->addressTypeLineEdit->setReadOnly(true);
@@ -92,33 +93,23 @@ void AddressView::on_addressTableView_doubleClicked(const QModelIndex& index) {
 
 void AddressView::sendQuery() {
   QSqlQuery query;
+  query.prepare(
+      "SELECT address_id, city, state, street_number, "
+      "address_type , country_name, country_id , zipcode "
+      "from customer_address "
+      "JOIN customer ON customer_address.fk_customer_id=customer.customer_id "
+      "JOIN address ON customer_address.fk_address_id=address.address_id "
+      "JOIN country ON address.fk_country_id=country.country_id "
+      "WHERE customer_address.fk_customer_id=:id");
+  query.bindValue(":id", UserData::userId);
 
-  if (UserData::isAdmin) {
-    query.prepare(
-        "SELECT address_id, city, state, street_number, "
-        "address_type, country_name, country_id , zipcode from address "
-        "JOIN country ON address.fk_country_id=country.country_id");
-  } else {
-    query.prepare(
-        "SELECT address_id, city, state, street_number, "
-        "address_type "
-        "from customer_address "
-        "JOIN customer ON customer_address.fk_customer_id=customer.customer_id "
-        "JOIN address ON customer_address.fk_address_id=address.address_id "
-        "WHERE customer_id=:id"
-
-    );
-    query.bindValue(":id", UserData::userId);
-
-    qDebug() << "error output " << query.lastError().text();
-  }
-
+  qDebug() << "error output " << query.lastError().text();
   addressModel->submit();
   addressModel->setQuery(query);
   addressModel->setHeaders({"address_id", "city", "State", "Street Number",
                             "address Type", "country ", "country_id",
                             "zipcode"});
-  ui->addressTableView->setModel(addressModel->getModel());
+  ui->addressTableView->setModel(addressModel);
   ui->addressTableView->setColumnHidden(6, true);
   ui->addressTableView->setColumnHidden(7, true);
 }
@@ -176,10 +167,17 @@ void AddressView::on_deleteButton_clicked() {
     if (answer == QMessageBox::Yes) {
       QSqlQuery query;
       qDebug() << "output "
-               << query.exec(QString("DELETE FROM customer_address "
-                                     "WHERE fk_address_id=%1")
-                                 .arg(ui->addressIDLineEdit->text().toInt()));
+               << query.exec(
+                      QString("DELETE FROM customer_address "
+                              "WHERE fk_address_id=%1 AND fk_customer_id=%2")
+                          .arg(ui->addressIDLineEdit->text().toInt())
+                          .arg(UserData::userId));
       qDebug() << "Error: " << query.lastError().text();
+
+      query.clear();
+      query.exec(QString("DELETE FROM address "
+                         "WHERE address_id=%1")
+                     .arg(ui->addressIDLineEdit->text().toInt()));
 
       addressModel->updateModel();
 
@@ -192,4 +190,34 @@ void AddressView::on_deleteButton_clicked() {
       }
     }
   }
+}
+
+void AddressView::on_addButton_clicked() {
+  AddressDTO aDTO(this);
+  if (aDTO.exec() == QDialog::Rejected) return;
+  AddressDataObject address = aDTO.address;
+  QSqlQuery q(_dbM->db());
+  q.exec(QString("INSERT INTO address"
+                 "(city,state, street_number, fk_country_id, address_type) "
+                 "VALUES ('%1','%2','%3',%4,'%5') returning address_id")
+             .arg(address.getCity())
+             .arg(address.getState())
+             .arg(address.getStreetNumber())
+             .arg(address.getCountryId())
+             .arg(address.getType()));
+
+  int lastInsertedId = q.lastInsertId().toInt();
+  qDebug() << "-------------   response " << lastInsertedId;
+
+  q.clear();
+  QDateTime dateTime = QDateTime::currentDateTime();
+  q.prepare(
+      "INSERT INTO customer_address (fk_customer_id, fk_address_id, "
+      "created_date_time) VALUES ( :customer_id, :address_id, :dateTime)");
+  q.bindValue(":customer_id", UserData::userId);
+  q.bindValue(":address_id", lastInsertedId);
+  q.bindValue(":dateTime", dateTime);
+  q.exec();
+
+  addressModel->updateModel();
 }

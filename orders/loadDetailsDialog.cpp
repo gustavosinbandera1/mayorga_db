@@ -24,18 +24,26 @@ DetailsDialog::DetailsDialog(DbManager *dbm, const QString &title,
   paymentChoice->addItems({"visa", "mastercard", "cash"});
 
   QSqlQuery qry(_dbM->db());
-  QString query = "SELECT * from customer_address";
 
-  qDebug() << "STATUS--->>>> "
-           << qry.exec(QString(
-                  "SELECT * from customer_address"
-                  " JOIN address ON"
-                  " customer_address.fk_address_id = address.address_id"));
-  // while (qry.next()) {
-  // select * from customer_address join address ON
-  // customer_address.fk_address_id=address.address_id  JOIN customer  ON
-  // customer_address.fk_customer_id = customer.customer_id ;
-  qry.first();
+  qDebug() << "STATUS--->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ";
+
+  //  qry.prepare(
+  //      "SELECT address_id, city, state, street_number, "
+  //      "address_type "
+  //      "from customer_address "
+  //      "JOIN customer ON customer_address.fk_customer_id=customer.customer_id
+  //      " "JOIN address ON customer_address.fk_address_id=address.address_id "
+
+  //  );
+  // qry.bindValue(":id", UserData::userId);
+
+  qry.prepare(
+      "SELECT * "
+      "from customer_address ");
+
+  qDebug() << "error output " << qry.lastError().text();
+
+  qDebug() << "Size: " << qry.size();
   qDebug() << "DATA: " << qry.record().value("street_number").toString();
   addressEdit->setPlainText(qry.record().value("street_number").toString());
   //}
@@ -77,10 +85,10 @@ QList<DTODetails> DetailsDialog::orderItems() {
     int quantity = itemsTable->item(row, 1)->data(Qt::DisplayRole).toInt();
     item.quantity = qMax(0, quantity);
 
-    int price = itemsTable->item(row, 2)->data(Qt::DisplayRole).toInt();
+    double price = itemsTable->item(row, 2)->data(Qt::DisplayRole).toDouble();
     item.price = price;
 
-    int total = itemsTable->item(row, 3)->data(Qt::DisplayRole).toInt();
+    double total = itemsTable->item(row, 3)->data(Qt::DisplayRole).toDouble();
     item.purchase = total;
 
     item.sku = itemsTable->item(row, 4)->data(Qt::DisplayRole).toInt();
@@ -135,7 +143,7 @@ void DetailsDialog::setupItemsTable() {
   while (qry.next()) {
     tmpDTO.sku = qry.record().value("sku").toInt();
     tmpDTO.productName = qry.record().value("name").toString();
-    tmpDTO.price = qry.record().value("price").toInt();
+    tmpDTO.price = qry.record().value("price").toDouble();
     _items.push_back(tmpDTO);
   }
 
@@ -177,10 +185,11 @@ void DetailsDialog::setupItemsTable() {
 //----------------------//
 void DetailsDialog::on_table_itemChanged(QTableWidgetItem *item) {
   if (item->column() == 1) {
+    qDebug() << "Going to update others cells .............";
     int quantity = itemsTable->item(item->row(), 1)->text().toInt();
-    int total;
-    int price = itemsTable->item(item->row(), 2)->text().toInt();
-    total = price * quantity;
+    double total;
+    double price = itemsTable->item(item->row(), 2)->text().toDouble();
+    total = (double)(price * quantity);
     itemsTable->item(item->row(), 3)->setText(QString::number(total));
   }
 }

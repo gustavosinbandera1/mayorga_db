@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 
   QString mainPath = QApplication::applicationDirPath();
   // set the app style sheet
-  QString stylePath = mainPath + "/Combinear.qss";
+  QString stylePath = mainPath + "/sql/Medize.qss";
   QFile styleSheetFile(stylePath);
   styleSheetFile.open(QFile::QIODevice::ReadOnly);
   QString styleSheet = styleSheetFile.readAll();
@@ -38,33 +38,32 @@ int main(int argc, char *argv[]) {
   /////////////////////////////////////
   //////////////////////////////////////////
 
-  //  QMainWindow mainWin(&mainWindow);
-  //  mainWin.setWindowTitle(QObject::tr("Qt SQL Browser"));
+  QMainWindow mainWin(&mainWindow);
+  mainWin.setWindowTitle(QObject::tr("Qt SQL Browser"));
 
-  //  Browser browser(&mainWin);
-  //  mainWin.setCentralWidget(&browser);
+  Browser browser(&mainWin);
+  mainWin.setCentralWidget(&browser);
 
-  //  QMenu *fileMenu = mainWin.menuBar()->addMenu(QObject::tr("&File"));
-  //  fileMenu->addAction(QObject::tr("Add &Connection..."),
-  //                      [&]() { browser.addConnection(); });
-  //  fileMenu->addSeparator();
-  //  fileMenu->addAction(QObject::tr("&Quit"), []() { qApp->quit(); });
+  QMenu *fileMenu = mainWin.menuBar()->addMenu(QObject::tr("&File"));
+  fileMenu->addAction(QObject::tr("Add &Connection..."),
+                      [&]() { browser.addConnection(); });
+  fileMenu->addSeparator();
+  fileMenu->addAction(QObject::tr("&Quit"), []() { qApp->quit(); });
 
-  //  QMenu *helpMenu = mainWin.menuBar()->addMenu(QObject::tr("&Help"));
-  //  helpMenu->addAction(QObject::tr("About"), [&]() { browser.about(); });
-  //  helpMenu->addAction(QObject::tr("About Qt"), []() { qApp->aboutQt(); });
+  QMenu *helpMenu = mainWin.menuBar()->addMenu(QObject::tr("&Help"));
+  helpMenu->addAction(QObject::tr("About"), [&]() { browser.about(); });
+  helpMenu->addAction(QObject::tr("About Qt"), []() { qApp->aboutQt(); });
 
-  //  QObject::connect(&browser, &Browser::statusMessage,
-  //                   [&mainWin](const QString &text) {
-  //                     mainWin.statusBar()->showMessage(text);
-  //                   });
+  QObject::connect(&browser, &Browser::statusMessage,
+                   [&mainWin](const QString &text) {
+                     mainWin.statusBar()->showMessage(text);
+                   });
 
-  //  mainWin.show();
-  //  browser.refreshConnection();
+  mainWin.show();
+  browser.refreshConnection();
 
-  //  if (QSqlDatabase::connectionNames().isEmpty())
-  //    QMetaObject::invokeMethod(&browser, "addConnection",
-  //    Qt::QueuedConnection);
+  if (QSqlDatabase::connectionNames().isEmpty())
+    QMetaObject::invokeMethod(&browser, "addConnection", Qt::QueuedConnection);
 
   ///////////////////////////
   //   OrderForm form;

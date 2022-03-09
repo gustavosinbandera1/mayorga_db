@@ -92,34 +92,6 @@ void MainWindow::on_actionAdd_Users_triggered() {
           .arg(_dbM->getHash(admin.getPassword())));
 }
 //---------------------
-void MainWindow::on_actionAdd_Address_triggered() {
-  AddressDTO aDTO(this);
-  if (aDTO.exec() == QDialog::Rejected) return;
-  AddressDataObject address = aDTO.address;
-  QSqlQuery q(_dbM->db());
-  q.exec(QString("INSERT INTO address"
-                 "(city,state, street_number, fk_country_id, address_type) "
-                 "VALUES ('%1','%2','%3',%4,'%5') returning address_id")
-             .arg(address.getCity())
-             .arg(address.getState())
-             .arg(address.getStreetNumber())
-             .arg(address.getCountryId())
-             .arg(address.getType()));
-
-  int lastInsertedId = q.lastInsertId().toInt();
-  qDebug() << "-------------   response " << lastInsertedId;
-
-  q.clear();
-  QDateTime dateTime = QDateTime::currentDateTime();
-  q.prepare(
-      "INSERT INTO customer_address (fk_customer_id, fk_address_id, "
-      "created_date_time) VALUES ( :customer_id, :address_id, :dateTime)");
-  q.bindValue(":customer_id", UserData::userId);
-  q.bindValue(":address_id", lastInsertedId);
-  q.bindValue(":dateTime", dateTime);
-  q.exec();
-}
-//---------------------
 void MainWindow::populateTab(QWidget *widget, QMdiArea *mdiArea) {
   mdiArea->closeAllSubWindows();
   auto subwindow = mdiArea->addSubWindow(widget);
@@ -162,13 +134,9 @@ void MainWindow::on_tabWidget_tabBarClicked(int index) {
       addressView->updateModel();
       break;
     case TAB_NAME::CREATE_ORDERS:
-
+      qDebug() << "Tab Orders Forms ..";
       break;
     default:
       break;
   }
-}
-//---------------------
-void MainWindow::on_NewAddressOrder_clicked() {
-  on_actionAdd_Address_triggered();
 }

@@ -31,11 +31,13 @@ class AddressView : public QWidget {
   void on_deleteButton_clicked();
   void on_updateButton_clicked();
 
-private:
+  void on_addButton_clicked();
+
+ private:
   Ui::AddressView *ui;
   QueryModel *addressModel;
   LineEditorDelegate *lineDelegate;
-  DbManager* _dbM;
+  DbManager *_dbM;
   AddressDataObject address;
 
   void sendQuery();

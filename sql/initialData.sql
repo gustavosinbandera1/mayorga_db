@@ -70,3 +70,13 @@ insert into address (city, state, fk_country_id, street_number, address_type) va
 
 
 
+insert into customer_address (fk_customer_id,fk_address_id,created_date_time) values (1,1, DATE '2022-02-15');
+insert into customer_address (fk_customer_id,fk_address_id,created_date_time) values (2,2, DATE '2022-02-15');
+insert into customer_address (fk_customer_id,fk_address_id,created_date_time) values (3,3, DATE '2022-02-15');
+insert into customer_address (fk_customer_id,fk_address_id,created_date_time) values (4,4, DATE '2022-02-15');
+insert into customer_address (fk_customer_id,fk_address_id,created_date_time) values (5,5, DATE '2022-02-15');
+insert into customer_address (fk_customer_id,fk_address_id,created_date_time) values (6,6, DATE '2022-02-15');
+insert into customer_address (fk_customer_id,fk_address_id,created_date_time) values (7,7, DATE '2022-02-15');
+insert into customer_address (fk_customer_id,fk_address_id,created_date_time) values (8,8, DATE '2022-02-15');
+insert into customer_address (fk_customer_id,fk_address_id,created_date_time) values (9,9, DATE '2022-02-15');
+insert into customer_address (fk_customer_id,fk_address_id,created_date_time) values (10,10, DATE '2022-02-15');

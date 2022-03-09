@@ -22,10 +22,10 @@ class QWidget;
 QT_END_NAMESPACE
 
 struct DTODetails {
-  int price;
+  double price;
   QString productName;
-  int quantity;
-  int purchase;
+  double quantity;
+  double purchase;
   int sku;
 };
 

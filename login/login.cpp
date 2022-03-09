@@ -31,10 +31,10 @@ void Login::on_buttonBox_accepted() {
   //    ui->passwordLineEdit->text().isEmpty())
   //        return;
 
-  UserData::userEmail = "n@gmail.com";
-  UserData::userName = "gustavo";
-  UserData::userId = 1;
-  UserData::isAdmin = true;
+  UserData::userEmail = "orlando6@reference.com";
+  UserData::userName = "Orlando";
+  UserData::userId = 10;
+  UserData::isAdmin = false;
 
   //    UserData::userEmail ="n@gmail.com";
   //    UserData::userName ="Newgustavo";

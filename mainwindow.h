@@ -33,13 +33,7 @@ class MainWindow : public QMainWindow {
 
   void on_actionAdd_Users_triggered();
 
-  void on_actionAdd_Address_triggered();
-
   void on_tabWidget_tabBarClicked(int index);
-
-  void on_NewAddressOrder_clicked();
-
-  // void on_action_search_triggered();
 
  private:
   Ui::MainWindow *ui;
@@ -50,7 +44,6 @@ class MainWindow : public QMainWindow {
   OrderDetailView *orderDetailView = nullptr;
   AddressView *addressView = nullptr;
   OrderForm *orderForm = nullptr;
-  // QString currentUser;
 
   void releaseMemory(QObject *obj) {
     if (obj != nullptr) delete obj;

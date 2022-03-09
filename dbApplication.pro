@@ -116,10 +116,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 DISTFILES += \
-    Combinear.qss \
-    Medize.qss \
-    initialData.sql \
-    initialData.sql \
+    sql/Combinear.qss \
+    sql/Medize.qss \
     sql/initialData.sql \
     sql/tableStructure.sql \
     tableStructure.sql
